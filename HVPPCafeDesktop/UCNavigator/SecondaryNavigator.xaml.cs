@@ -1,5 +1,4 @@
-﻿using HVPPCafeDesktop.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HVPPCafeDesktop
+namespace HVPPCafeDesktop.UCNavigator
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SecondaryNavigator.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SecondaryNavigator : UserControl
     {
-        public MainWindow()
+        public SecondaryNavigator()
         {
             InitializeComponent();
-            this.DataContext = new NavigationVM();
         }
     }
 }
