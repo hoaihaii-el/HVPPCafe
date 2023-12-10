@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:HVPPCafe"
     xmlns:views="clr-namespace:HVPPCafe.Views"
+    xmlns:icons="clr-namespace:HVPPCafe.Models"
     FlyoutWidth="180"
     FlyoutBackgroundColor="{StaticResource Primary}"
     Shell.FlyoutBehavior="{OnIdiom Phone=Disable, Default=Locked}">
@@ -12,7 +13,8 @@
         <Grid HeightRequest="70">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="2"/>
             </Grid.RowDefinitions>
             <Grid 
                 Grid.Row="0"
@@ -32,26 +34,41 @@
                     Text="Cafe"
                     TextColor="{StaticResource Secondary}"/>
             </Grid>
-            <Label
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                TextColor="{StaticResource Secondary}"
-                Grid.Row="1"
-                Text="____________________"/>
+            <Grid
+                Grid.Row="2"
+                Margin="15,0"
+                Background="{StaticResource Secondary}"/>
         </Grid>
     </Shell.FlyoutHeader>
     <Shell.FlyoutFooter>
         <Grid 
             HeightRequest="50"
-            Margin="10">
+            Margin="0,10">
             <Button
+                Padding="0, 10, 85, 10"
                 BackgroundColor="{StaticResource Primary}"
-                Text="Đăng xuất"
+                BorderWidth="0"
+                FontFamily="AwesomeIcon"
+                FontSize="20"
+                Text="{x:Static icons:Icons.ArrowLeftLong}"
                 TextColor="White"/>
+            <Button
+                x:Name="Button1"
+                ZIndex="1"
+                Padding="30, 10, 0, 10"
+                BackgroundColor="Transparent"
+                BorderWidth="0"
+                FontFamily="NunitoSemiBold"
+                Text="Đăng xuất"
+                Focused="Button_Focused"
+                Unfocused="Button_Unfocused"
+                TextColor="White">
+            </Button>
         </Grid>
     </Shell.FlyoutFooter>
     <FlyoutItem 
         Title="Menu"
+        Icon="{x:Static icons:Icons.House}"
         Route="MenuPage">
         <ShellContent ContentTemplate="{DataTemplate views:MenuPage}"/>
     </FlyoutItem>

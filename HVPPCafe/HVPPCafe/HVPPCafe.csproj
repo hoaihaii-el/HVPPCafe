@@ -49,20 +49,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\Logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-Bold.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-BoldItalic.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-Medium.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-MediumItalic.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-SemiBold.ttf" />
 	  <None Remove="Resources\Fonts\Nunito-SemiBoldItalic.ttf" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Models\" />
+	  <None Remove="Resources\Images\Logo.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\Images\Logo.png" />
 	</ItemGroup>
 
 	<ItemGroup>

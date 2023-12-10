@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:nav="clr-namespace:HVPPCafeDesktop.UCNavigator"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="800" 
+        Height="760" 
         Width="1360"
         AllowsTransparency="True"
         Background="Transparent"
@@ -20,7 +21,7 @@
             CornerRadius="10">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
@@ -28,7 +29,7 @@
                     Grid.Column="0">
                     <Border
                         Background="#004225"
-                        CornerRadius="10 0 0 10">
+                        CornerRadius="8 0 0 8">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="180"/>
@@ -37,6 +38,12 @@
                                 <RowDefinition/>
                                 <RowDefinition Height="80"/>
                             </Grid.RowDefinitions>
+
+                            <Image
+                                Grid.Row="0"
+                                Height="150"
+                                Width="130"
+                                Source="/Resources/Images/Logo.png"/>
 
                             <Grid
                                 Grid.Row="1"
@@ -78,8 +85,14 @@
                                 Style="{StaticResource NormalButton}"
                                 Grid.Row="4">
                                 <Grid>
-                                    <Image/>
+                                    <fa:ImageAwesome
+                                        HorizontalAlignment="Left"
+                                        Height="26"
+                                        Margin="35 0 0 0"
+                                        Foreground="White"
+                                        Icon="ArrowLeft"/>
                                     <TextBlock
+                                        Margin="30 0 0 0"
                                         Text="Đăng xuất"
                                         Style="{StaticResource NormalTextBlock}"/>
                                 </Grid>

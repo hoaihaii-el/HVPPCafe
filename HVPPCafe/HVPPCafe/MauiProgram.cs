@@ -17,6 +17,7 @@ public static class MauiProgram
 				fonts.AddFont("Nunito-SemiBoldItalic.ttf", "NunitoSemiBoldItalic");
 				fonts.AddFont("Nunito-Bold.ttf", "NunitoBoldItalic");
 				fonts.AddFont("Nunito-BoldItalic.ttf", "NunitoBoldItalic");
+				fonts.AddFont("fa-solid-900.ttf", "AwesomeIcon");
 			});
 
 		return builder.Build();

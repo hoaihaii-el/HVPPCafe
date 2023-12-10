@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:menu="clr-namespace:HVPPCafeDesktop.Resources.Utilities"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d" 
     d:DesignHeight="450" 
     d:DesignWidth="800">
@@ -15,7 +16,9 @@
             Command="{Binding MenuCM}"
             IsChecked="True">
             <Grid>
-                <Image
+                <fa:ImageAwesome 
+                    Icon="Barcode"
+                    Foreground="White"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Menu"
@@ -28,33 +31,84 @@
             Style="{StaticResource ButtonStyle}"
             Command="{Binding OrderCM}">
             <Grid>
-                <Image
+                <fa:ImageAwesome 
+                    Icon="StackOverflow"
+                    Foreground="White"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Order"
                     Style="{StaticResource Text_Style}"/>
             </Grid>
         </menu:NavigateButton>
-        
+
+        <menu:NavigateButton
+            Cursor="Hand"
+            Style="{StaticResource ButtonStyle}"
+            Command="{Binding KhoCM}">
+            <Grid>
+                <fa:ImageAwesome 
+                    Icon="Home"
+                    Foreground="White"
+                    Style="{StaticResource Image_Style}"/>
+                <TextBlock
+                    Text="Kho"
+                    Style="{StaticResource Text_Style}"/>
+            </Grid>
+        </menu:NavigateButton>
+
         <menu:NavigateButton
             Cursor="Hand"
             Style="{StaticResource ButtonStyle}"
             Command="{Binding OrderStatusCM}">
             <Grid>
-                <Image
+                <fa:ImageAwesome 
+                    Icon="CheckSquareOutline"
+                    Foreground="White"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
-                    Text="Tình trạng đơn"
+                    Text="Tình trạng"
                     Style="{StaticResource Text_Style}"/>
             </Grid>
         </menu:NavigateButton>
-        
+
+        <menu:NavigateButton
+            Cursor="Hand"
+            Style="{StaticResource ButtonStyle}"
+            Command="{Binding ThongKeCM}">
+            <Grid>
+                <fa:ImageAwesome 
+                    Icon="BarChart"
+                    Foreground="White"
+                    Style="{StaticResource Image_Style}"/>
+                <TextBlock
+                    Text="Thống kê"
+                    Style="{StaticResource Text_Style}"/>
+            </Grid>
+        </menu:NavigateButton>
+
+        <menu:NavigateButton
+            Cursor="Hand"
+            Style="{StaticResource ButtonStyle}"
+            Command="{Binding NhanVienCM}">
+            <Grid>
+                <fa:ImageAwesome 
+                    Icon="Group"
+                    Foreground="White"
+                    Style="{StaticResource Image_Style}"/>
+                <TextBlock
+                    Text="Nhân viên"
+                    Style="{StaticResource Text_Style}"/>
+            </Grid>
+        </menu:NavigateButton>
+
         <menu:NavigateButton
             Cursor="Hand"
             Style="{StaticResource ButtonStyle}"
             Command="{Binding LichSuCM}">
             <Grid>
-                <Image
+                <fa:ImageAwesome 
+                    Icon="ClockOutline"
+                    Foreground="White"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Lịch sử đơn"
@@ -67,49 +121,12 @@
             Style="{StaticResource ButtonStyle}"
             Command="{Binding KhuyenMaiCM}">
             <Grid>
-                <Image
+                <fa:ImageAwesome 
+                    Icon="CreditCard"
+                    Foreground="White"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Khuyến mãi"
-                    Style="{StaticResource Text_Style}"/>
-            </Grid>
-        </menu:NavigateButton>
-
-        <menu:NavigateButton
-            Cursor="Hand"
-            Style="{StaticResource ButtonStyle}"
-            Command="{Binding KhoCM}">
-            <Grid>
-                <Image
-                    Style="{StaticResource Image_Style}"/>
-                <TextBlock
-                    Text="Kho"
-                    Style="{StaticResource Text_Style}"/>
-            </Grid>
-        </menu:NavigateButton>
-
-        <menu:NavigateButton
-            Cursor="Hand"
-            Style="{StaticResource ButtonStyle}"
-            Command="{Binding NhanVienCM}">
-            <Grid>
-                <Image
-                    Style="{StaticResource Image_Style}"/>
-                <TextBlock
-                    Text="Nhân viên"
-                    Style="{StaticResource Text_Style}"/>
-            </Grid>
-        </menu:NavigateButton>
-
-        <menu:NavigateButton
-            Cursor="Hand"
-            Style="{StaticResource ButtonStyle}"
-            Command="{Binding ThongKeCM}">
-            <Grid>
-                <Image
-                    Style="{StaticResource Image_Style}"/>
-                <TextBlock
-                    Text="Thống kê"
                     Style="{StaticResource Text_Style}"/>
             </Grid>
         </menu:NavigateButton>

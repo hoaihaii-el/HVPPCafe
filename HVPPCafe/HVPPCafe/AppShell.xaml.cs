@@ -11,4 +11,14 @@ public partial class AppShell : Shell
             this.CurrentItem = PhoneTabs;
         }
     }
+
+    private void Button_Focused(object sender, FocusEventArgs e)
+    {
+        Button1.Opacity = 1;
+    }
+
+    private void Button_Unfocused(object sender, FocusEventArgs e)
+    {
+        Button1.Opacity = 1;
+    }
 }
