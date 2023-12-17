@@ -26,5 +26,10 @@ namespace HVPPCafeDesktop
             InitializeComponent();
             this.DataContext = new NavigationVM();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

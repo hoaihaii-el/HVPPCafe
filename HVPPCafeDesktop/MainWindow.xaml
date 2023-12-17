@@ -12,7 +12,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
-        TextElement.FontFamily="Nunito"
+        TextElement.FontFamily="{StaticResource Nunito}"
         TextElement.FontSize="20"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -56,6 +56,7 @@
                                 <TextBlock
                                     Text="HVPP"
                                     FontWeight="Bold"
+                                    FontFamily="Nunito"
                                     Foreground="White"
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Right"
@@ -64,6 +65,7 @@
                                 <TextBlock
                                     Grid.Column="1"
                                     FontWeight="Bold"
+                                    FontFamily="Nunito"
                                     Text="Cafe"
                                     Foreground="#FFB000"
                                     VerticalAlignment="Top"
@@ -88,12 +90,13 @@
                                     <fa:ImageAwesome
                                         HorizontalAlignment="Left"
                                         Height="26"
-                                        Margin="35 0 0 0"
+                                        Margin="30 0 0 0"
                                         Foreground="White"
                                         Icon="ArrowLeft"/>
                                     <TextBlock
                                         Margin="30 0 0 0"
                                         Text="Đăng xuất"
+                                        FontFamily="{StaticResource Nunito}"
                                         Style="{StaticResource NormalTextBlock}"/>
                                 </Grid>
                             </Button>
@@ -113,9 +116,17 @@
                         Background="White"
                         Margin="7"
                         CornerRadius="7">
-                        <StackPanel
-                            Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="78"/>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
                             <TextBlock
+                                Grid.Column="0"
                                 Margin="20 0 0 0"
                                 FontFamily="Nunito"
                                 FontSize="20"
@@ -124,22 +135,32 @@
                                 VerticalAlignment="Center"
                                 Text="HVPP"/>
                             <TextBlock
-                                FontFamily="Nunito"
+                                Grid.Column="1"
+                                FontFamily="{StaticResource Nunito}"
                                 FontSize="20"
                                 FontWeight="SemiBold"
                                 Foreground="#FFB000"
                                 VerticalAlignment="Center"
                                 Text="Cafe"/>
                             <TextBlock
-                                Margin=" 15 0"
-                                FontFamily="Nunito"
+                                Grid.Column="2"
+                                FontFamily="{StaticResource NunitoLight}"
                                 FontSize="18"
-                                FontWeight="Medium"
                                 FontStyle="Italic"
-                                Foreground="#004225"
+                                Foreground="{StaticResource Primary}"
                                 VerticalAlignment="Center"
                                 Text="Nâng tầm cà phê Việt"/>
-                        </StackPanel>
+                            <Button
+                                Grid.Column="5"
+                                Background="Transparent"
+                                Height="35"
+                                Width="35"
+                                BorderThickness="0"
+                                Click="Button_Click">
+                                <fa:ImageAwesome
+                                    Icon="PowerOff"/>
+                            </Button>
+                        </Grid>
                     </Border>
 
                     <Border
