@@ -27,7 +27,7 @@ namespace HVPPCafeDesktop
             this.DataContext = new NavigationVM();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
         }

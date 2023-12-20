@@ -1,12 +1,134 @@
-﻿<UserControl x:Class="HVPPCafeDesktop.Views.Menu"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HVPPCafeDesktop.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+﻿<UserControl 
+    x:Class="HVPPCafeDesktop.Views.Menu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:HVPPCafeDesktop.Views"
+    xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
+    mc:Ignorable="d" 
+    TextElement.FontFamily="{StaticResource NunitoLight}"
+    d:DesignHeight="673" 
+    d:DesignWidth="1146">
+    <Grid 
+        x:Name="MainSec"
+        Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBox 
+                    FontSize="15" 
+                    Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource SearchBox}"/>
+                <Button 
+                    Grid.Column="1"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding AddOneMenuDish}"
+                    Content="Thêm món"/>
+                <Button 
+                    Grid.Column="2"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding RemoveDish_Command}"
+                    CommandParameter="{Binding ElementName=Dishes_ListView}"
+                    Content="Xoá món"/>
+            </Grid>
+
+            <ListView 
+                x:Name="Dishes_ListView" 
+                SelectedIndex="0" 
+                Style="{StaticResource PrimaryListView}"
+                ItemsSource="{Binding MenuItemCollection, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding MenuItem, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn 
+                            Header="Mã món" 
+                            Width="140"
+                            DisplayMemberBinding="{Binding ID}"/>
+                        <GridViewColumn 
+                            Header="Tên món" 
+                            Width="270"
+                            DisplayMemberBinding="{Binding FoodName}"/>
+                        <GridViewColumn 
+                            Header="Giá (VNĐ)" 
+                            DisplayMemberBinding="{Binding PriceVNDCurrency}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <!--EDIT VIEW-->
+        
+        <Grid 
+            Grid.Column="2"
+            x:Name="EditGrid"
+            Margin="0 20 20 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="270"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border 
+                Grid.Row="0"
+                CornerRadius="8"
+                BorderBrush="{StaticResource Primary}"
+                BorderThickness="3">
+                <Rectangle 
+                    MaxWidth="400" 
+                    MaxHeight="200">
+                    <Rectangle.Fill>
+                        <ImageBrush 
+                            ImageSource="{Binding MenuItem.FoodImage, UpdateSourceTrigger=PropertyChanged}" 
+                            Stretch="UniformToFill"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border 
+                Grid.Row="2" 
+                Margin="0 20 0 0"
+                Background="{StaticResource CardColor}" 
+                CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox 
+                        Text="{Binding MenuItem.FoodName, Mode=TwoWay}"
+                        Grid.Row="0"
+                        design:HintAssist.Hint="Tên món"
+                        Style="{StaticResource FloatingTextBox}" />
+
+                    <TextBox 
+                        Text="{Binding MenuItem.Str_Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="1"
+                        design:HintAssist.Hint="Giá (VNĐ)"
+                        Style="{StaticResource FloatingTextBox}" />
+                    
+                    <Button 
+                        Grid.Row="2"
+                        Style="{StaticResource PrimaryButton}"
+                        Content="Sửa chi tiết món ăn"
+                        Command="{Binding EditIngredient_Command}"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
