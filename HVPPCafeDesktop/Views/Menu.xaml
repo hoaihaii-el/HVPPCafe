@@ -11,7 +11,6 @@
     d:DesignHeight="673" 
     d:DesignWidth="1146">
     <Grid 
-        x:Name="MainSec"
         Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />

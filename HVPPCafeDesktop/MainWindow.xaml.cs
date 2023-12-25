@@ -31,5 +31,10 @@ namespace HVPPCafeDesktop
         {
             this.Close();
         }
+
+        private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

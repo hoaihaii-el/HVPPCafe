@@ -21,16 +21,30 @@
         <Setter Property="materialDesign:HintAssist.Hint" Value="Tìm kiếm"/>
         <Setter Property="SelectionBrush" Value="{StaticResource Primary}"/>
         <Setter Property="Height" Value="30"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="17"/>
         <Setter Property="Margin" Value="20 0"/>
     </Style>
 
+    <Style
+        x:Key="FloatingComboBox"
+        TargetType="ComboBox"
+        BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+        <Setter Property="Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
+        <Setter Property="Margin" Value="20 0"/>
+    </Style>
+    
     <Style
         x:Key="PrimaryButton"
         TargetType="Button"
         BasedOn="{StaticResource MaterialDesignRaisedButton}">
         <Setter Property="Background" Value="{StaticResource Primary}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Primary}"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="17"/>
         <Setter Property="Margin" Value="15 0"/>
     </Style>
 
