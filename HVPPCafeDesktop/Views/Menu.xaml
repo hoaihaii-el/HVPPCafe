@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:HVPPCafeDesktop.Views"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
@@ -13,13 +13,13 @@
     <Grid 
         Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="450"/>
         </Grid.ColumnDefinitions>
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid
@@ -29,10 +29,23 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox 
-                    FontSize="15" 
-                    Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource SearchBox}"/>
+                <Border Grid.Column="0" Style="{DynamicResource SearchBar}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <fa:ImageAwesome 
+                            Grid.Column="0"
+                            Icon="Search"
+                            Foreground="#DFDFDF"
+                            Height="20"/>
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="0 0 10 0"
+                            Style="{StaticResource SearchBox}"/>
+                    </Grid>
+                </Border>
                 <Button 
                     Grid.Column="1"
                     Style="{StaticResource PrimaryButton}"
@@ -61,7 +74,7 @@
                             DisplayMemberBinding="{Binding ID}"/>
                         <GridViewColumn 
                             Header="Tên món" 
-                            Width="270"
+                            Width="300"
                             DisplayMemberBinding="{Binding FoodName}"/>
                         <GridViewColumn 
                             Header="Giá (VNĐ)" 

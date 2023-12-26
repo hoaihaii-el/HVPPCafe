@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:HVPPCafeDesktop.Views"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-              Margin="10 0 10 0">
+              Margin="10 10 10 0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -30,12 +30,26 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBox 
-                    Style="{StaticResource SearchBox}"
-                    Text="{Binding Search}">
-                </TextBox>
+                <Border Grid.Row="0" Style="{DynamicResource SearchBar}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <fa:ImageAwesome 
+                            Grid.Column="0"
+                            Icon="Search"
+                            Foreground="#DFDFDF"
+                            Height="20"/>
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="0 0 10 0"
+                            Style="{StaticResource SearchBox}"/>
+                    </Grid>
+                </Border>
                 <ComboBox 
                     Grid.Row="1"
+                    Width="300"
                     ItemsSource="{Binding Groups}"
                     design:HintAssist.Hint="Nhóm sản phẩm"
                     SelectedItem="{Binding GroupSelected}"

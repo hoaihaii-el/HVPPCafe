@@ -17,8 +17,8 @@
         x:Key="SearchBox"
         TargetType="TextBox"
         BasedOn="{StaticResource MaterialDesignTextBox}">
-        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
-        <Setter Property="materialDesign:HintAssist.Hint" Value="Tìm kiếm"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="Transparent"/>
+        <Setter Property="materialDesign:HintAssist.Hint" Value="Tìm kiếm theo tên"/>
         <Setter Property="SelectionBrush" Value="{StaticResource Primary}"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="FontSize" Value="17"/>
@@ -30,6 +30,7 @@
         TargetType="ComboBox"
         BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
         <Setter Property="Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
         <Setter Property="Height" Value="50"/>
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
@@ -42,6 +43,8 @@
         TargetType="DatePicker"
         BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
         <Setter Property="FontSize" Value="17"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="materialDesign:CalendarAssist.Orientation" Value="Vertical"/>
         <Setter Property="Height" Value="43"/>
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
     </Style>

@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:local="clr-namespace:HVPPCafeDesktop.Views"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
     d:DesignHeight="673" 
@@ -19,8 +19,8 @@
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0"
@@ -33,11 +33,23 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox    
-                    Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Column="0"
-                    Style="{StaticResource SearchBox}">
-                </TextBox>
+                <Border Grid.Column="0" Style="{DynamicResource SearchBar}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <fa:ImageAwesome 
+                            Grid.Column="0"
+                            Icon="Search"
+                            Foreground="#DFDFDF"
+                            Height="20"/>
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="0 0 10 0"
+                            Style="{StaticResource SearchBox}"/>
+                    </Grid>
+                </Border>
 
                 <Button 
                     Name="btnDeleteStaff"
@@ -215,20 +227,19 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <TextBox 
-                                design:HintAssist.Hint="Tài khoản"
-                                Text="{Binding NhanVienItem.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="15 0 5 0"
-                                Style="{StaticResource FloatingTextBox}" />
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <TextBox 
-                                design:HintAssist.Hint="Mật khẩu"
-                                Text="{Binding NhanVienItem.MatKhau, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="5 0 15 0"
-                                Style="{StaticResource FloatingTextBox}" />
-                        </Grid>
+                        <TextBox 
+                            IsEnabled="False"
+                            design:HintAssist.Hint="Tài khoản"
+                            Text="{Binding NhanVienItem.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="15 0 5 0"
+                            Style="{StaticResource FloatingTextBox}" />
+                        <TextBox 
+                            IsEnabled="False"
+                            Grid.Column="1"
+                            design:HintAssist.Hint="Mật khẩu"
+                            Text="{Binding NhanVienItem.MatKhau, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="5 0 15 0"
+                            Style="{StaticResource FloatingTextBox}" />
                     </Grid>
                 </Grid>
 
