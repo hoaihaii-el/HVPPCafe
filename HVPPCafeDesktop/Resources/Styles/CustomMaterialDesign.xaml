@@ -30,11 +30,20 @@
         TargetType="ComboBox"
         BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
         <Setter Property="Foreground" Value="{StaticResource Primary}"/>
-        <Setter Property="Height" Value="48"/>
+        <Setter Property="Height" Value="50"/>
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
         <Setter Property="Margin" Value="20 0"/>
+    </Style>
+
+    <Style
+        x:Key="FloatingDatePicker"
+        TargetType="DatePicker"
+        BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Height" Value="43"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
     </Style>
     
     <Style
