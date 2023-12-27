@@ -88,15 +88,36 @@
                         Style="{StaticResource PrimaryListView}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding HoTen}"
-                                                Width="300"
-                                                Header="Họ tên" />
-                                <GridViewColumn DisplayMemberBinding="{Binding ChucVu}"
-                                                Width="150"
-                                                Header="Chức vụ" />
-                                <GridViewColumn DisplayMemberBinding="{Binding NgayVaoLam}"
-                                                Width="220"
-                                                Header="Ngày vào làm" />
+                                <GridViewColumn 
+                                    DisplayMemberBinding="{Binding HoTen}"
+                                    Width="280"
+                                    Header="Họ tên" />
+                                <GridViewColumn 
+                                    DisplayMemberBinding="{Binding ChucVu}"
+                                    Width="150"
+                                    Header="Chức vụ" />
+                                <GridViewColumn 
+                                    DisplayMemberBinding="{Binding NgayVaoLam}"
+                                    Width="220"
+                                    Header="Ngày vào làm" />
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button>
+                                                    <fa:ImageAwesome 
+                                                        Icon="Edit" 
+                                                        Foreground="{StaticResource Primary}"/>
+                                                </Button>
+                                                <Button>
+                                                    <fa:ImageAwesome 
+                                                        Icon="Times"
+                                                        Foreground="#BF3131"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>

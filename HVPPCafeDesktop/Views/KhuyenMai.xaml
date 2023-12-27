@@ -75,37 +75,12 @@
                 Style="{StaticResource PrimaryListView}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="60">
-                            <GridViewColumnHeader 
-                                Padding="7,10,10,10"
-                                Grid.IsSharedSizeScope="True">
-                                <CheckBox 
-                                    IsChecked="{Binding IsAllSelected, Mode=TwoWay}" 
-                                    Background="#3C6255" 
-                                    HorizontalContentAlignment="Left">
-                                    <CheckBox.LayoutTransform>
-                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                    </CheckBox.LayoutTransform>
-                                </CheckBox>
-                            </GridViewColumnHeader>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox 
-                                        IsChecked="{Binding IsSelected, Mode=TwoWay}" 
-                                        Background="#3C6255">
-                                        <CheckBox.LayoutTransform>
-                                            <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                        </CheckBox.LayoutTransform>
-                                    </CheckBox>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
                         <GridViewColumn 
                             Width="250"
                             Header="Tên KM" 
                             DisplayMemberBinding="{Binding TenKM}"/>
                         <GridViewColumn 
-                            Width="140" 
+                            Width="135" 
                             Header="Giảm (%)" 
                             DisplayMemberBinding="{Binding GiamGia}"/>
                         <GridViewColumn 
@@ -124,6 +99,24 @@
                             Width="170"
                             Header="Trạng thái" 
                             DisplayMemberBinding="{Binding TrangThai}"/>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button>
+                                            <fa:ImageAwesome 
+                                                Icon="Edit" 
+                                                Foreground="{StaticResource Primary}"/>
+                                        </Button>
+                                        <Button>
+                                            <fa:ImageAwesome 
+                                                Icon="Times"
+                                                Foreground="#BF3131"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
