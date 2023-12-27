@@ -4,16 +4,11 @@
     <Style x:Key="Text_Style"
            TargetType="TextBlock">
 
-        <Setter Property="VerticalAlignment"
-                Value="Center" />
-        <Setter Property="HorizontalAlignment"
-                Value="Left" />
-        <Setter Property="Foreground"
-                Value="White" />
-        <Setter Property="FontSize"
-                Value="17" />
-        <Setter Property="Margin"
-                Value="74,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="#EAE7B1" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="Margin" Value="74,0,0,0" />
 
     </Style>
 

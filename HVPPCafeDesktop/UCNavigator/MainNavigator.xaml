@@ -19,7 +19,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="Barcode"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Menu"
@@ -34,7 +34,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="StackOverflow"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Order"
@@ -49,7 +49,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="Home"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Kho"
@@ -64,7 +64,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="CheckSquareOutline"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Tình trạng"
@@ -79,7 +79,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="BarChart"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Thống kê"
@@ -94,7 +94,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="Group"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Nhân viên"
@@ -109,7 +109,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="ClockOutline"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Lịch sử đơn"
@@ -124,7 +124,7 @@
             <Grid>
                 <fa:ImageAwesome 
                     Icon="CreditCard"
-                    Foreground="White"
+                    Foreground="{StaticResource TextColor2}"
                     Style="{StaticResource Image_Style}"/>
                 <TextBlock
                     Text="Khuyến mãi"

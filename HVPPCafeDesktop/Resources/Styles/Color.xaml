@@ -3,5 +3,6 @@
     <SolidColorBrush x:Key="Primary">#3C6255</SolidColorBrush>
     <SolidColorBrush x:Key="Secondary">#FFB000</SolidColorBrush>
     <SolidColorBrush x:Key="TextColor">#004225</SolidColorBrush>
+    <SolidColorBrush x:Key="TextColor2">#EAE7B1</SolidColorBrush>
     <SolidColorBrush x:Key="CardColor">#EEEEEE</SolidColorBrush>
 </ResourceDictionary>

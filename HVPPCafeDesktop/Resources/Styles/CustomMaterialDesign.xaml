@@ -55,7 +55,7 @@
         BasedOn="{StaticResource MaterialDesignRaisedButton}">
         <Setter Property="Background" Value="{StaticResource Primary}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Primary}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor2}"/>
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="Margin" Value="15 0"/>
     </Style>

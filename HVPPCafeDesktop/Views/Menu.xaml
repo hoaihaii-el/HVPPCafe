@@ -25,7 +25,7 @@
             <Grid
                 Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="320"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -51,12 +51,6 @@
                     Style="{StaticResource PrimaryButton}"
                     Command="{Binding AddOneMenuDish}"
                     Content="Thêm món"/>
-                <Button 
-                    Grid.Column="2"
-                    Style="{StaticResource PrimaryButton}"
-                    Command="{Binding RemoveDish_Command}"
-                    CommandParameter="{Binding ElementName=Dishes_ListView}"
-                    Content="Xoá món"/>
             </Grid>
 
             <ListView 
@@ -70,15 +64,26 @@
                     <GridView>
                         <GridViewColumn 
                             Header="Mã món" 
-                            Width="140"
+                            Width="130"
                             DisplayMemberBinding="{Binding ID}"/>
                         <GridViewColumn 
                             Header="Tên món" 
-                            Width="300"
+                            Width="290"
                             DisplayMemberBinding="{Binding FoodName}"/>
                         <GridViewColumn 
                             Header="Giá (VNĐ)" 
                             DisplayMemberBinding="{Binding PriceVNDCurrency}"/>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button>
+                                        <fa:ImageAwesome 
+                                            Icon="Times"
+                                            Foreground="#BF3131"/>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

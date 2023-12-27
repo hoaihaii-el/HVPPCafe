@@ -37,42 +37,44 @@
                         </Grid.ColumnDefinitions>
                         <Label 
                             Content="Tình hình thu chi:"
-                            Foreground="#3C6255"
+                            Foreground="{StaticResource Primary}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"/>
                         <ComboBox 
-                            Margin="10,0,10,0"
+                            Margin="10 0"
                             Grid.Column="1"
-                            Foreground="#3C6255"
+                            Height="45"
+                            Foreground="{StaticResource Primary}"
                             ItemsSource="{Binding Types}"
                             SelectedItem="{Binding TypeSelected}"
-                            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                            Style="{StaticResource FloatingComboBox}">
                         </ComboBox>
                         <ComboBox 
-                            Margin="10,4,10,4"
+                            Margin="10 4"
+                            Height="45"
                             Grid.Column="2"
-                            Foreground="#3C6255"
+                            Foreground="{StaticResource Primary}"
                             Visibility="{Binding ListTimeVisible}"
                             ItemsSource="{Binding ListTime}"
                             SelectedItem="{Binding TimeSelected}"
-                            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                            Style="{StaticResource FloatingComboBox}">
                         </ComboBox>
                         <DatePicker 
                             design:HintAssist.Hint="Bắt đầu"
                             Grid.Column="2"
-                            Foreground="#3C6255"
+                            Foreground="{StaticResource Primary}"
                             Visibility="{Binding DateBeginVisible}"
                             Margin="5,0,5,0"
                             SelectedDate="{Binding DateBegin, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            Style="{StaticResource FloatingDatePicker}" />
                         <DatePicker 
                             design:HintAssist.Hint="Kết thúc"
                             Grid.Column="3"
-                            Foreground="#3C6255"
+                            Foreground="{StaticResource Primary}"
                             Margin="5,0,5,0"
                             Visibility="{Binding DateEndVisible}"
                             SelectedDate="{Binding DateEnd, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            Style="{StaticResource FloatingDatePicker}" />
                     </Grid>
 
                     <Grid Grid.Row="1"
@@ -89,14 +91,14 @@
                                 <lvc:Axis 
                                     Labels="{Binding LabelsRevenue}"
                                     FontFamily="Comfortaa"
-                                    Foreground="#3C6255"
+                                    Foreground="{StaticResource Primary}"
                                     FontSize="10"></lvc:Axis>
                             </lvc:CartesianChart.AxisX>
                             <lvc:CartesianChart.AxisY>
                                 <lvc:Axis 
                                     Title="VNĐ" 
                                     FontFamily="Comfortaa"
-                                    Foreground="#3C6255"
+                                    Foreground="{StaticResource Primary}"
                                     FontSize="13"
                                     LabelFormatter="{Binding Formatter}"></lvc:Axis>
                             </lvc:CartesianChart.AxisY>
@@ -161,26 +163,27 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Label 
-                                Content="Tỉ lệ chọn loại bàn"
+                                Content="Doanh thu các món"
                                 VerticalAlignment="Center"
                                 Grid.Row="0"
-                                Foreground="#3C6255"
+                                Foreground="{StaticResource Primary}"
                                 HorizontalAlignment="Center"/>
                             <ComboBox 
                                 design:HintAssist.Hint="Tháng"
-                                Margin="5,0,15,0"
-                                Foreground="#3C6255"
+                                Margin="5,-5,15,0"
+                                Height="50"
+                                Foreground="{StaticResource Primary}"
                                 Grid.Column="1"
                                 ItemsSource="{Binding ListMonths}"
                                 Text="{Binding TypeTableMonth, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                Style="{StaticResource FloatingComboBox}"/>
                         </Grid>
                         <Grid Grid.Row="1">
 
                             <lvc:PieChart 
                                 Series="{Binding SeriesCollectionTypeTable}" 
                                 LegendLocation="Bottom" 
-                                InnerRadius="10"
+                                InnerRadius="5"
                                 Margin="0 15">
                                 <lvc:PieChart.ChartLegend>
                                     <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
@@ -215,19 +218,20 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <Label 
-                                Content="Thông lượng khách đến quán trong tháng"
+                                Content="Số lượng đơn trong ngày theo tháng"
                                 Grid.Column="0"
-                                Foreground="#3C6255"
+                                Foreground="{StaticResource Primary}"
                                 VerticalAlignment="Center"
                                 HorizontalContentAlignment="Center"/>
                             <ComboBox 
                                 design:HintAssist.Hint="Tháng"
-                                Margin="5,0,15,0"
-                                Foreground="#3C6255"
+                                Margin="5,-5,15,0"
+                                Height="50"
+                                Foreground="{StaticResource Primary}"
                                 Grid.Column="1"
                                 ItemsSource="{Binding ListCrowdMonths}"
                                 Text="{Binding CrowdMonth, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                Style="{StaticResource FloatingComboBox}"/>
                         </Grid>
                         <Grid Grid.Row="1"
                           Margin="5">
@@ -235,21 +239,24 @@
                                 <ColumnDefinition Width="226*"/>
                                 <ColumnDefinition Width="29*"/>
                             </Grid.ColumnDefinitions>
-                            <lvc:CartesianChart Series="{Binding SeriesCollectionCrowd}"
-                                            Visibility="{Binding Visibility}"
-                                            LegendLocation="Bottom" Grid.ColumnSpan="2">
+                            <lvc:CartesianChart 
+                                Series="{Binding SeriesCollectionCrowd}"
+                                Visibility="{Binding Visibility}"
+                                LegendLocation="Bottom" Grid.ColumnSpan="2">
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Labels="{Binding LabelsCrowd}"
-                                          FontFamily="Comfortaa"
-                                          Foreground="#3C6255"
-                                          FontSize="10"/>
+                                    <lvc:Axis 
+                                        Labels="{Binding LabelsCrowd}"
+                                        FontFamily="Comfortaa"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="10"/>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Số người" 
-                                          FontFamily="Comfortaa"
-                                          Foreground="#3C6255"
-                                          FontSize="13"
-                                          LabelFormatter="{Binding CrowdFormatter}"/>
+                                    <lvc:Axis 
+                                        Title="Số người" 
+                                        FontFamily="Comfortaa"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="13"
+                                        LabelFormatter="{Binding CrowdFormatter}"/>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>
                         </Grid>
@@ -274,17 +281,18 @@
                             <Label 
                                 Content="Các món bán chạy theo tháng"
                                 Grid.Column="0"
-                                Foreground="#3C6255"
+                                Foreground="{StaticResource Primary}"
                                 VerticalAlignment="Center"
                                 HorizontalContentAlignment="Center"/>
                             <ComboBox 
                                 design:HintAssist.Hint="Tháng"
-                                Margin="5,0,15,0"
-                                Foreground="#3C6255"
+                                Margin="5,-5,15,0"
+                                Height="50"
+                                Foreground="{StaticResource Primary}"
                                 Grid.Column="1"
                                 ItemsSource="{Binding ListMonths}"
                                 Text="{Binding StaffMonth, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                Style="{StaticResource FloatingComboBox}"/>
                         </Grid>
                         <Grid Grid.Row="1"
                           Margin="5">
@@ -295,7 +303,7 @@
                                     <lvc:Axis 
                                         Labels="{Binding LabelsStaff}"
                                         FontFamily="Comfortaa"
-                                        Foreground="#3C6255"
+                                        Foreground="{StaticResource Primary}"
                                         FontSize="13"></lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
@@ -303,7 +311,7 @@
                                         Title="Tổng giá trị hóa đơn(VNĐ)" 
                                         LabelFormatter="{Binding Formatter}"
                                         FontFamily="Comfortaa"
-                                        Foreground="#3C6255"
+                                        Foreground="{StaticResource Primary}"
                                         FontSize="13"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>

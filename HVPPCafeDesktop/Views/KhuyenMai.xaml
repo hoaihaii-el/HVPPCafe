@@ -29,7 +29,7 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -54,18 +54,11 @@
                         Style="{StaticResource SearchBox}"/>
                 </Grid>
             </Border>
-            <Button Command="{Binding AddKhuyenMai_Command}"
-                    Grid.Column="2"
-                    Style="{StaticResource PrimaryButton}"
-                    Content="Thêm"/>
-            <Button Command="{Binding EditKhuyenMai_Command}"
-                    Grid.Column="3"
-                    Content="Sửa" 
-                    Style="{StaticResource PrimaryButton}"/>
-            <Button Content="Xoá"
-                    Grid.Column="4"
-                    Command="{Binding DeleteKhuyenMai_Command}" 
-                    Style="{StaticResource PrimaryButton}"/>
+            <Button 
+                Command="{Binding AddKhuyenMai_Command}"
+                Grid.Column="1"
+                Style="{StaticResource PrimaryButton}"
+                Content="Thêm"/>
         </Grid>
 
         <Grid Grid.Row="1">

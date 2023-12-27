@@ -92,10 +92,11 @@
                                         HorizontalAlignment="Left"
                                         Height="26"
                                         Margin="30 0 0 0"
-                                        Foreground="White"
+                                        Foreground="{StaticResource TextColor2}"
                                         Icon="ArrowLeft"/>
                                     <TextBlock
                                         Margin="30 0 0 0"
+                                        Foreground="{StaticResource TextColor2}"
                                         Text="Đăng xuất"
                                         FontFamily="{StaticResource Nunito}"
                                         Style="{StaticResource NormalTextBlock}"/>
@@ -116,6 +117,7 @@
                     <Border
                         Background="White"
                         Margin="7"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown"
                         CornerRadius="7">
                         <Grid>
                             <Grid.ColumnDefinitions>

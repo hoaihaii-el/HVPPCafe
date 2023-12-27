@@ -26,6 +26,7 @@ namespace HVPPCafeDesktop.ViewModels
         public ICommand KhoCM { get; set; }
         public ICommand KhuyenMaiCM { get; set; }
         public ICommand LichSuCM { get; set; }
+        public ICommand LichSuCaCM { get; set; }
         public ICommand NhanVienCM { get; set; }
         public ICommand ThongKeCM { get; set; }
 
@@ -35,6 +36,7 @@ namespace HVPPCafeDesktop.ViewModels
         private void Kho(object obj) => CurrentView = new KhoVM();
         private void KhuyenMai(object obj) => CurrentView = new KhuyenMaiVM();
         private void LichSu(object obj) => CurrentView = new LichSuVM();
+        private void LichSuCa(object obj) => CurrentView = new LichSuCaVM();
         private void NhanVien(object obj) => CurrentView = new NhanVienVM();
         private void ThongKe(object obj) => CurrentView = new ThongKeVM();
 
@@ -46,6 +48,7 @@ namespace HVPPCafeDesktop.ViewModels
             KhoCM = new RelayCommand(Kho);
             KhuyenMaiCM = new RelayCommand(KhuyenMai);
             LichSuCM = new RelayCommand(LichSu);
+            LichSuCaCM = new RelayCommand(LichSuCa);
             NhanVienCM = new RelayCommand(NhanVien);
             ThongKeCM = new RelayCommand(ThongKe);
 

@@ -26,4 +26,7 @@
     <DataTemplate DataType="{x:Type vm:ThongKeVM}">
         <view:ThongKe/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:LichSuCaVM}">
+        <view:LichSuCa/>
+    </DataTemplate>
 </ResourceDictionary>

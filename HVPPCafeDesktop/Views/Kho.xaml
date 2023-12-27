@@ -13,100 +13,64 @@
     d:DesignWidth="1146">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
-              Margin="10 10 10 0">
+        <Grid Grid.Row="0">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="185"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0" Style="{DynamicResource SearchBar}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="4*"/>
-                        </Grid.ColumnDefinitions>
-                        <fa:ImageAwesome 
-                            Grid.Column="0"
-                            Icon="Search"
-                            Foreground="#DFDFDF"
-                            Height="20"/>
-                        <TextBox
-                            Grid.Column="1"
-                            Margin="0 0 10 0"
-                            Style="{StaticResource SearchBox}"/>
-                    </Grid>
-                </Border>
-                <ComboBox 
-                    Grid.Row="1"
-                    Width="300"
-                    ItemsSource="{Binding Groups}"
-                    design:HintAssist.Hint="Nhóm sản phẩm"
-                    SelectedItem="{Binding GroupSelected}"
-                    Style="{StaticResource FloatingComboBox}">
-                </ComboBox>
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+            <Border Grid.Column="0" Style="{DynamicResource SearchBar}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
-                    <Button 
-                        Grid.Column="2"
-                        Command="{Binding DeleteCM}"
-                        Style="{StaticResource PrimaryButton}"
-                        Content="Xóa">
-                    </Button>
-
-
-                    <Button 
+                    <fa:ImageAwesome 
                         Grid.Column="0"
-                        Command="{Binding CheckCM}"
-                        Style="{StaticResource PrimaryButton}"
-                        Content="Kiểm tra">
-                    </Button>
-                    <Button 
+                        Icon="Search"
+                        Foreground="#DFDFDF"
+                        Height="20"/>
+                    <TextBox
                         Grid.Column="1"
-                        Command="{Binding ExportCM}"
-                        Style="{StaticResource PrimaryButton}"
-                        Content="Xuất file">
-                    </Button>
+                        Margin="0 0 10 0"
+                        Style="{StaticResource SearchBox}"/>
                 </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button 
-                        Grid.Column="1"
-                        Command="{Binding AddCM}"
-                        Style="{StaticResource PrimaryButton}"
-                        Content="Phiếu nhập mới">
-                    </Button>
-                    <Button 
-                        Grid.Column="0"
-                        Command="{Binding DetailCM}"
-                        Style="{StaticResource PrimaryButton}"
-                        Content="Xem chi tiết">
-                    </Button>
-                </Grid>
-            </Grid>
+            </Border>
+            <ComboBox 
+                Grid.Column="1"
+                Margin="0 10 0 0"
+                ItemsSource="{Binding Groups}"
+                design:HintAssist.Hint="Nhóm sản phẩm"
+                SelectedItem="{Binding GroupSelected}"
+                Style="{StaticResource FloatingComboBox}">
+            </ComboBox>
+
+            <Button 
+                Grid.Column="2"
+                Command="{Binding AddCM}"
+                Style="{StaticResource PrimaryButton}"
+                Content="Phiếu nhập mới">
+            </Button>
+            <Button 
+                Grid.Column="3"
+                Command="{Binding CheckCM}"
+                Style="{StaticResource PrimaryButton}"
+                Content="Kiểm tra">
+            </Button>
+            <Button 
+                Grid.Column="4"
+                Command="{Binding ExportCM}"
+                Style="{StaticResource PrimaryButton}"
+                Content="Xuất file">
+            </Button>
 
         </Grid>
 
@@ -135,6 +99,24 @@
                                 DisplayMemberBinding="{Binding NhomSP}"
                                 Width="230"
                                 Header="Nhóm sản phẩm" />
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button>
+                                                <fa:ImageAwesome 
+                                                    Icon="Eye" 
+                                                    Foreground="{StaticResource Primary}"/>
+                                            </Button>
+                                            <Button>
+                                                <fa:ImageAwesome 
+                                                    Icon="Times"
+                                                    Foreground="#BF3131"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>

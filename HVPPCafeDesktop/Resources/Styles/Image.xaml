@@ -4,18 +4,12 @@
     <Style x:Key="Image_Style"
            TargetType="Image">
 
-        <Setter Property="HorizontalAlignment"
-                Value="Left" />
-        <Setter Property="VerticalAlignment"
-                Value="Center" />
-        <Setter Property="Stretch"
-                Value="Uniform" />
-        <Setter Property="Height"
-                Value="26" />
-        <Setter Property="Width"
-                Value="26" />
-        <Setter Property="Margin"
-                Value="30,0,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="Width" Value="26" />
+        <Setter Property="Margin" Value="30,0,0,0" />
 
     </Style>
 
