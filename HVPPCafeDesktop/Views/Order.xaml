@@ -4,12 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
-TextElement.FontSize="17"
-d:DesignHeight="673" 
-d:DesignWidth="1146">
+    TextElement.FontSize="17"
+    d:DesignHeight="673" 
+    d:DesignWidth="1146">
     <Grid>
         <Grid Background="#fff">
             <Grid.ColumnDefinitions>
@@ -25,6 +26,32 @@ d:DesignWidth="1146">
                     <RowDefinition Height="70"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Border 
+                        Grid.Column="0" 
+                        Width="300"
+                        Style="{DynamicResource SearchBar}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:ImageAwesome 
+                                Grid.Column="0"
+                                Icon="Search"
+                                Foreground="#DFDFDF"
+                                Height="20"/>
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="0 0 10 0"
+                                Style="{StaticResource SearchBox}"/>
+                        </Grid>
+                    </Border>
+                    <ComboBox
+                        Grid.Column="1"
+                        design:HintAssist.Hint="Sắp xếp theo"
+                        Style="{StaticResource FloatingComboBox}"/>
+                </StackPanel>
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="itemControl" ItemsSource="{Binding MenuItemCollection, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
@@ -62,7 +89,7 @@ d:DesignWidth="1146">
                                         Style="{StaticResource MaterialDesignRaisedButton}"
                                         Width="100"
                                         Foreground="White"
-                                        Background="#3C6255"
+                                        Background="{StaticResource Primary}"
                                         Command="{Binding ElementName=vm, Path=OrderFeature_Command}"
                                         CommandParameter="{Binding}">
                                             _ĐẶT
@@ -85,65 +112,29 @@ d:DesignWidth="1146">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="120"/>
-                            <RowDefinition Height="300"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="140"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" 
+                        <Border 
+                            Grid.Row="0" 
                             Padding="20" 
-                            Background="#3C6255" 
+                            Background="{StaticResource Primary}" 
                             CornerRadius="20 20 0 0" 
                             Margin="0 20 0 0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock 
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock 
                                     Height="30" 
                                     Foreground="#fff" 
                                     FontWeight="SemiBold" 
-                                    FontSize="20">New Order</TextBlock>
-                                    <TextBlock 
+                                    FontSize="20"
+                                    Text="New Order"/>
+                                <TextBlock 
                                     Height="30" 
                                     Foreground="#fff" 
                                     FontWeight="Light" 
                                     FontSize="16" 
                                     Text="{Binding Day}"/>
-                                </StackPanel>
-                                <TextBlock Grid.Column="1"
-                                       Text="Bàn"
-                                       Foreground="White"
-                                       FontSize="20"
-                                       HorizontalAlignment="Center"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                                <ComboBox Grid.Column="1" 
-                                      Background="Transparent"
-                                      Foreground="White"
-                                      Width="65"
-                                      HorizontalAlignment="Right"
-                                      FontSize="20"
-                                      BorderBrush="White"
-                                      ItemsSource="{Binding Tables}"
-                                      SelectedItem="{Binding SelectedTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      DisplayMemberPath="NumOfTable"
-                                      HorizontalContentAlignment="Center">
-                                    <ComboBox.ItemContainerStyle>
-                                        <Style TargetType="ComboBoxItem">
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}" Value="0">
-                                                    <Setter Property="Background" Value="Red"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="1">
-                                                    <Setter Property="Background" Value="MediumSeaGreen"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ComboBox.ItemContainerStyle>
-                                </ComboBox>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                         <ScrollViewer Grid.Row="1">
                             <StackPanel Orientation="Vertical" x:Name="border">
@@ -160,27 +151,30 @@ d:DesignWidth="1146">
                                                                 <ColumnDefinition Width="60"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Grid.Column="1"  
-                                                                   TextAlignment="Left" 
-                                                                   VerticalAlignment="Center" 
-                                                                   FontSize="14" 
-                                                                   FontWeight="SemiBold"
-                                                                   Text="{Binding FoodName}"/>
+                                                            <TextBlock 
+                                                                Grid.Column="1"  
+                                                                TextAlignment="Left" 
+                                                                VerticalAlignment="Center" 
+                                                                FontSize="15" 
+                                                                FontWeight="SemiBold"
+                                                                Text="{Binding FoodName}"/>
 
-                                                            <TextBlock Grid.Column="2"  
-                                                                   TextAlignment="Center" 
-                                                                   FontSize="14" 
-                                                                   FontWeight="SemiBold" 
-                                                                   VerticalAlignment="Center"
-                                                                   Text="{Binding Quantity}"/>
+                                                            <TextBlock 
+                                                                Grid.Column="2"  
+                                                                TextAlignment="Center" 
+                                                                FontSize="15" 
+                                                                FontWeight="SemiBold" 
+                                                                VerticalAlignment="Center"
+                                                                Text="{Binding Quantity}"/>
 
-                                                            <TextBlock Grid.Column="3"  
-                                                                   ToolTip="Đơn giá" 
-                                                                   TextAlignment="Right" 
-                                                                   VerticalAlignment="Center" 
-                                                                   FontSize="14" 
-                                                                   FontWeight="SemiBold" 
-                                                                   Text="{Binding PriceVNDCurrency}"/>
+                                                            <TextBlock 
+                                                                Grid.Column="3"  
+                                                                ToolTip="Đơn giá" 
+                                                                TextAlignment="Right" 
+                                                                VerticalAlignment="Center" 
+                                                                FontSize="15" 
+                                                                FontWeight="SemiBold" 
+                                                                Text="{Binding PriceVNDCurrency}"/>
                                                         </Grid>
                                                     </Border>
                                                 </DataTemplate>
@@ -191,61 +185,40 @@ d:DesignWidth="1146">
                             </StackPanel>
                         </ScrollViewer>
                         <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 15 0 0">
-                            <Separator Margin="20 20"/>
-                            <StackPanel Orientation="Horizontal"  VerticalAlignment="Top" Margin="10 0 0 0" >
-                                <TextBlock Text="Tổng" 
-                                       FontSize="17" 
-                                       FontWeight="SemiBold" 
-                                       Width="250"/>
-                                <TextBlock Text="{Binding Path=StrSubtotal}" 
-                                       FontSize="15" 
-                                       FontWeight="SemiBold" 
-                                       Foreground="#3C6255"
-                                       TextAlignment="Right"/>
+                            <Border
+                                Margin="20 10"
+                                Height="1.25"
+                                Background="{StaticResource Primary}"/>
+                            <StackPanel 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Top" 
+                                Margin="10 5 10 20" >
+                                <TextBlock 
+                                    Text="Tổng"
+                                    FontSize="22"
+                                    FontWeight="SemiBold" 
+                                    Width="180"/>
+                                <TextBlock 
+                                    Text="{Binding Path=StrSubtotal}"
+                                    FontWeight="SemiBold" 
+                                    FontSize="22"
+                                    Foreground="{StaticResource Primary}"
+                                    TextAlignment="Right"/>
                             </StackPanel>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 0 0" >
-                                    <Button Background="#3C6255" 
-                                    Width="155"
-                                    Command="{Binding ClearAllSelectedDishes}"
-                                   >
-                                        <TextBlock 
-                                    Foreground="White" 
-                                    Text="Xoá chọn tất cả"
-                                    FontSize="15"
-                                    />
-                                    </Button>
-                                    <Button Command="{Binding Inform_Chef_Of_OrderedDishes}"
-                                    Background="#3C6255" 
-                                    BorderThickness="0" 
-                                    Margin="0 20 0 0"
-                                    Width="155"
-                                            Content="Hoàn thành">
-                                    </Button>
-
-                                    <Button Command=""
-                                    Content="Đặt bàn trước"
-                                    Background="#3C6255"
-                                    Foreground="White"
-                                    FontSize="15"
-                                    Margin="0 20 0 0"
-                                    />
-                                </StackPanel>
-                                <StackPanel Margin="0 20 0 0" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="SDT: " FontSize="18" FontWeight="SemiBold"/>
-                                        <TextBox FontSize="18" FontWeight="SemiBold" Width="120" Margin="20 0 0 0"/>
-                                    </StackPanel>
-                                    <StackPanel Margin="0 20 0 0"  Orientation="Horizontal">
-                                        <Label Content="Ngày: " FontSize="18" FontWeight="SemiBold"/>
-                                        <TextBox FontSize="18" FontWeight="SemiBold" Width="120" Margin="12 0 0 0"/>
-                                    </StackPanel>
-                                </StackPanel>
+                                <Button 
+                                    Grid.Column="0"
+                                    Content="Đặt"
+                                    Style="{StaticResource PrimaryButton}"/>
+                                <Button
+                                    Grid.Column="1"
+                                    Content="Xóa tất cả"
+                                    Style="{StaticResource PrimaryButton}"/>
                             </Grid>
                         </StackPanel>
                     </Grid>
