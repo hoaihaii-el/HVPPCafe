@@ -1,0 +1,157 @@
+﻿<Window 
+    x:Class="HVPPCafeDesktop.Views.SubViews.KhuyenMaiThem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    TextElement.FontFamily="{StaticResource NunitoLight}"
+    TextElement.FontSize="16"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="Transparent"
+    FontFamily="Comfortaa"
+    ResizeMode="NoResize"
+    AllowsTransparency="True"
+    mc:Ignorable="d"
+    Height="500" Width="600">
+    <Grid>
+        <Border 
+            Background="White"
+            CornerRadius="5"
+            MouseLeftButtonDown="Border_MouseLeftButtonDown"
+            BorderBrush="{StaticResource Primary}"
+            BorderThickness="4"/>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Border Background="#EEEEEE"
+                        CornerRadius="5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Content="KHUYẾN MÃI MỚI"
+                        Margin="10 0 0 0"
+                        Foreground="{StaticResource Primary}"
+                        VerticalAlignment="Center"/>
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource CloseWindow}"
+                        MouseDown="Label_MouseDown">
+                        <fa:ImageAwesome
+                            Icon="PowerOff"
+                            Foreground="{StaticResource Primary}"/>
+                    </Label>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1"
+                  Margin="0 7 0 0">
+                <Border Background="#EEEEEE"
+                        CornerRadius="5"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox 
+                            design:HintAssist.Hint="Mã khuyến mãi"
+                            Grid.Column="0"
+                            Text="{Binding AddKhuyenMaiItem.MAKM, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="False"
+                            Margin="15 0 5 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
+                        <TextBox 
+                            design:HintAssist.Hint="Tên khuyến mãi"
+                            Grid.Column="1"
+                            Text="{Binding AddKhuyenMaiItem.TenKM, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="5 0 15 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <DatePicker 
+                            Grid.Column="0"
+                            SelectedDate="{Binding AddKhuyenMaiItem.NgayBatDau, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="15 0 5 0"
+                            design:HintAssist.Hint="Ngày bắt đầu"
+                            Style="{StaticResource SubFloatingDatePicker}" 
+                            SelectedDateFormat="Short" />
+                        <DatePicker
+                            Grid.Column="1"
+                            SelectedDate="{Binding AddKhuyenMaiItem.NgayKetThuc, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="5 0 15 0"
+                            design:HintAssist.Hint="Ngày kết thúc"
+                            Style="{StaticResource SubFloatingDatePicker}" 
+                            SelectedDateFormat="Short" />
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox 
+                            design:HintAssist.Hint="Giá trị giảm (%)"
+                            Grid.Column="0"
+                            Text="{Binding AddKhuyenMaiItem.GiamGia, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="15 0 5 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
+                        <TextBox 
+                            design:HintAssist.Hint="Mức áp dụng"
+                            Grid.Column="1"
+                            Text="{Binding AddKhuyenMaiItem.MucApDung, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="5 0 15 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox 
+                            design:HintAssist.Hint="Mô tả"
+                            Grid.Column="0"
+                            Text="{Binding AddKhuyenMaiItem.MoTa, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="15 0 5 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
+                        <ComboBox 
+                            design:HintAssist.Hint="Trạng thái"
+                            Grid.Column="1"
+                            Text="{Binding AddKhuyenMaiItem.TrangThai, UpdateSourceTrigger=PropertyChanged}"
+                            ItemsSource="{Binding TrangThais}"
+                            SelectedItem="{Binding AddKhuyenMaiItem.TrangThai}"
+                            Margin="5 0 15 0"
+                            Style="{StaticResource SubFloatingComboBox}">
+                        </ComboBox>
+                    </Grid>
+                    <Button 
+                        Content="Thêm" 
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding AddKhuyenMaiItem_Command}"
+                        CommandParameter="{Binding ElementName=info_field}"
+                        Grid.Row="4"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

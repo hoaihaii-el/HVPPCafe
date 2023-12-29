@@ -14,6 +14,18 @@
     </Style>
 
     <Style
+         x:Key="SubFloatingTextBox"
+         TargetType="TextBox"
+         BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource Primary}"/>
+        <Setter Property="Margin" Value="15 0"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style
         x:Key="SearchBox"
         TargetType="TextBox"
         BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -39,6 +51,19 @@
     </Style>
 
     <Style
+        x:Key="SubFloatingComboBox"
+        TargetType="ComboBox"
+        BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+        <Setter Property="Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
+        <Setter Property="Margin" Value="15 0"/>
+    </Style>
+
+    <Style
         x:Key="FloatingDatePicker"
         TargetType="DatePicker"
         BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
@@ -48,7 +73,18 @@
         <Setter Property="Height" Value="43"/>
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
     </Style>
-    
+
+    <Style
+        x:Key="SubFloatingDatePicker"
+        TargetType="DatePicker"
+        BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
+        <Setter Property="materialDesign:CalendarAssist.Orientation" Value="Vertical"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
+    </Style>
+
     <Style
         x:Key="PrimaryButton"
         TargetType="Button"
