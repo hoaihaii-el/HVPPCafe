@@ -52,14 +52,6 @@
                 </Border>
 
                 <Button 
-                    Name="btnDeleteStaff"
-                    Grid.Column="3"
-                    Command="{Binding DeleteCM}"
-                    Style="{StaticResource PrimaryButton}"
-                    Content="Xóa">
-                </Button>
-
-                <Button 
                     Name="btnAddStaff"
                     Grid.Column="1"
                     Command="{Binding AddCM}"
@@ -104,11 +96,6 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Button>
-                                                    <fa:ImageAwesome 
-                                                        Icon="Edit" 
-                                                        Foreground="{StaticResource Primary}"/>
-                                                </Button>
                                                 <Button>
                                                     <fa:ImageAwesome 
                                                         Icon="Times"
