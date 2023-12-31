@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CafeAPI.Models;
+using CafeAPI.Repo;
+using CafeAPI.StaticServices;
+using CafeAPI.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CafeAPI.Models;
-using CafeAPI.Repo;
+using System.Text.RegularExpressions;
 
 namespace CafeAPI.Controllers
 {
@@ -25,21 +23,23 @@ namespace CafeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mon>>> GetMon()
         {
-          if (_context.Mon == null)
-          {
-              return NotFound();
-          }
-            return await _context.Mon.ToListAsync();
+            if (_context.Mon == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Mon.Where(m => !m.Xoa).ToListAsync();
         }
 
         // GET: api/Mon/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Mon>> GetMon(string id)
         {
-          if (_context.Mon == null)
-          {
-              return NotFound();
-          }
+            if (_context.Mon == null)
+            {
+                return NotFound();
+            }
+
             var mon = await _context.Mon.FindAsync(id);
 
             if (mon == null)
@@ -51,88 +51,117 @@ namespace CafeAPI.Controllers
         }
 
         // PUT: api/Mon/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMon(string id, Mon mon)
+        [HttpPut("{maMon}")]
+        public async Task<IActionResult> PutMon(string maMon, MonVM monVM)
         {
-            if (id != mon.MaMon)
+            var mon = await _context.Mon.FindAsync(maMon);            
+
+            if (mon == null)
             {
-                return BadRequest();
+                return NotFound("Món không tồn tại!");
             }
 
-            _context.Entry(mon).State = EntityState.Modified;
+            mon.TenMon = monVM.TenMon;
+            mon.GiaBan = monVM.GiaBan;
+            mon.Nhom = monVM.Nhom;
+            mon.AnhMonAn = await UploadImage.Instance.UploadAsync(maMon, monVM.AnhMonAn ?? "");
 
             try
             {
+                _context.Mon.Update(mon);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Lưu thất bại!");
             }
 
             return NoContent();
         }
 
         // POST: api/Mon
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Mon>> PostMon(Mon mon)
+        public async Task<ActionResult<Mon>> PostMon(MonVM monVM)
         {
-          if (_context.Mon == null)
-          {
-              return Problem("Entity set 'DataContext.Mon'  is null.");
-          }
+            var mon = new Mon
+            {
+                MaMon = await AutoID(),
+                TenMon = monVM.TenMon,
+                GiaBan = monVM.GiaBan,
+                Nhom = monVM.Nhom,
+                Xoa = false
+            };
+
+            mon.AnhMonAn = await UploadImage.Instance.UploadAsync(mon.MaMon, monVM.AnhMonAn ?? "");
+
             _context.Mon.Add(mon);
+
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (MonExists(mon.MaMon))
+                return BadRequest(new
                 {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                    message = "Món đã tồn tại!"
+                });
             }
 
-            return CreatedAtAction("GetMon", new { id = mon.MaMon }, mon);
+            return Ok(new
+            {
+                data = mon
+            });
         }
 
         // DELETE: api/Mon/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMon(string id)
+        [HttpPut("xoa/{maMon}")]
+        public async Task<IActionResult> DeleteMon(string maMon)
         {
-            if (_context.Mon == null)
-            {
-                return NotFound();
-            }
-            var mon = await _context.Mon.FindAsync(id);
+            var mon = await _context.Mon.FindAsync(maMon);
+
             if (mon == null)
             {
                 return NotFound();
             }
 
-            _context.Mon.Remove(mon);
+            mon.Xoa = true;
+
+            _context.Mon.Update(mon);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new
+            {
+                success = true
+            });
         }
 
-        private bool MonExists(string id)
+        private async Task<string> AutoID()
         {
-            return (_context.Mon?.Any(e => e.MaMon == id)).GetValueOrDefault();
+            var ID = "MA0001";
+
+            var maxID = await _context.Mon
+                .OrderByDescending(m => m.MaMon)
+                .Select(m => m.MaMon)
+                .FirstOrDefaultAsync();
+
+            if (string.IsNullOrEmpty(maxID))
+            {
+                return ID;
+            }
+
+            ID = "MA";
+
+            var numeric = Regex.Match(maxID, @"\d+").Value;
+
+            numeric = (int.Parse(numeric) + 1).ToString();
+
+            while (ID.Length + numeric.Length < 6)
+            {
+                ID += '0';
+            }
+
+            return ID + numeric;
         }
     }
 }

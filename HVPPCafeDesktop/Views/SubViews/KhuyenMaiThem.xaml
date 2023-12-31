@@ -17,7 +17,6 @@
     FontFamily="Comfortaa"
     ResizeMode="NoResize"
     AllowsTransparency="True"
-    mc:Ignorable="d"
     Height="500" Width="600">
     <Grid>
         <Border 

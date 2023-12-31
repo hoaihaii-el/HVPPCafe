@@ -15,5 +15,6 @@ namespace CafeAPI.Models
         public string? TenNhomSanPham { get; set; }
         public DonVi? DonVi { get; set; }
         public NhomSanPham? NhomSanPham { get; set; }
+        public bool Xoa { get; set; }
     }
 }
