@@ -19,9 +19,20 @@ namespace HVPPCafeDesktop.CustomControl
                 Run(mess);
             }
         }
+        public CustomMessageBox(bool spin)
+        {
+            InitializeComponent();
+
+            if (spin)
+            {
+                Loading.Visibility = Visibility.Visible;
+                Message.Visibility = Visibility.Collapsed;
+            }
+        }
         private void Run(string Message, bool yesno = false)
         {
             lbMessage.Text = Message;
+            Loading.Visibility = Visibility.Collapsed;
             if (!yesno)
             {
                 btnYES.Visibility = Visibility.Hidden;
@@ -50,6 +61,13 @@ namespace HVPPCafeDesktop.CustomControl
         public bool ACCEPT()
         {
             return Accept;
+        }
+        public void TaskDone(string msg)
+        {
+            Message.Visibility = Visibility.Visible;
+            Loading.Visibility = Visibility.Collapsed;
+
+            Run(msg);
         }
     }
 }

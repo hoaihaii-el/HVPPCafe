@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using HVPPCafeDesktop.Models;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace HVPPCafeDesktop.Views
@@ -15,7 +16,6 @@ namespace HVPPCafeDesktop.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

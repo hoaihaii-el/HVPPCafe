@@ -20,15 +20,24 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/Mon
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mon>>> GetMon()
+        [HttpGet("all/{search}")]
+        public async Task<ActionResult<IEnumerable<Mon>>> GetAll(string search)
         {
             if (_context.Mon == null)
             {
                 return NotFound();
             }
 
-            return await _context.Mon.Where(m => !m.Xoa).ToListAsync();
+            var menu = await _context.Mon.Where(m => !m.Xoa).ToListAsync();
+
+            if (search != "empty")
+            {
+                menu = menu
+                    .Where(m => m.TenMon.ToLower().Contains(search.ToLower()))
+                    .ToList();
+            }
+
+            return menu;
         }
 
         // GET: api/Mon/5
@@ -112,7 +121,7 @@ namespace CafeAPI.Controllers
         }
 
         // DELETE: api/Mon/5
-        [HttpPut("xoa/{maMon}")]
+        [HttpDelete("{maMon}")]
         public async Task<IActionResult> DeleteMon(string maMon)
         {
             var mon = await _context.Mon.FindAsync(maMon);

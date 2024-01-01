@@ -42,6 +42,7 @@ namespace HVPPCafeDesktop.ViewModels
         public ICommand EditDetailCM { get; set; }
         public ICommand SaveMenuCM { get; set; }
         public ICommand SaveDetailCM { get; set; }
+        public ICommand DeleteCM { get; set; }
 
         private bool _IsEditMenu = false;
         public static string? ImagePath;
@@ -86,72 +87,112 @@ namespace HVPPCafeDesktop.ViewModels
                 }
 
                 return true;
-            }, (p) =>
+            },(p) =>
             {
                 NewMenu();
             });
-        }
 
-        public async void LoadMenuCol()
-        {
-            MenuCol.Clear();
-
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
-
-            var response = await client.GetAsync("api/Mon");
-
-            if (response.IsSuccessStatusCode)
+            DeleteCM = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                var result = await response.Content.ReadAsStringAsync();
-                var menu = JsonConvert.DeserializeObject<List<Mon>>(result);
-
-                if (menu == null)
+                if (p is Mon)
                 {
-                    return;
+                    var mon = p as Mon;
+                    DeleteMenu(mon?.MaMon ?? "");
                 }
 
-                foreach (var item in menu)
+                LoadMenuCol();
+            });
+        }
+
+        public async void LoadMenuCol(string search = "")
+        {
+            MenuCol.Clear();
+            search = string.IsNullOrEmpty(search) ? "empty" : search;
+            
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/Mon/all/{search}");
+
+                if (response.IsSuccessStatusCode)
                 {
-                    MenuCol.Add(item);
+                    var result = await response.Content.ReadAsStringAsync();
+                    var menu = JsonConvert.DeserializeObject<List<Mon>>(result);
+
+                    if (menu == null)
+                    {
+                        return;
+                    }
+
+                    foreach (var item in menu)
+                    {
+                        MenuCol.Add(item);
+                    }
                 }
             }
         }
 
         public async void NewMenu()
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
-
-            var mon = new MonDTO
+            using (var client = new HttpClient())
             {
-                TenMon = MenuItem.TenMon,
-                GiaBan = MenuItem.GiaBan,
-                Nhom = MenuItem.Nhom,
-            };
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
 
-            if (string.IsNullOrEmpty(ImagePath))
-            {
-                var msgBox = new CustomMessageBox("Hãy chọn hình ảnh!");
-                msgBox.ShowDialog();
-                return;
+                var mon = new MonDTO
+                {
+                    TenMon = MenuItem.TenMon,
+                    GiaBan = MenuItem.GiaBan,
+                    Nhom = MenuItem.Nhom,
+                };
+
+                if (string.IsNullOrEmpty(ImagePath))
+                {
+                    var msgBox2 = new CustomMessageBox("Hãy chọn hình ảnh!");
+                    msgBox2.ShowDialog();
+                    return;
+                }
+
+                var msgBox = new CustomMessageBox(true);
+                msgBox.Show();
+
+                byte[] bytes = File.ReadAllBytes(ImagePath);
+                var base64 = Convert.ToBase64String(bytes);
+
+                mon.AnhMonAn = base64;
+
+                var json = JsonConvert.SerializeObject(mon);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("api/Mon", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    msgBox.TaskDone("Thêm thành công!");
+                }
             }
 
-            byte[] bytes = File.ReadAllBytes(ImagePath);
-            var base64 = Convert.ToBase64String(bytes);
+            LoadMenuCol();
+        }
 
-            mon.AnhMonAn = base64;
-
-            var json = JsonConvert.SerializeObject(mon);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync("api/Mon", content);
-
-            if (response.IsSuccessStatusCode)
+        public async void DeleteMenu(string _MaMon)
+        {
+            using (var client = new HttpClient())
             {
-                var msgBox = new CustomMessageBox("Thêm thành công!");
-                msgBox.ShowDialog();
-            }
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+
+                var response = await client.DeleteAsync($"api/Mon/{_MaMon}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var msgBox = new CustomMessageBox("Xóa thành công!");
+                    msgBox.ShowDialog();
+                }
+                else
+                {
+                    var msgBox = new CustomMessageBox("Đã có lỗi xảy ra!");
+                    msgBox.ShowDialog();
+                }
+            }            
         }
     }
 }

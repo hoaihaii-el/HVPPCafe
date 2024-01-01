@@ -97,6 +97,15 @@
     </Style>
 
     <Style
+        x:Key="ListViewButton"
+        TargetType="Button"
+        BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style
         x:Key="PrimaryListView"
         TargetType="ListView"
         BasedOn="{StaticResource MaterialDesignListView}">

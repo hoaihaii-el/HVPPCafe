@@ -54,6 +54,7 @@
             </Grid>
 
             <ListView
+                x:Name="ListMenu"
                 Style="{StaticResource PrimaryListView}"
                 ItemsSource="{Binding MenuCol}"
                 SelectedItem="{Binding MenuSelected}" 
@@ -75,9 +76,8 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button 
-                                        Background="Transparent"
-                                        Click="Button_Click"
-                                        BorderThickness="0">
+                                        Style="{StaticResource ListViewButton}"
+                                        Command="{Binding ElementName=ListMenu, Path=DataContext.DeleteCM}" CommandParameter="{Binding}">
                                         <fa:ImageAwesome 
                                             Icon="Times"
                                             Foreground="#BF3131"/>
@@ -110,7 +110,7 @@
                     RadiusX="6"
                     RadiusY="6"
                     MaxWidth="400" 
-                    MaxHeight="250">
+                    MaxHeight="280">
                     <Rectangle.Fill>
                         <ImageBrush 
                             ImageSource="{Binding MenuSelected.AnhMonAn}" 
