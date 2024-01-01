@@ -53,30 +53,31 @@
                     Content="Thêm món"/>
             </Grid>
 
-            <ListView 
-                x:Name="Dishes_ListView" 
-                SelectedIndex="0" 
+            <ListView
                 Style="{StaticResource PrimaryListView}"
-                ItemsSource="{Binding MenuItemCollection, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding MenuItem, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                ItemsSource="{Binding MenuCol}"
+                SelectedItem="{Binding MenuSelected}" 
                 Grid.Row="1">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn 
                             Header="Mã món" 
                             Width="130"
-                            DisplayMemberBinding="{Binding ID}"/>
+                            DisplayMemberBinding="{Binding MaMon}"/>
                         <GridViewColumn 
                             Header="Tên món" 
                             Width="290"
-                            DisplayMemberBinding="{Binding FoodName}"/>
+                            DisplayMemberBinding="{Binding TenMon}"/>
                         <GridViewColumn 
                             Header="Giá (VNĐ)" 
-                            DisplayMemberBinding="{Binding PriceVNDCurrency}"/>
+                            DisplayMemberBinding="{Binding GiaBan}"/>
                         <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button>
+                                    <Button 
+                                        Background="Transparent"
+                                        Click="Button_Click"
+                                        BorderThickness="0">
                                         <fa:ImageAwesome 
                                             Icon="Times"
                                             Foreground="#BF3131"/>
@@ -106,12 +107,14 @@
                 BorderBrush="{StaticResource Primary}"
                 BorderThickness="3">
                 <Rectangle 
+                    RadiusX="6"
+                    RadiusY="6"
                     MaxWidth="400" 
-                    MaxHeight="200">
+                    MaxHeight="250">
                     <Rectangle.Fill>
                         <ImageBrush 
-                            ImageSource="{Binding MenuItem.FoodImage, UpdateSourceTrigger=PropertyChanged}" 
-                            Stretch="UniformToFill"/>
+                            ImageSource="{Binding MenuSelected.AnhMonAn}" 
+                            Stretch="Uniform"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -125,22 +128,29 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
 
                     <TextBox 
-                        Text="{Binding MenuItem.FoodName, Mode=TwoWay}"
+                        Text="{Binding MenuSelected.TenMon}"
                         Grid.Row="0"
                         design:HintAssist.Hint="Tên món"
                         Style="{StaticResource FloatingTextBox}" />
 
                     <TextBox 
-                        Text="{Binding MenuItem.Str_Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding MenuSelected.GiaBan}"
                         Grid.Row="1"
                         design:HintAssist.Hint="Giá (VNĐ)"
                         Style="{StaticResource FloatingTextBox}" />
+
+                    <TextBox 
+                        Text="{Binding MenuSelected.Nhom}"
+                        Grid.Row="2"
+                        design:HintAssist.Hint="Nhóm sản phẩm"
+                        Style="{StaticResource FloatingTextBox}" />
                     
                     <Button 
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Style="{StaticResource PrimaryButton}"
                         Content="Sửa chi tiết món ăn"
                         Command="{Binding EditDetailCM}"/>

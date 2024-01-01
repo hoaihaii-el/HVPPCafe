@@ -108,10 +108,7 @@ namespace CafeAPI.Controllers
                 });
             }
 
-            return Ok(new
-            {
-                data = mon
-            });
+            return Ok(mon);
         }
 
         // DELETE: api/Mon/5
