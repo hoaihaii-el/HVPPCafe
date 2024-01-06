@@ -7,6 +7,7 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
+    IsVisibleChanged="UserControl_IsVisibleChanged"
     TextElement.FontFamily="{StaticResource NunitoLight}"
     TextElement.FontSize="17"
     d:DesignHeight="673" 
@@ -14,8 +15,8 @@
     <Grid>
         <Grid Background="#fff">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="600"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter 
             Height="700" 
@@ -42,6 +43,7 @@
                                 Height="20"/>
                             <TextBox
                                 Grid.Column="1"
+                                Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="0 0 10 0"
                                 Style="{StaticResource SearchBox}"/>
                         </Grid>
@@ -50,12 +52,17 @@
                         Grid.Column="1"
                         Width="170"
                         Margin="0 10 0 0"
+                        Text="{Binding GroupSelected, Mode=TwoWay}"
                         design:HintAssist.Hint="Nhóm sản phẩm"
                         Style="{StaticResource FloatingComboBox}">
+                        <ComboBoxItem Content="Trà trái cây"/>
+                        <ComboBoxItem Content="Trà sữa"/>
+                        <ComboBoxItem Content="Cafe"/>
+                        <ComboBoxItem IsSelected="True" Content="Tất cả"/>
                     </ComboBox>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="itemControl" ItemsSource="{Binding MenuItemCollection, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl x:Name="MenuCard" ItemsSource="{Binding MenuCol, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
@@ -63,39 +70,76 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <design:Card Width="180" Height="250" Margin="10">
+                                <design:Card Width="260" Height="280" Margin="15 10">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="130"/>
-                                            <RowDefinition Height="80" />
+                                            <RowDefinition Height="160"/>
+                                            <RowDefinition Height="40" />
+                                            <RowDefinition Height="40" />
                                             <RowDefinition Height="30" />
                                         </Grid.RowDefinitions>
 
-                                        <Image Source="{Binding FoodImage}" Stretch="UniformToFill" />
-                                        <StackPanel Grid.Row ="1" Orientation="Vertical" HorizontalAlignment="Center">
-                                            <TextBlock 
+                                        <Image Source="{Binding AnhMonAn}" Stretch="UniformToFill" />
+                                        <TextBlock 
+                                            Grid.Row="1"
                                             FontWeight="SemiBold" 
                                             FontSize="20"  
                                             Margin="0 10 0 0" 
                                             TextAlignment="Center"
-                                            Text="{Binding FoodName}"/>
+                                            Text="{Binding TenMon}"/>
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
                                             <TextBlock 
-                                            FontWeight="Regular" 
-                                            FontSize="18" 
-                                            Margin="0 10 0 0" 
-                                            TextAlignment="Center" 
-                                            Text="{Binding PriceVNDCurrency}"/>
-                                        </StackPanel>
-                                        <Button            
-                                        Grid.Row="2"
-                                        Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Width="100"
-                                        Foreground="White"
-                                        Background="{StaticResource Primary}"
-                                        Command="{Binding ElementName=vm, Path=OrderFeature_Command}"
-                                        CommandParameter="{Binding}">
-                                            _ĐẶT
-                                        </Button>
+                                                Grid.Column="0"
+                                                FontWeight="Regular" 
+                                                FontSize="18" 
+                                                Margin="0 10 0 0" 
+                                                TextAlignment="Center" 
+                                                Text="{Binding GiaBanM, StringFormat=N0}"/>
+                                            <TextBlock 
+                                                Grid.Column="1"
+                                                FontWeight="Regular" 
+                                                FontSize="18" 
+                                                Margin="0 10 0 0" 
+                                                TextAlignment="Center" 
+                                                Text="{Binding GiaBanL, StringFormat=N0}"/>
+                                            <TextBlock 
+                                                Grid.Column="2"
+                                                FontWeight="Regular" 
+                                                FontSize="18" 
+                                                Margin="0 10 0 0" 
+                                                TextAlignment="Center" 
+                                                Text="{Binding GiaBanXL, StringFormat=N0}"/>
+                                        </Grid>
+                                        <Grid Grid.Row="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button 
+                                                Content="M"
+                                                Grid.Column="0"
+                                                Margin="5 0 2 0"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Command="{Binding ElementName=MenuCard, Path=DataContext.OrderSizeM}" CommandParameter="{Binding}"/>
+                                            <Button 
+                                                Content="L"
+                                                Grid.Column="1"
+                                                Margin="2 0 5 0"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Command="{Binding ElementName=MenuCard, Path=DataContext.OrderSizeL}" CommandParameter="{Binding}"/>
+                                            <Button 
+                                                Content="XL"
+                                                Grid.Column="2"
+                                                Margin="2 0 5 0"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Command="{Binding ElementName=MenuCard, Path=DataContext.OrderSizeXL}" CommandParameter="{Binding}"/>
+                                        </Grid>
                                     </Grid>
                                 </design:Card>
                             </DataTemplate>
@@ -117,7 +161,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="140"/>
                         </Grid.RowDefinitions>
-                        <Border 
+                        <Border
                             Grid.Row="0" 
                             Padding="20" 
                             Background="{StaticResource Primary}" 
@@ -126,66 +170,72 @@
                             <StackPanel Orientation="Vertical">
                                 <TextBlock 
                                     Height="30" 
-                                    Foreground="#fff" 
+                                    Foreground="{StaticResource TextColor2}" 
                                     FontWeight="SemiBold" 
                                     FontSize="20"
                                     Text="New Order"/>
                                 <TextBlock 
                                     Height="30" 
-                                    Foreground="#fff" 
+                                    Foreground="{StaticResource TextColor2}" 
                                     FontWeight="Light" 
                                     FontSize="16" 
-                                    Text="{Binding Day}"/>
+                                    Text="{Binding ToDay}"/>
                             </StackPanel>
                         </Border>
-                        <ScrollViewer Grid.Row="1">
-                            <StackPanel Orientation="Vertical" x:Name="border">
-                                <Border>
-                                    <StackPanel Orientation="Horizontal">
-                                        <ItemsControl ItemsSource="{Binding SelectedItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderThickness="0,0,0,1" BorderBrush="#1C3879" Width="{Binding ActualWidth, ElementName=border}" Height="50">
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="50"/>
-                                                                <ColumnDefinition Width="150"/>
-                                                                <ColumnDefinition Width="60"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock 
-                                                                Grid.Column="1"  
-                                                                TextAlignment="Left" 
-                                                                VerticalAlignment="Center" 
-                                                                FontSize="15" 
-                                                                FontWeight="SemiBold"
-                                                                Text="{Binding FoodName}"/>
-
-                                                            <TextBlock 
-                                                                Grid.Column="2"  
-                                                                TextAlignment="Center" 
-                                                                FontSize="15" 
-                                                                FontWeight="SemiBold" 
-                                                                VerticalAlignment="Center"
-                                                                Text="{Binding Quantity}"/>
-
-                                                            <TextBlock 
-                                                                Grid.Column="3"  
-                                                                ToolTip="Đơn giá" 
-                                                                TextAlignment="Right" 
-                                                                VerticalAlignment="Center" 
-                                                                FontSize="15" 
-                                                                FontWeight="SemiBold" 
-                                                                Text="{Binding PriceVNDCurrency}"/>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </Border>
-                            </StackPanel>
-                        </ScrollViewer>
+                        <ListView
+                            Grid.Row="1" 
+                            Margin="0 -40 0 0"
+                            FontSize="16"
+                            x:Name="ListNewOrder"
+                            ItemsSource="{Binding NewOrder, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        DisplayMemberBinding="{Binding TenMon}"
+                                        Width="230"/>
+                                    <GridViewColumn
+                                        DisplayMemberBinding="{Binding Size}"
+                                        Width="60"/>
+                                    <GridViewColumn
+                                        DisplayMemberBinding="{Binding SoLuong}"
+                                        Width="40"/>
+                                    <GridViewColumn Width="70">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    Height="20"
+                                                    Width="45"
+                                                    Margin="10 0 0 0"
+                                                    BorderThickness="0"
+                                                    Click="Button_Click"
+                                                    Background="Transparent">
+                                                    <fa:ImageAwesome
+                                                        Icon="Plus"
+                                                        Foreground="{StaticResource Primary}"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="70">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button 
+                                                    Height="20"
+                                                    Width="45"
+                                                    Margin="10 0 0 0"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    Command="{Binding ElementName=ListNewOrder, Path=DataContext.RemoveCM}" CommandParameter="{Binding}">
+                                                    <fa:ImageAwesome 
+                                                        Icon="Trash"
+                                                        Foreground="{StaticResource DeleteColor}"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                         <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 15 0 0">
                             <Border
                                 Margin="20 10"
@@ -200,8 +250,8 @@
                                     FontSize="22"
                                     FontWeight="SemiBold" 
                                     Width="180"/>
-                                <TextBlock 
-                                    Text="{Binding Path=StrSubtotal}"
+                                <TextBlock
+                                    Text="{Binding SubTotal, UpdateSourceTrigger=PropertyChanged}"
                                     FontWeight="SemiBold" 
                                     FontSize="22"
                                     Foreground="{StaticResource Primary}"
@@ -216,10 +266,12 @@
                                 <Button 
                                     Grid.Column="0"
                                     Content="Đặt"
+                                    Command="{Binding OrderCM}"
                                     Style="{StaticResource PrimaryButton}"/>
                                 <Button
                                     Grid.Column="1"
                                     Content="Xóa tất cả"
+                                    Command="{Binding DeleteAllCM}"
                                     Style="{StaticResource PrimaryButton}"/>
                             </Grid>
                         </StackPanel>

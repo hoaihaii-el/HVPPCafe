@@ -8,6 +8,7 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d"
     Title="MainWindow" 
+    LocationChanged="Window_LocationChanged"
     Height="760" 
     Width="1360"
     AllowsTransparency="True"

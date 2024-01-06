@@ -1,5 +1,6 @@
 ﻿using CafeAPI.Models;
 using CafeAPI.Repo;
+using CafeAPI.Response;
 using CafeAPI.StaticServices;
 using CafeAPI.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,8 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/Mon
-        [HttpGet("all/{search}")]
-        public async Task<ActionResult<IEnumerable<Mon>>> GetAll(string search)
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<MonResponse>>> GetAll()
         {
             if (_context.Mon == null)
             {
@@ -30,14 +31,46 @@ namespace CafeAPI.Controllers
 
             var menu = await _context.Mon.Where(m => !m.Xoa).ToListAsync();
 
-            if (search != "empty")
+            var result = new List<MonResponse>();
+
+            foreach (var item in menu)
             {
-                menu = menu
-                    .Where(m => m.TenMon.ToLower().Contains(search.ToLower()))
-                    .ToList();
+                var response = new MonResponse
+                {
+                    MaMon = item.MaMon,
+                    TenMon = item.TenMon,
+                    AnhMonAn = item.AnhMonAn,
+                    Nhom = item.Nhom,
+                    GiaBanL = 0,
+                    GiaBanXL = 0,
+                    TyLeL = 0,
+                    TyLeXL = 0
+                };
+                var ctg = await _context.ChiTietGia.Where(c => c.MaMon == item.MaMon).ToListAsync();
+                if (ctg == null) continue;
+
+                foreach (var ct in ctg)
+                {
+                    if (ct.Size == "M")
+                    {
+                        response.GiaBanM = ct.GiaBan;
+                    }
+                    if (ct.Size == "L")
+                    {
+                        response.GiaBanL = ct.GiaBan;
+                        response.TyLeL = ct.TyLeSizeM;
+                    }
+                    if (ct.Size == "XL")
+                    {
+                        response.GiaBanXL = ct.GiaBan;
+                        response.TyLeXL = ct.TyLeSizeM;
+                    }
+                }
+
+                result.Add(response);
             }
 
-            return menu;
+            return result;
         }
 
         // GET: api/Mon/5
@@ -71,7 +104,6 @@ namespace CafeAPI.Controllers
             }
 
             mon.TenMon = monVM.TenMon;
-            mon.GiaBan = monVM.GiaBan;
             mon.Nhom = monVM.Nhom;
             mon.AnhMonAn = await UploadImage.Instance.UploadAsync(maMon, monVM.AnhMonAn ?? "");
 
@@ -96,7 +128,6 @@ namespace CafeAPI.Controllers
             {
                 MaMon = await AutoID(),
                 TenMon = monVM.TenMon,
-                GiaBan = monVM.GiaBan,
                 Nhom = monVM.Nhom,
                 Xoa = false
             };
@@ -104,6 +135,39 @@ namespace CafeAPI.Controllers
             mon.AnhMonAn = await UploadImage.Instance.UploadAsync(mon.MaMon, monVM.AnhMonAn ?? "");
 
             _context.Mon.Add(mon);
+
+            if (monVM.GiaBanM > 0)
+            {
+                _context.ChiTietGia.Add(new ChiTietGia
+                {
+                    MaMon = mon.MaMon,
+                    Size = "M",
+                    GiaBan = monVM.GiaBanM,
+                    TyLeSizeM = 1
+                });
+            }
+
+            if (monVM.GiaBanL > 0)
+            {
+                _context.ChiTietGia.Add(new ChiTietGia
+                {
+                    MaMon = mon.MaMon,
+                    Size = "L",
+                    GiaBan = monVM.GiaBanL,
+                    TyLeSizeM = monVM.TyLeL
+                });
+            }
+
+            if (monVM.GiaBanXL > 0)
+            {
+                _context.ChiTietGia.Add(new ChiTietGia
+                {
+                    MaMon = mon.MaMon,
+                    Size = "XL",
+                    GiaBan = monVM.GiaBanXL,
+                    TyLeSizeM = monVM.TyLeXL
+                });
+            }
 
             try
             {

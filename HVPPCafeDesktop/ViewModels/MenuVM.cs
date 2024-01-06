@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Input;
@@ -38,6 +39,58 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _MenuItem, value);
         }
 
+        private bool _IsHaveSizeL;
+        public bool IsHaveSizeL
+        {
+            get => _IsHaveSizeL;
+            set => SetProperty(ref _IsHaveSizeL, value);
+        }
+
+        private bool _IsHaveSizeXL;
+        public bool IsHaveSizeXL
+        {
+            get => _IsHaveSizeXL;
+            set => SetProperty(ref _IsHaveSizeXL, value);
+        }
+
+        private string _TyLeL;
+        public string TyLeL
+        {
+            get => _TyLeL;
+            set
+            {
+                _TyLeL = value;
+                OnPropertyChanged();
+                try
+                {
+                    MenuItem.TyLeL = double.Parse(TyLeL);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private string _TyLeXL;
+        public string TyLeXL
+        {
+            get => _TyLeXL;
+            set
+            {
+                _TyLeXL = value;
+                OnPropertyChanged();
+                try
+                {
+                    MenuItem.TyLeXL = double.Parse(TyLeXL);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
         public ICommand NewMenuCM { get; set; }
         public ICommand EditDetailCM { get; set; }
         public ICommand SaveMenuCM { get; set; }
@@ -46,6 +99,8 @@ namespace HVPPCafeDesktop.ViewModels
 
         private bool _IsEditMenu = false;
         public static string? ImagePath;
+        public List<Mon> NewMon = new List<Mon>();
+        public List<Mon> EditMon = new List<Mon>();
 
         public MenuVM()
         {
@@ -56,6 +111,13 @@ namespace HVPPCafeDesktop.ViewModels
                 _IsEditMenu = false;
                 MenuItem = new Mon();
                 MenuItem.Nhom = "Trà trái cây";
+                MenuItem.GiaBanM = 0;
+                MenuItem.GiaBanL = 0;
+                MenuItem.GiaBanXL = 0;
+                MenuItem.TyLeL = 0;
+                MenuItem.TyLeXL = 0;
+                IsHaveSizeL = false;
+                IsHaveSizeXL = false;
 
                 var addWindow = new MenuThem();
                 addWindow.DataContext = this;
@@ -73,6 +135,10 @@ namespace HVPPCafeDesktop.ViewModels
 
                 _IsEditMenu = true;
                 MenuItem = MenuSelected;
+                IsHaveSizeL = MenuSelected.GiaBanL > 0;
+                IsHaveSizeXL = MenuSelected.GiaBanXL > 0;
+                TyLeL = MenuSelected.TyLeL.ToString();
+                TyLeXL = MenuSelected.TyLeXL.ToString();
 
                 var editWindow = new MenuThem(true);
                 editWindow.DataContext = this;
@@ -81,15 +147,30 @@ namespace HVPPCafeDesktop.ViewModels
 
             SaveMenuCM = new RelayCommand<object>((p) =>
             {
-                if (string.IsNullOrEmpty(MenuItem.TenMon) || MenuItem.GiaBan < 0)
+                if (string.IsNullOrEmpty(MenuItem.TenMon) || MenuItem.GiaBanM <= 0)
                 {
                     return false;
+                }
+                if (IsHaveSizeL)
+                {
+                    if (MenuItem.GiaBanL <= 0 || !double.TryParse(TyLeL, out _)) return false;
+                }
+                if (IsHaveSizeXL)
+                {
+                    if (MenuItem.GiaBanXL <= 0 || !double.TryParse(TyLeXL, out _)) return false;
                 }
 
                 return true;
             },(p) =>
             {
-                NewMenu();
+                if (!_IsEditMenu)
+                {
+                    NewMenu();
+                }
+                else
+                {
+
+                }
             });
 
             DeleteCM = new RelayCommand<object>((p) => { return true; }, (p) =>
@@ -104,15 +185,14 @@ namespace HVPPCafeDesktop.ViewModels
             });
         }
 
-        public async void LoadMenuCol(string search = "")
+        public async void LoadMenuCol()
         {
             MenuCol.Clear();
-            search = string.IsNullOrEmpty(search) ? "empty" : search;
             
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
-                var response = await client.GetAsync($"api/Mon/all/{search}");
+                var response = await client.GetAsync($"api/Mon/all");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -141,8 +221,12 @@ namespace HVPPCafeDesktop.ViewModels
                 var mon = new MonDTO
                 {
                     TenMon = MenuItem.TenMon,
-                    GiaBan = MenuItem.GiaBan,
+                    GiaBanM = MenuItem.GiaBanM,
+                    GiaBanL = IsHaveSizeL ? MenuItem.GiaBanL : 0,
+                    GiaBanXL = IsHaveSizeXL ? MenuItem.GiaBanXL : 0,
                     Nhom = MenuItem.Nhom,
+                    TyLeL = IsHaveSizeL ? MenuItem.TyLeL : 0,
+                    TyLeXL = IsHaveSizeXL ? MenuItem.TyLeXL : 0,
                 };
 
                 if (string.IsNullOrEmpty(ImagePath))

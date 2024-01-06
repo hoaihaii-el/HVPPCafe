@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HVPPCafeDesktop.Views.SubViews;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,35 @@ namespace HVPPCafeDesktop.Views
         public Order()
         {
             InitializeComponent();
+        }
+
+        public SubOrder subOrder { get; set; }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (subOrder == null)
+            {
+                subOrder = new SubOrder();
+                subOrder.DataContext = this.DataContext;
+                subOrder.Show();
+            }
+            else
+            {
+                subOrder.Close();
+                subOrder = null;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var item = sender as Button;
+            var point = item?.PointToScreen(Mouse.GetPosition(item));
+
+            var popup = new Topping();
+            popup.Left = point.Value.X;
+            popup.Top = point.Value.Y - popup.Height;
+            popup.DataContext = this.DataContext;
+            popup.ShowDialog();
         }
     }
 }

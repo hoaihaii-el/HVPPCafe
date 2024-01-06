@@ -1,0 +1,104 @@
+﻿<Window x:Class="HVPPCafeDesktop.Views.SubViews.SubOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="SubOrder"
+        Height="600" Width="730"
+        Background="Transparent"
+        FontFamily="{StaticResource NunitoLight}"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Border 
+        Background="White"
+        CornerRadius="5"
+        BorderBrush="{StaticResource Primary}"
+        BorderThickness="4"/>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Border 
+                    Background="#EEEEEE"
+                    CornerRadius="5"
+                    MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                            Content="NEW ORDER"
+                            Margin="15 0"
+                            Foreground="{StaticResource Primary}"
+                            FontSize="17"
+                            VerticalAlignment="Center"/>
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource CloseWindow}"
+                            MouseDown="Label_MouseDown">
+                            <fa:ImageAwesome
+                                Icon="PowerOff"
+                                Foreground="{StaticResource Primary}"/>
+                        </Label>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Margin="0 7 0 0"
+              Grid.Row="1">
+                <Border Background="#EEEEEE"
+                    CornerRadius="5"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <ListView
+                    Style="{StaticResource PrimaryListView}"
+                    ItemsSource="{Binding NewOrder}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn
+                                Header="Tên món"
+                                Width="300"
+                                DisplayMemberBinding="{Binding TenMon}"/>
+                                <GridViewColumn
+                                Header="Size"
+                                Width="100"
+                                DisplayMemberBinding="{Binding Size}"/>
+                                <GridViewColumn
+                                Header="Số lượng"
+                                Width="140"
+                                DisplayMemberBinding="{Binding SoLuong}"/>
+                                <GridViewColumn
+                                Header="Thành tiền"
+                                Width="170"
+                                DisplayMemberBinding="{Binding GiaBan}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label 
+                            Content="TỔNG TIỀN: "
+                            FontSize="18"
+                            VerticalContentAlignment="Center"/>
+                        <Label 
+                            Content="{Binding SubTotal}"
+                            FontSize="18"
+                            VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

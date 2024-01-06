@@ -25,7 +25,12 @@ namespace HVPPCafeDesktop
         {
             InitializeComponent();
             this.DataContext = new NavigationVM();
+            MainWX = this.Left;
+            MainWY = this.Top;
         }
+
+        public static double MainWX;
+        public static double MainWY;
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -40,6 +45,12 @@ namespace HVPPCafeDesktop
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            MainWX = this.Left;
+            MainWY = this.Top;
         }
     }
 }

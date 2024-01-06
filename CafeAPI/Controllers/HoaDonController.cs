@@ -25,10 +25,11 @@ namespace CafeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HoaDon>>> GetHoaDon()
         {
-          if (_context.HoaDon == null)
-          {
-              return NotFound();
-          }
+            if (_context.HoaDon == null)
+            {
+                return NotFound();
+            }
+
             return await _context.HoaDon.ToListAsync();
         }
 
@@ -50,8 +51,6 @@ namespace CafeAPI.Controllers
             return hoaDon;
         }
 
-        // PUT: api/HoaDon/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHoaDon(int id, HoaDon hoaDon)
         {
@@ -81,19 +80,18 @@ namespace CafeAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/HoaDon
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<HoaDon>> PostHoaDon(HoaDon hoaDon)
         {
-          if (_context.HoaDon == null)
-          {
-              return Problem("Entity set 'DataContext.HoaDon'  is null.");
-          }
+            if (_context.HoaDon == null)
+            {
+                return Problem("Entity set 'DataContext.HoaDon'  is null.");
+            }
+
             _context.HoaDon.Add(hoaDon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetHoaDon", new { id = hoaDon.SoHoaDon }, hoaDon);
+            return Ok(hoaDon);
         }
 
         // DELETE: api/HoaDon/5

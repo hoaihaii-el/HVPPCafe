@@ -5,4 +5,5 @@
     <SolidColorBrush x:Key="TextColor">#004225</SolidColorBrush>
     <SolidColorBrush x:Key="TextColor2">#EAE7B1</SolidColorBrush>
     <SolidColorBrush x:Key="CardColor">#EEEEEE</SolidColorBrush>
+    <SolidColorBrush x:Key="DeleteColor">#BF3131</SolidColorBrush>
 </ResourceDictionary>

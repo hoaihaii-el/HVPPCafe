@@ -25,6 +25,8 @@ namespace CafeAPI.Repo
         public DbSet<NhomSanPham> NhomSanPham { get; set; }
         public DbSet<SanPham> SanPham { get; set; }
         public DbSet<TaiKhoan> TaiKhoan { get; set; }
+        public DbSet<ChiTietGia> ChiTietGia { get; set; }
+        public DbSet<Topping> Topping { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietCaLam>()
@@ -35,6 +37,9 @@ namespace CafeAPI.Repo
 
             modelBuilder.Entity<ChiTietMon>()
                 .HasKey(c => new { c.TenNguyenLieu, c.MaMon });
+
+            modelBuilder.Entity<ChiTietGia>()
+                .HasKey(c => new { c.MaMon, c.Size });
 
             base.OnModelCreating(modelBuilder);
         }
