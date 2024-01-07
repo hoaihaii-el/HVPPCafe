@@ -1,13 +1,19 @@
-﻿using HVPPCafeDesktop.Models;
+﻿using HVPPCafeDesktop.CustomControl;
+using HVPPCafeDesktop.DTO;
+using HVPPCafeDesktop.Models;
 using HVPPCafeDesktop.Resources;
 using HVPPCafeDesktop.Resources.Utilities;
+using HVPPCafeDesktop.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using static iTextSharp.text.pdf.AcroFields;
 using SubView = HVPPCafeDesktop.Views.SubViews;
 
 namespace HVPPCafeDesktop.ViewModels
@@ -102,8 +108,110 @@ namespace HVPPCafeDesktop.ViewModels
             });
             OrderCM = new RelayCommand<object>((p) => true, (p) =>
             {
-
+                CreateOrderAsync();
             });
+        }
+
+        private async void CreateOrderAsync()
+        {
+            int OrderID;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var hoadon = new HoaDonDTO
+                {
+                    LoaiHoaDon = "Dùng tại chỗ",
+                    TriGia = NewOrder.Select(o => o.GiaBan).Sum(),
+                    NgayHoaDon = DateTime.Now,
+                    MaNV = "",
+                    MaKhuyenMai = "",
+                    DaCheBien = false,
+                    DaThanhToan = true,
+                    SoBan = 0
+                };
+
+                var json = JsonConvert.SerializeObject(hoadon);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("api/HoaDon", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var msg = new CustomMessageBox("Đã có lỗi xảy ra!");
+                    msg.ShowDialog();
+                    return;
+                }
+
+                var result = await response.Content.ReadAsStringAsync();
+                OrderID = JsonConvert.DeserializeObject<int>(result);
+                try
+                {
+                    AddCTHD(OrderID);
+                }
+                catch
+                {
+                    var msg = new CustomMessageBox("Đã có lỗi xảy ra!");
+                    msg.ShowDialog();
+                    return;
+                }
+
+                var msg1 = new CustomMessageBox("Tạo đơn thành công!");
+                msg1.ShowDialog();
+            }
+        }
+
+        public async void AddCTHD(int OrderID)
+        {
+            foreach (var order in NewOrder)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                    var cthd = new
+                    {
+                        MaMon = order.MaMon,
+                        Size = order.Size,
+                        SoLuong = order.SoLuong,
+                        SoHoaDon = OrderID
+                    };
+
+                    var json = JsonConvert.SerializeObject(cthd);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("api/HoaDon/add-cthd", content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception();
+                    }
+                }
+            }
+        }
+
+        public async void AddCTTopping(int CTHDID, NewOrder item)
+        {
+            if (item.toppings.Count <= 0) return;
+
+            foreach (var topping in item.toppings)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                    var cttopping = new
+                    {
+                        ID = CTHDID,
+                        TenTopping = topping.TenTopping
+                    };
+
+                    var json = JsonConvert.SerializeObject(cttopping);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("api/HoaDon/add-cttopping", content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception();
+                    }
+                }
+            }
         }
 
         private void RemoveFromOrder(NewOrder p)
@@ -236,7 +344,11 @@ namespace HVPPCafeDesktop.ViewModels
             decimal total = 0;
             foreach (var item in NewOrder)
             {
-                total += (item.GiaBan * item.SoLuong);
+                var mon = MenuRaw.Where(m => m.MaMon == item.MaMon).FirstOrDefault();
+                var dongia = item.Size == "M" ? mon.GiaBanM
+                           : item.Size == "L" ? mon.GiaBanL : mon.GiaBanXL;
+                total += dongia * item.SoLuong;
+                item.GiaBan = item.SoLuong * dongia;
                 foreach (var topping in item.toppings)
                 {
                     total += topping.Gia;

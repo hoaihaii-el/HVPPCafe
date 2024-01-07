@@ -5,11 +5,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:fa="http://schemas.fontawesome.io/icons/" 
+    xmlns:local1="clr-namespace:HVPPCafeDesktop.Converters"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
     d:DesignHeight="673" 
     d:DesignWidth="1146">
+    <UserControl.Resources>
+        <local1:BoolToStringConverter x:Key="BoolToString"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -47,6 +51,7 @@
                         <TextBox
                             Grid.Column="1"
                             Margin="0 0 10 0"
+                            Text="{Binding Search}"
                             Style="{StaticResource SearchBox}"/>
                     </Grid>
                 </Border>
@@ -54,7 +59,7 @@
                 <Button 
                     Name="btnAddStaff"
                     Grid.Column="1"
-                    Command="{Binding AddCM}"
+                    Command="{Binding OpenAddCM}"
                     Style="{StaticResource PrimaryButton}"
                     Content="Thêm">
                 </Button>
@@ -75,6 +80,7 @@
             <Grid Grid.Row="1">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ListView 
+                        x:Name="ItemControls"
                         ItemsSource="{Binding ListStaff}"
                         SelectedItem="{Binding StaffSelected, Mode=OneWayToSource}"
                         Style="{StaticResource PrimaryListView}">
@@ -96,10 +102,15 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Button>
+                                                <Button 
+                                                    Command="{Binding ElementName=ItemsControls, Path=DataContext.DeleteCM}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Height="27">
                                                     <fa:ImageAwesome 
-                                                        Icon="Times"
-                                                        Foreground="#BF3131"/>
+                                                          Icon="Trash"
+                                                          Foreground="#BF3131"/>
                                                 </Button>
                                             </StackPanel>
                                         </DataTemplate>
@@ -141,7 +152,7 @@
 
                         <TextBox 
                             design:HintAssist.Hint="ID"
-                            Text="{Binding NhanVienItem.MaNV, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding StaffSelected.MaNV, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="0"
                             IsEnabled="False"
                             Margin="15 0 5 0"
@@ -149,7 +160,7 @@
                         <TextBox 
                             design:HintAssist.Hint="Họ tên"
                             Margin="5 0 15 0"
-                            Text="{Binding NhanVienItem.HoTen, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding StaffSelected.HoTen, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="1"
                             Style="{StaticResource FloatingTextBox}" />
                     </Grid>
@@ -161,7 +172,7 @@
                         <Grid Grid.Column="0">
                             <ComboBox 
                                 design:HintAssist.Hint="Chức vụ"
-                                Text="{Binding NhanVienItem.ChucVu, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding StaffSelected.ChucVu, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="15 20 5 23"
                                 Style="{StaticResource FloatingComboBox}">
                                 <ComboBoxItem>
@@ -178,7 +189,7 @@
                         <Grid Grid.Column="1">
                             <ComboBox 
                                 design:HintAssist.Hint="Loại nhân viên"
-                                Text="{Binding Fulltime, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding StaffSelected.IsFullTime, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToString}}"
                                 Margin="5 20 15 23"
                                 Style="{StaticResource FloatingComboBox}">
                                 <ComboBoxItem>
@@ -198,14 +209,14 @@
                         <Grid Grid.Column="0">
                             <TextBox 
                                 design:HintAssist.Hint="Địa chỉ"
-                                Text="{Binding NhanVienItem.DiaChi, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding StaffSelected.DiaChi, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="15 0 5 0"
                                 Style="{StaticResource FloatingTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <TextBox 
                                 design:HintAssist.Hint="SĐT"
-                                Text="{Binding NhanVienItem.SDT, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding StaffSelected.SDT, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="5 0 15 0"
                                 Style="{StaticResource FloatingTextBox}" />
                         </Grid>
@@ -217,14 +228,14 @@
                         </Grid.ColumnDefinitions>
                         <DatePicker 
                             Grid.Column="0"
-                            SelectedDate="{Binding NhanVienItem.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedDate="{Binding StaffSelected.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             FontFamily="Comfortaa"
                             Margin="15 0 5 0"
                             design:HintAssist.Hint="Ngày sinh"
                             Style="{StaticResource FloatingDatePicker}" SelectedDateFormat="Short" />
                         <DatePicker 
                             Grid.Column="1"
-                            SelectedDate="{Binding NhanVienItem.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedDate="{Binding StaffSelected.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             FontFamily="Comfortaa"
                             Margin="5 0 15 0"
                             design:HintAssist.Hint="Ngày vào làm"
@@ -238,14 +249,14 @@
                         <TextBox 
                             IsEnabled="False"
                             design:HintAssist.Hint="Tài khoản"
-                            Text="{Binding NhanVienItem.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding StaffSelected.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
                             Margin="15 0 5 0"
                             Style="{StaticResource FloatingTextBox}" />
                         <TextBox 
                             IsEnabled="False"
                             Grid.Column="1"
                             design:HintAssist.Hint="Mật khẩu"
-                            Text="{Binding NhanVienItem.MatKhau, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding StaffSelected.MatKhau, UpdateSourceTrigger=PropertyChanged}"
                             Margin="5 0 15 0"
                             Style="{StaticResource FloatingTextBox}" />
                     </Grid>

@@ -22,14 +22,10 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/NhanVien
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<NhanVien>>> GetNhanVien()
         {
-          if (_context.NhanVien == null)
-          {
-              return NotFound();
-          }
-            return await _context.NhanVien.ToListAsync();
+            return await _context.NhanVien.Where(nv => !nv.Xoa).ToListAsync();
         }
 
         // GET: api/NhanVien/5
@@ -50,64 +46,22 @@ namespace CafeAPI.Controllers
             return nhanVien;
         }
 
-        // PUT: api/NhanVien/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNhanVien(string id, NhanVien nhanVien)
+        [HttpPut]
+        public async Task<IActionResult> PutNhanVien(NhanVien nhanVien)
         {
-            if (id != nhanVien.MaNV)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(nhanVien).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NhanVienExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.NhanVien.Update(nhanVien);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // POST: api/NhanVien
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<NhanVien>> PostNhanVien(NhanVien nhanVien)
         {
-          if (_context.NhanVien == null)
-          {
-              return Problem("Entity set 'DataContext.NhanVien'  is null.");
-          }
             _context.NhanVien.Add(nhanVien);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (NhanVienExists(nhanVien.MaNV))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNhanVien", new { id = nhanVien.MaNV }, nhanVien);
+            return Ok();
         }
 
         // DELETE: api/NhanVien/5

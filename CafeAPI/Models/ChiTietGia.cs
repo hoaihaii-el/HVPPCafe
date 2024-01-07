@@ -11,6 +11,5 @@ namespace CafeAPI.Models
         public decimal GiaBan { get; set; }
         //tỷ lệ nguyên liệu cần thiết so với sizeM
         public double TyLeSizeM { get; set; }
-        public Mon? Mon { get; set; }
     }
 }

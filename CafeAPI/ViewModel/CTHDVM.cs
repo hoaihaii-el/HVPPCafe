@@ -1,15 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CafeAPI.Models
+namespace CafeAPI.ViewModel
 {
-    public class ChiTietHoaDon
+    public class CTHDVM
     {
-        [Key]
-        public int ID { get; set; }
         public int SoHoaDon { get; set; }
-        [MaxLength(20)]
         public string? MaMon { get; set; }
-        [MaxLength(10)]
         public string? Size { get; set; }
         public int SoLuong { get; set; }
     }

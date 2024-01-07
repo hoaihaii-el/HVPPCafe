@@ -27,19 +27,20 @@ namespace CafeAPI.Repo
         public DbSet<TaiKhoan> TaiKhoan { get; set; }
         public DbSet<ChiTietGia> ChiTietGia { get; set; }
         public DbSet<Topping> Topping { get; set; }
+        public DbSet<ChiTietTopping> ChiTietTopping { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietCaLam>()
                 .HasKey(c => new { c.LoaiCaLam, c.MaNV, c.Ngay });
-
-            modelBuilder.Entity<ChiTietHoaDon>()
-                .HasKey(c => new { c.SoHoaDon, c.MaMon });
 
             modelBuilder.Entity<ChiTietMon>()
                 .HasKey(c => new { c.TenNguyenLieu, c.MaMon });
 
             modelBuilder.Entity<ChiTietGia>()
                 .HasKey(c => new { c.MaMon, c.Size });
+
+            modelBuilder.Entity<ChiTietTopping>()
+                .HasKey(c => new { c.ID, c.TenTopping });
 
             base.OnModelCreating(modelBuilder);
         }

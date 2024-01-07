@@ -10,8 +10,8 @@ namespace CafeAPI.Models
         public string? LoaiHoaDon { get; set; }
         public decimal TriGia { get; set; }
         public DateTime NgayHoaDon { get; set; }
-        [MaxLength(20)]
-        public string? TrangThai { get; set; }
+        public bool DaCheBien { get; set; }
+        public bool DaThanhToan { get; set; }
         [MaxLength(20)]
         public string? MaNV { get; set; }
         [MaxLength(20)]

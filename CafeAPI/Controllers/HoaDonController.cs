@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CafeAPI.Models;
+using CafeAPI.Repo;
+using CafeAPI.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CafeAPI.Models;
-using CafeAPI.Repo;
 
 namespace CafeAPI.Controllers
 {
@@ -30,17 +26,17 @@ namespace CafeAPI.Controllers
                 return NotFound();
             }
 
-            return await _context.HoaDon.Where(h => h.TrangThai == "Đã thanh toán").ToListAsync();
+            return await _context.HoaDon.Where(h => h.DaThanhToan).ToListAsync();
         }
 
         // GET: api/HoaDon/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HoaDon>> GetHoaDon(int id)
         {
-          if (_context.HoaDon == null)
-          {
-              return NotFound();
-          }
+            if (_context.HoaDon == null)
+            {
+                return NotFound();
+            }
             var hoaDon = await _context.HoaDon.FindAsync(id);
 
             if (hoaDon == null)
@@ -51,72 +47,51 @@ namespace CafeAPI.Controllers
             return hoaDon;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutHoaDon(int id, HoaDon hoaDon)
-        {
-            if (id != hoaDon.SoHoaDon)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(hoaDon).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HoaDonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         [HttpPost]
-        public async Task<ActionResult<HoaDon>> PostHoaDon(HoaDon hoaDon)
+        public async Task<ActionResult<HoaDon>> PostHoaDon(HoaDonVM hdVM)
         {
-            if (_context.HoaDon == null)
+            var hoadon = new HoaDon
             {
-                return Problem("Entity set 'DataContext.HoaDon'  is null.");
-            }
+                LoaiHoaDon = hdVM.LoaiHoaDon,
+                TriGia = hdVM.TriGia,
+                NgayHoaDon = hdVM.NgayHoaDon,
+                MaNV = hdVM.MaNV,
+                MaKhuyenMai = hdVM.MaKhuyenMai,
+                DaCheBien = hdVM.DaCheBien,
+                DaThanhToan = hdVM.DaThanhToan,
+                SoBan = hdVM.SoBan
+            };
 
-            _context.HoaDon.Add(hoaDon);
+            _context.HoaDon.Add(hoadon);
             await _context.SaveChangesAsync();
 
-            return Ok(hoaDon);
+            return Ok(hoadon.SoHoaDon);
         }
 
-        // DELETE: api/HoaDon/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHoaDon(int id)
+        [HttpPost("add-cthd")]
+        public async Task<ActionResult<ChiTietHoaDon>> AddCTHD(CTHDVM cthdVM)
         {
-            if (_context.HoaDon == null)
+            var cthd = new ChiTietHoaDon
             {
-                return NotFound();
-            }
-            var hoaDon = await _context.HoaDon.FindAsync(id);
-            if (hoaDon == null)
-            {
-                return NotFound();
-            }
+                MaMon = cthdVM.MaMon,
+                SoHoaDon = cthdVM.SoHoaDon,
+                Size = cthdVM.Size,
+                SoLuong = cthdVM.SoLuong
+            };
 
-            _context.HoaDon.Remove(hoaDon);
+            _context.ChiTietHoaDon.Add(cthd);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(cthd.ID);
         }
 
-        private bool HoaDonExists(int id)
+        [HttpPost("add-cttopping")]
+        public async Task<ActionResult<ChiTietTopping>> AddCTTopping(ChiTietTopping ct)
         {
-            return (_context.HoaDon?.Any(e => e.SoHoaDon == id)).GetValueOrDefault();
+            _context.ChiTietTopping.Add(ct);
+            await _context.SaveChangesAsync();
+
+            return Ok(ct);
         }
     }
 }

@@ -71,26 +71,13 @@
                         </Grid.RowDefinitions>
 
 
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox 
-                                design:HintAssist.Hint="ID"
-                                Text="{Binding AddItem.MaNV, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Column="0"
-                                IsEnabled="False"
-                                Margin="15 0 5 0"
-                                Style="{StaticResource SubFloatingTextBox}" />
-                            <TextBox 
-                                design:HintAssist.Hint="Họ tên"
-                                Text="{Binding AddItem.HoTen, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Column="1"
-                                Margin="5 0 15 0"
-                                Style="{StaticResource SubFloatingTextBox}" />
-                        </Grid>
+                        <TextBox 
+                            Grid.Row="0"
+                            design:HintAssist.Hint="Họ tên"
+                            Text="{Binding NhanVienItem.HoTen, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Column="1"
+                            Margin="15 0"
+                            Style="{StaticResource SubFloatingTextBox}" />
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -98,7 +85,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
                                 <ComboBox design:HintAssist.Hint="Chức vụ"
-                                      Text="{Binding AddItem.ChucVu, UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding NhanVienItem.ChucVu, UpdateSourceTrigger=PropertyChanged}"
                                       Margin="15 0 5 0"
                                       Style="{StaticResource SubFloatingComboBox}">
                                     <ComboBoxItem>
@@ -114,7 +101,7 @@
                             </Grid>
                             <Grid Grid.Column="1">
                                 <ComboBox design:HintAssist.Hint="Loại nhân viên"
-                                      Text="{Binding Fulltime, UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding NhanVienItem.IsFullTime, UpdateSourceTrigger=PropertyChanged}"
                                       Margin="5 0 15 0"
                                       Style="{StaticResource SubFloatingComboBox}">
                                     <ComboBoxItem>
@@ -134,14 +121,14 @@
                             <Grid Grid.Column="0">
                                 <TextBox 
                                     design:HintAssist.Hint="Địa chỉ"
-                                    Text="{Binding AddItem.DiaChi, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding NhanVienItem.DiaChi, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="15 0 5 0"
                                     Style="{StaticResource SubFloatingTextBox}" />
                             </Grid>
                             <Grid Grid.Column="1">
                                 <TextBox 
                                     design:HintAssist.Hint="SĐT"
-                                    Text="{Binding AddItem.SDT, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding NhanVienItem.SDT, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="5 0 15 0"
                                     Style="{StaticResource SubFloatingTextBox}" />
                             </Grid>
@@ -153,14 +140,14 @@
                             </Grid.ColumnDefinitions>
                             <DatePicker
                                 Grid.Column="0"
-                                SelectedDate="{Binding AddItem.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding NhanVienItem.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="15 21 5 21"
                                 design:HintAssist.Hint="Ngày sinh"
                                 Style="{StaticResource SubFloatingDatePicker}" 
                                 SelectedDateFormat="Short" />
                             <DatePicker 
                                 Grid.Column="1"
-                                SelectedDate="{Binding AddItem.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding NhanVienItem.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                                 FontFamily="Comfortaa"
                                 Margin="5 21 15 21"
                                 design:HintAssist.Hint="Ngày vào làm"
@@ -174,14 +161,14 @@
                             <Grid Grid.Column="0">
                                 <TextBox 
                                     design:HintAssist.Hint="Tài khoản"
-                                    Text="{Binding AddItem.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding NhanVienItem.TaiKhoan, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="15 0 5 0"
                                     Style="{StaticResource SubFloatingTextBox}" />
                             </Grid>
                             <Grid Grid.Column="1">
                                 <TextBox 
                                     design:HintAssist.Hint="Mật khẩu"
-                                    Text="{Binding AddItem.MatKhau, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding NhanVienItem.MatKhau, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="5 0 15 0"
                                     Style="{StaticResource SubFloatingTextBox}" />
                             </Grid>

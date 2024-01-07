@@ -4,6 +4,7 @@ using CafeAPI.Repo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240107175733_Modify")]
+    partial class Modify
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,12 +230,6 @@ namespace CafeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SoHoaDon"), 1L, 1);
 
-                    b.Property<bool>("DaCheBien")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DaThanhToan")
-                        .HasColumnType("bit");
-
                     b.Property<string>("KhuyenMaiMaKhuyenMai")
                         .HasColumnType("nvarchar(20)");
 
@@ -258,6 +254,10 @@ namespace CafeAPI.Migrations
 
                     b.Property<int>("SoBan")
                         .HasColumnType("int");
+
+                    b.Property<string>("TrangThai")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("TriGia")
                         .HasColumnType("decimal(18,2)");
@@ -396,10 +396,6 @@ namespace CafeAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("IsFullTime")
-                        .HasMaxLength(20)
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("datetime2");
 
@@ -407,7 +403,8 @@ namespace CafeAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SoDienThoai")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("Xoa")
                         .HasColumnType("bit");

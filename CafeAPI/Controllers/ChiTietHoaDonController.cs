@@ -25,10 +25,10 @@ namespace CafeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChiTietHoaDon>>> GetChiTietHoaDon()
         {
-          if (_context.ChiTietHoaDon == null)
-          {
-              return NotFound();
-          }
+            if (_context.ChiTietHoaDon == null)
+            {
+                return NotFound();
+            }
             return await _context.ChiTietHoaDon.ToListAsync();
         }
 
@@ -50,8 +50,6 @@ namespace CafeAPI.Controllers
             return chiTietHoaDon;
         }
 
-        // PUT: api/ChiTietHoaDon/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutChiTietHoaDon(int id, ChiTietHoaDon chiTietHoaDon)
         {
@@ -81,8 +79,6 @@ namespace CafeAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/ChiTietHoaDon
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ChiTietHoaDon>> PostChiTietHoaDon(ChiTietHoaDon chiTietHoaDon)
         {
