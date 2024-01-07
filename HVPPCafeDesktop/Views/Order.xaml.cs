@@ -1,18 +1,10 @@
-﻿using HVPPCafeDesktop.Views.SubViews;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HVPPCafeDesktop.Models;
+using HVPPCafeDesktop.Views.SubViews;
+using Sub = HVPPCafeDesktop.Views.SubViews;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using HVPPCafeDesktop.ViewModels;
 
 namespace HVPPCafeDesktop.Views
 {
@@ -48,10 +40,26 @@ namespace HVPPCafeDesktop.Views
             var item = sender as Button;
             var point = item?.PointToScreen(Mouse.GetPosition(item));
 
-            var popup = new Topping();
+            var order = item?.DataContext as NewOrder;
+            var vm = this.DataContext as OrderVM;
+
+            if (order == null || vm == null) return;
+
+            vm.ResetToppings();
+            foreach (var temp in order.toppings)
+            {
+                if (vm.Toppings.Contains(temp))
+                {
+                    vm.Toppings[vm.Toppings.IndexOf(temp)].IsPicked = true;
+                }
+            }
+
+            var popup = new Sub.Topping(order.Index);
+            Sub.Topping.Index = order.Index;
+            popup.Height = vm.Toppings.Count * 30 + 60;
             popup.Left = point.Value.X;
             popup.Top = point.Value.Y - popup.Height;
-            popup.DataContext = this.DataContext;
+            popup.DataContext = vm;
             popup.ShowDialog();
         }
     }

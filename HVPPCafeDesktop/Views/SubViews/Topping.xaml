@@ -7,7 +7,8 @@
     xmlns:local="clr-namespace:HVPPCafeDesktop.Views.SubViews"
     mc:Ignorable="d"
     x:Name="ToppingPopup"
-    Title="Topping" Height="400" Width="300"
+    Title="Topping"
+    Width="225"
     TextElement.FontSize="15"
     FontFamily="{StaticResource NunitoLight}"
     TextOptions.TextFormattingMode="Ideal"
@@ -31,6 +32,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
+                            Margin="0 5 0 0"
                             BorderBrush="{StaticResource Primary}"
                             BorderThickness="0 0 0 0.5">
                             <Grid>
@@ -42,11 +44,14 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Grid.Column="0"
-                                    IsChecked="{Binding IsPicked}"/>
+                                    Background="{StaticResource Primary}"
+                                    IsChecked="{Binding IsPicked}"
+                                    Checked="CheckBox_Checked"
+                                    Unchecked="CheckBox_Unchecked"/>
                                 <Label
                                     Grid.Column="1"
                                     VerticalContentAlignment="Center"
-                                    Content="{Binding ToppingName}"/>
+                                    Content="{Binding TenTopping}"/>
                             </Grid>
                         </Border>
                     </DataTemplate>

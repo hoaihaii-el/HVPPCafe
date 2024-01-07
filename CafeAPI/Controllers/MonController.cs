@@ -73,7 +73,30 @@ namespace CafeAPI.Controllers
             return result;
         }
 
-        // GET: api/Mon/5
+
+        [HttpGet("toppings")]
+        public async Task<ActionResult<IEnumerable<Topping>>> GetTopping()
+        {
+            return await _context.Topping.ToListAsync();
+        }
+
+
+        [HttpPost("add-topping")]
+        public async Task<ActionResult<Topping>> AddTopping(ToppingVM toppingVM)
+        {
+            var topping = new Topping
+            {
+                TenTopping = toppingVM.TenTopping,
+                Gia = toppingVM.Gia,
+            };
+
+            _context.Topping.Add(topping);
+            await _context.SaveChangesAsync();
+
+            return Ok(topping);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Mon>> GetMon(string id)
         {
@@ -105,19 +128,43 @@ namespace CafeAPI.Controllers
 
             mon.TenMon = monVM.TenMon;
             mon.Nhom = monVM.Nhom;
-            mon.AnhMonAn = await UploadImage.Instance.UploadAsync(maMon, monVM.AnhMonAn ?? "");
-
-            try
+            
+            if (!string.IsNullOrEmpty(monVM.AnhMonAn))
             {
-                _context.Mon.Update(mon);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest("Lưu thất bại!");
+                mon.AnhMonAn = await UploadImage.Instance.UploadAsync(maMon, monVM.AnhMonAn);
             }
 
-            return NoContent();
+            if (monVM.GiaBanM > 0)
+            {
+                var ctg = await _context.ChiTietGia.FindAsync(maMon, "M");
+                if (ctg == null) return NotFound();
+                ctg.GiaBan = monVM.GiaBanM;
+
+                _context.ChiTietGia.Update(ctg);
+            }
+            if (monVM.GiaBanL > 0)
+            {
+                var ctg = await _context.ChiTietGia.FindAsync(maMon, "L");
+                if (ctg == null) return NotFound();
+                ctg.GiaBan = monVM.GiaBanL;
+                ctg.TyLeSizeM = monVM.TyLeL;
+
+                _context.ChiTietGia.Update(ctg);
+            }
+            if (monVM.GiaBanXL > 0)
+            {
+                var ctg = await _context.ChiTietGia.FindAsync(maMon, "XL");
+                if (ctg == null) return NotFound();
+                ctg.GiaBan = monVM.GiaBanXL;
+                ctg.TyLeSizeM = monVM.TyLeXL;
+
+                _context.ChiTietGia.Update(ctg);
+            }
+
+            _context.Mon.Update(mon);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Mon

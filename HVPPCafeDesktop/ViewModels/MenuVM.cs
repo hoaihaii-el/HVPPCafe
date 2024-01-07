@@ -99,8 +99,6 @@ namespace HVPPCafeDesktop.ViewModels
 
         private bool _IsEditMenu = false;
         public static string? ImagePath;
-        public List<Mon> NewMon = new List<Mon>();
-        public List<Mon> EditMon = new List<Mon>();
 
         public MenuVM()
         {
@@ -139,6 +137,7 @@ namespace HVPPCafeDesktop.ViewModels
                 IsHaveSizeXL = MenuSelected.GiaBanXL > 0;
                 TyLeL = MenuSelected.TyLeL.ToString();
                 TyLeXL = MenuSelected.TyLeXL.ToString();
+                ImagePath = "";
 
                 var editWindow = new MenuThem(true);
                 editWindow.DataContext = this;
@@ -169,7 +168,7 @@ namespace HVPPCafeDesktop.ViewModels
                 }
                 else
                 {
-
+                    EditMenu();
                 }
             });
 
@@ -208,6 +207,29 @@ namespace HVPPCafeDesktop.ViewModels
                     {
                         MenuCol.Add(item);
                     }
+                }
+            }
+        }
+
+        public async void AddTopping(string name, decimal gia)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+
+                var topping = new ToppingDTO
+                {
+                    TenTopping = name,
+                    Gia = gia
+                };
+
+                var json = JsonConvert.SerializeObject(topping);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("api/Mon/add-topping", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
                 }
             }
         }
@@ -252,6 +274,55 @@ namespace HVPPCafeDesktop.ViewModels
                 if (response.IsSuccessStatusCode)
                 {
                     msgBox.TaskDone("Thêm thành công!");
+                }
+            }
+
+            LoadMenuCol();
+        }
+
+        public async void EditMenu()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+
+                var mon = new MonDTO
+                {
+                    TenMon = MenuItem.TenMon,
+                    GiaBanM = MenuItem.GiaBanM,
+                    GiaBanL = IsHaveSizeL ? MenuItem.GiaBanL : 0,
+                    GiaBanXL = IsHaveSizeXL ? MenuItem.GiaBanXL : 0,
+                    Nhom = MenuItem.Nhom,
+                    TyLeL = IsHaveSizeL ? MenuItem.TyLeL : 0,
+                    TyLeXL = IsHaveSizeXL ? MenuItem.TyLeXL : 0,
+                };
+
+                var msgBox = new CustomMessageBox(true);
+                msgBox.Show();
+
+                if (!string.IsNullOrEmpty(ImagePath))
+                {
+                    byte[] bytes = File.ReadAllBytes(ImagePath);
+                    var base64 = Convert.ToBase64String(bytes);
+                    mon.AnhMonAn = base64;
+                }
+                else
+                {
+                    mon.AnhMonAn = "";
+                }
+
+                var json = JsonConvert.SerializeObject(mon);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync($"api/mon/{MenuItem.MaMon}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    msgBox.TaskDone("Sửa thành công!");
+                }
+                else
+                {
+                    msgBox.TaskDone("Sửa thất bại!");
                 }
             }
 

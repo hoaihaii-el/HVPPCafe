@@ -7,7 +7,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="SubOrder"
-        Height="600" Width="730"
+        Height="600" Width="940"
         Background="Transparent"
         FontFamily="{StaticResource NunitoLight}"
         ResizeMode="NoResize"
@@ -32,8 +32,8 @@
                     MouseLeftButtonDown="Border_MouseLeftButtonDown">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="7*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="70"/>
                         </Grid.ColumnDefinitions>
                         <Label 
                             Content="NEW ORDER"
@@ -62,26 +62,43 @@
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
                     <ListView
-                    Style="{StaticResource PrimaryListView}"
-                    ItemsSource="{Binding NewOrder}">
+                        FontSize="18"
+                        Style="{StaticResource PrimaryListView}"
+                        ItemsSource="{Binding NewOrder}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn
-                                Header="Tên món"
-                                Width="300"
-                                DisplayMemberBinding="{Binding TenMon}"/>
+                                    Header="Tên món"
+                                    Width="300"
+                                    DisplayMemberBinding="{Binding TenMon}"/>
                                 <GridViewColumn
-                                Header="Size"
-                                Width="100"
-                                DisplayMemberBinding="{Binding Size}"/>
+                                    Header="Size"
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Size}"/>
                                 <GridViewColumn
-                                Header="Số lượng"
-                                Width="140"
-                                DisplayMemberBinding="{Binding SoLuong}"/>
+                                    Header="Số lượng"
+                                    Width="140"
+                                    DisplayMemberBinding="{Binding SoLuong}"/>
                                 <GridViewColumn
-                                Header="Thành tiền"
-                                Width="170"
-                                DisplayMemberBinding="{Binding GiaBan}"/>
+                                    Header="Thành tiền"
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding GiaBan}"/>
+                                <GridViewColumn Header="Topping thêm" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl x:Name="Toppings" ItemsSource="{Binding toppings, UpdateSourceTrigger=PropertyChanged}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Label
+                                                            FontSize="14"
+                                                            VerticalContentAlignment="Center"
+                                                            Content="{Binding TenTopping}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -95,6 +112,7 @@
                         <Label 
                             Content="{Binding SubTotal}"
                             FontSize="18"
+                            Margin="0 0 15 0"
                             VerticalContentAlignment="Center"/>
                     </StackPanel>
                 </Grid>

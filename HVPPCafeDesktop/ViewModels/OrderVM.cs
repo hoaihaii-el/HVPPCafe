@@ -1,16 +1,14 @@
 ﻿using HVPPCafeDesktop.Models;
 using HVPPCafeDesktop.Resources;
 using HVPPCafeDesktop.Resources.Utilities;
-using HVPPCafeDesktop.Views.SubViews;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
-using System.Windows.Controls;
 using System.Windows.Input;
+using SubView = HVPPCafeDesktop.Views.SubViews;
 
 namespace HVPPCafeDesktop.ViewModels
 {
@@ -70,6 +68,13 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _NewOrder, value);
         }
 
+        private ObservableCollection<Topping> _Toppings = new ObservableCollection<Topping>();
+        public ObservableCollection<Topping> Toppings
+        {
+            get => _Toppings;
+            set => SetProperty(ref _Toppings, value);
+        }
+
         public List<Mon> MenuRaw { get; set; } = new List<Mon>();
 
         public ICommand OrderCM { get; set; }
@@ -82,6 +87,8 @@ namespace HVPPCafeDesktop.ViewModels
         public OrderVM()
         {
             GetMenu();
+            GetToppings();
+            CalculateTotal();
 
             OrderSizeM = new RelayCommand<Mon>((p) => true, (p) => AddToOrder(p, "M"));
             OrderSizeL = new RelayCommand<Mon>((p) => true, (p) => AddToOrder(p, "L"));
@@ -91,35 +98,47 @@ namespace HVPPCafeDesktop.ViewModels
             DeleteAllCM = new RelayCommand<object>((p) => true, (p) =>
             {
                 NewOrder.Clear();
+                CalculateTotal();
             });
             OrderCM = new RelayCommand<object>((p) => true, (p) =>
             {
-                var popup = new Topping();
-                popup.ShowDialog();
+
             });
         }
 
         private void RemoveFromOrder(NewOrder p)
         {
-            for (int i = 0; i < NewOrder.Count; i++)
+            NewOrder.RemoveAt(p.Index);
+            p.SoLuong--;
+            if (p.SoLuong > 0)
             {
-                if (NewOrder[i].MaMon == p.MaMon && NewOrder[i].Size == p.Size)
-                {
-                    NewOrder.RemoveAt(i);
-                    p.SoLuong--;
-                    if (p.SoLuong > 0)
-                    {
-                        NewOrder.Insert(i, p);
-                    }
-                    break;
-                }
+                NewOrder.Insert(p.Index, p);
             }
-            SubTotal = String.Format("{0:0,0 VND}", NewOrder.Select(o => o.GiaBan * o.SoLuong).Sum());
+            CalculateTotal();
         }
 
         private void AddToOrder(Mon mon, string size)
         {
             var isContain = false;
+            if (size == "L" && mon.GiaBanL <= 0) return;
+            if (size == "XL" && mon.GiaBanXL <= 0) return;
+
+            if (mon.Nhom == "Trà sữa")
+            {
+                NewOrder.Add(new NewOrder
+                {
+                    Index = NewOrder.Count,
+                    MaMon = mon.MaMon,
+                    TenMon = mon.TenMon,
+                    Size = size,
+                    SoLuong = 1,
+                    GiaBan = size == "M" ? mon.GiaBanM
+                            : size == "L" ? mon.GiaBanL : mon.GiaBanXL,
+                    CoTopping = mon.Nhom == "Trà sữa"
+                });
+                CalculateTotal();
+                return;
+            }
 
             for (int index = 0; index < NewOrder.Count; index++)
             {
@@ -138,15 +157,17 @@ namespace HVPPCafeDesktop.ViewModels
             {
                 NewOrder.Add(new NewOrder
                 {
+                    Index = NewOrder.Count,
                     MaMon = mon.MaMon,
                     TenMon = mon.TenMon,
                     Size = size,
                     SoLuong = 1,
-                    GiaBan = size == "M" ? mon.GiaBanM 
-                            :size == "L" ? mon.GiaBanL : mon.GiaBanXL
+                    GiaBan = size == "M" ? mon.GiaBanM
+                            : size == "L" ? mon.GiaBanL : mon.GiaBanXL,
+                    CoTopping = mon.Nhom == "Trà sữa"
                 });
             }
-            SubTotal = String.Format("{0:0,0 VND}", NewOrder.Select(o => o.GiaBan * o.SoLuong).Sum());
+            CalculateTotal();
         }
 
         public async void GetMenu()
@@ -176,6 +197,49 @@ namespace HVPPCafeDesktop.ViewModels
                     }
                 }
             }
+        }
+
+        public async void GetToppings()
+        {
+            Toppings.Clear();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/Mon/toppings");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var toppings = JsonConvert.DeserializeObject<ObservableCollection<Topping>>(result);
+
+                    if (toppings == null) return;
+                    Toppings = toppings;
+                }
+            }
+        }
+
+        public void ResetToppings()
+        {
+            foreach (var item in Toppings)
+            {
+                item.IsPicked = false;
+            }
+        }
+
+        public void CalculateTotal()
+        {
+            decimal total = 0;
+            foreach (var item in NewOrder)
+            {
+                total += (item.GiaBan * item.SoLuong);
+                foreach (var topping in item.toppings)
+                {
+                    total += topping.Gia;
+                }
+            }
+
+            SubTotal = String.Format("{0:0,0 VND}", total);
         }
 
         public void Filter(string filter = "", string search = "")

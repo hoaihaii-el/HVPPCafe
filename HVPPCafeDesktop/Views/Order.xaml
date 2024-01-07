@@ -6,12 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d" 
     IsVisibleChanged="UserControl_IsVisibleChanged"
     TextElement.FontFamily="{StaticResource NunitoLight}"
     TextElement.FontSize="17"
     d:DesignHeight="673" 
     d:DesignWidth="1146">
+    <UserControl.Resources>
+        <local1:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
     <Grid>
         <Grid Background="#fff">
             <Grid.ColumnDefinitions>
@@ -205,6 +209,7 @@
                                                 <Button
                                                     Height="20"
                                                     Width="45"
+                                                    Visibility="{Binding CoTopping, Converter={StaticResource BoolToVisibility}}"
                                                     Margin="10 0 0 0"
                                                     BorderThickness="0"
                                                     Click="Button_Click"
