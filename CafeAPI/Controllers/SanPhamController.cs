@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CafeAPI.Models;
 using CafeAPI.Repo;
+using CafeAPI.Response;
+using System.Drawing;
+using Humanizer.Localisation;
 
 namespace CafeAPI.Controllers
 {
@@ -22,14 +25,14 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/SanPham
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<SanPham>>> GetSanPham()
         {
-          if (_context.SanPham == null)
-          {
-              return NotFound();
-          }
-            return await _context.SanPham.ToListAsync();
+            if (_context.SanPham == null)
+            {
+                return NotFound();
+            }
+            return await _context.SanPham.Where(p => !p.Xoa).ToListAsync();
         }
 
         // GET: api/SanPham/5
@@ -50,8 +53,63 @@ namespace CafeAPI.Controllers
             return sanPham;
         }
 
-        // PUT: api/SanPham/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpGet("chi-tiet-nhap")]
+        public async Task<ActionResult<IEnumerable<CTNResponse>>> GetCTN([FromQuery] DateTime begin, [FromQuery] DateTime end)
+        {
+            var ctn = await _context.ChiTietNhap.Where(c => c.NgayNhap >= begin && c.NgayNhap <= end).ToListAsync();
+
+            var list = new List<CTNResponse>();
+            foreach (var item in ctn)
+            {
+                var sp = await _context.SanPham.FindAsync(item.TenSanPham);
+
+                list.Add(new CTNResponse
+                {
+                    MaNhap = item.MaNhap,
+                    TenSanPham = item.TenSanPham,
+                    SoLuong = item.SoLuong,
+                    DonVi = item.DonVi,
+                    GiaNhap = item.GiaNhap,
+                    NgayNhap = item.NgayNhap,
+                    NguonNhap = item.NhaCungCap,
+                    LienLac = item.LienLac,
+                    Nhom = sp.Nhom,
+                    MucBaoNhap = sp.MucBaoNhap
+                });
+            }
+
+            return list;
+        }
+
+
+        [HttpGet("ctn/{TenSP}")]
+        public async Task<ActionResult<IEnumerable<CTNResponse>>> GetCTN2(string TenSP)
+        {
+            var ctn = await _context.ChiTietNhap.Where(c => c.TenSanPham == TenSP).ToListAsync();
+
+            var list = new List<CTNResponse>();
+            foreach (var item in ctn)
+            {
+                var sp = await _context.SanPham.FindAsync(item.TenSanPham);
+
+                list.Add(new CTNResponse
+                {
+                    MaNhap = item.MaNhap,
+                    TenSanPham = item.TenSanPham,
+                    SoLuong = item.SoLuong,
+                    DonVi = item.DonVi,
+                    GiaNhap = item.GiaNhap,
+                    NgayNhap = item.NgayNhap,
+                    NguonNhap = item.NhaCungCap,
+                    LienLac = item.LienLac,
+                    Nhom = sp.Nhom,
+                    MucBaoNhap = sp.MucBaoNhap
+                });
+            }
+
+            return list;
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSanPham(string id, SanPham sanPham)
         {
@@ -68,71 +126,71 @@ namespace CafeAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SanPhamExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
             }
 
             return NoContent();
         }
 
-        // POST: api/SanPham
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
-        public async Task<ActionResult<SanPham>> PostSanPham(SanPham sanPham)
+        public async Task<ActionResult<SanPham>> PostSanPham(CTNResponse sanPham)
         {
-          if (_context.SanPham == null)
-          {
-              return Problem("Entity set 'DataContext.SanPham'  is null.");
-          }
-            _context.SanPham.Add(sanPham);
-            try
+            var sp = await _context.SanPham.FindAsync(sanPham.TenSanPham);
+
+            if (sp == null)
             {
-                await _context.SaveChangesAsync();
+                sp = new SanPham()
+                {
+                    TenSanPham = sanPham.TenSanPham,
+                    DonVi = sanPham.DonVi,
+                    Nhom = sanPham.Nhom,
+                    MucBaoNhap = sanPham.MucBaoNhap,
+                    TonDu = sanPham.SoLuong
+                };
+                _context.SanPham.Add(sp);
             }
-            catch (DbUpdateException)
+            else
             {
-                if (SanPhamExists(sanPham.TenSanPham))
+                sp.TonDu += sanPham.SoLuong;
+                if (sp.Xoa)
                 {
-                    return Conflict();
+                    sp.Xoa = false;
+                    sp.TonDu = sanPham.SoLuong;
                 }
-                else
-                {
-                    throw;
-                }
+                _context.SanPham.Update(sp);
             }
 
-            return CreatedAtAction("GetSanPham", new { id = sanPham.TenSanPham }, sanPham);
+            _context.ChiTietNhap.Add(new ChiTietNhap
+            {
+                TenSanPham = sp.TenSanPham,
+                DonVi = sp.DonVi,
+                SoLuong = sanPham.SoLuong,
+                GiaNhap = sanPham.GiaNhap,
+                NgayNhap = sanPham.NgayNhap,
+                NhaCungCap = sanPham.NguonNhap,
+                LienLac = sanPham.LienLac
+            });
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         // DELETE: api/SanPham/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSanPham(string id)
+        [HttpDelete("{TenSP}")]
+        public async Task<IActionResult> DeleteSanPham(string TenSP)
         {
-            if (_context.SanPham == null)
-            {
-                return NotFound();
-            }
-            var sanPham = await _context.SanPham.FindAsync(id);
+            var sanPham = await _context.SanPham.FindAsync(TenSP);
             if (sanPham == null)
             {
                 return NotFound();
             }
 
-            _context.SanPham.Remove(sanPham);
+            sanPham.Xoa = true;
+            _context.SanPham.Update(sanPham);
             await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
-
-        private bool SanPhamExists(string id)
-        {
-            return (_context.SanPham?.Any(e => e.TenSanPham == id)).GetValueOrDefault();
+            return Ok();
         }
     }
 }

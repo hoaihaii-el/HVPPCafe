@@ -145,20 +145,42 @@ namespace CafeAPI.Controllers
             if (monVM.GiaBanL > 0)
             {
                 var ctg = await _context.ChiTietGia.FindAsync(maMon, "L");
-                if (ctg == null) return NotFound();
-                ctg.GiaBan = monVM.GiaBanL;
-                ctg.TyLeSizeM = monVM.TyLeL;
-
-                _context.ChiTietGia.Update(ctg);
+                if (ctg == null)
+                {
+                    _context.ChiTietGia.Add(new ChiTietGia
+                    {
+                        MaMon = maMon,
+                        Size = "L",
+                        GiaBan = monVM.GiaBanL,
+                        TyLeSizeM = monVM.TyLeL
+                    });
+                }
+                else
+                {
+                    ctg.GiaBan = monVM.GiaBanL;
+                    ctg.TyLeSizeM = monVM.TyLeL;
+                    _context.ChiTietGia.Update(ctg);
+                }
             }
             if (monVM.GiaBanXL > 0)
             {
                 var ctg = await _context.ChiTietGia.FindAsync(maMon, "XL");
-                if (ctg == null) return NotFound();
-                ctg.GiaBan = monVM.GiaBanXL;
-                ctg.TyLeSizeM = monVM.TyLeXL;
-
-                _context.ChiTietGia.Update(ctg);
+                if (ctg == null)
+                {
+                    _context.ChiTietGia.Add(new ChiTietGia
+                    {
+                        MaMon = maMon,
+                        Size = "XL",
+                        GiaBan = monVM.GiaBanXL,
+                        TyLeSizeM = monVM.TyLeXL
+                    });
+                }
+                else
+                {
+                    ctg.GiaBan = monVM.GiaBanXL;
+                    ctg.TyLeSizeM = monVM.TyLeXL;
+                    _context.ChiTietGia.Update(ctg);
+                }
             }
 
             _context.Mon.Update(mon);

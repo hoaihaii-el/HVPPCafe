@@ -12,8 +12,9 @@ namespace CafeAPI.Models
         public float SoLuong { get; set; }
         public decimal GiaNhap { get; set; }
         [MaxLength(10)]
-        public string? TenDonVi { get; set; }
+        public string? DonVi { get; set; }
         [MaxLength(100)]
-        public string? TenNhaCungCap { get; set; }
+        public string? NhaCungCap { get; set; }
+        public string? LienLac { get; set; }
     }
 }

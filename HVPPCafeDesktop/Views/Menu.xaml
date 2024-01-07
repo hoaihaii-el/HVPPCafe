@@ -26,7 +26,8 @@
                 Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="320"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="90"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Style="{DynamicResource SearchBar}">
@@ -51,6 +52,16 @@
                     Style="{StaticResource PrimaryButton}"
                     Command="{Binding NewMenuCM}"
                     Content="Thêm món"/>
+                <Button 
+                    Grid.Column="2" 
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    Height="35"
+                    Command="{Binding OpenSettingCM}">
+                    <fa:ImageAwesome
+                        Icon="Gear"
+                        Foreground="{StaticResource Primary}"/>
+                </Button>
             </Grid>
 
             <ListView
@@ -67,7 +78,7 @@
                             DisplayMemberBinding="{Binding MaMon}"/>
                         <GridViewColumn 
                             Header="Tên món" 
-                            Width="290"
+                            Width="270"
                             DisplayMemberBinding="{Binding TenMon}"/>
                         <GridViewColumn 
                             Header="Giá SizeM(VNĐ)" 

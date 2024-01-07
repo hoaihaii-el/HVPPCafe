@@ -13,8 +13,9 @@ namespace HVPPCafeDesktop.CustomControl
         {
             InitializeComponent();
         }
-        public DateTime? DateBegin => dtBegin.SelectedDate;
-        public DateTime? DateEnd => dtEnd.SelectedDate;
+        public DateTime DateBegin => dtBegin.SelectedDate ?? DateTime.Now;
+        public DateTime DateEnd => dtEnd.SelectedDate ?? DateTime.Now;
+        public bool Cancel = false;
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
@@ -24,7 +25,7 @@ namespace HVPPCafeDesktop.CustomControl
                 msg.ShowDialog();
                 return;
             }
-            if (dtBegin.SelectedDate > dtEnd.SelectedDate || dtEnd.SelectedDate > DateTime.Now)
+            if (dtBegin.SelectedDate > dtEnd.SelectedDate)
             {
                 var msg = new CustomMessageBox("Vui lòng chọn ngày hợp lệ!");
                 msg.ShowDialog();
@@ -35,6 +36,7 @@ namespace HVPPCafeDesktop.CustomControl
 
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Cancel = true;
             this.Close();
         }
     }

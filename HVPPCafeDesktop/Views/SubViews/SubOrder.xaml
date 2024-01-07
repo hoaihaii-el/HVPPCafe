@@ -7,7 +7,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="SubOrder"
-        Height="600" Width="940"
+        Height="600" Width="860"
         Background="Transparent"
         FontFamily="{StaticResource NunitoLight}"
         ResizeMode="NoResize"
@@ -22,7 +22,7 @@
         BorderThickness="4"/>
         <Grid Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="55"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid>
@@ -69,7 +69,7 @@
                             <GridView>
                                 <GridViewColumn
                                     Header="Tên món"
-                                    Width="300"
+                                    Width="230"
                                     DisplayMemberBinding="{Binding TenMon}"/>
                                 <GridViewColumn
                                     Header="Size"
@@ -82,7 +82,7 @@
                                 <GridViewColumn
                                     Header="Thành tiền"
                                     Width="150"
-                                    DisplayMemberBinding="{Binding GiaBan}"/>
+                                    DisplayMemberBinding="{Binding GiaBan, StringFormat=N0}"/>
                                 <GridViewColumn Header="Topping thêm" Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>

@@ -114,6 +114,10 @@ namespace HVPPCafeDesktop.ViewModels
             {
                 NewOrder.Insert(p.Index, p);
             }
+            for (int i = 0; i < NewOrder.Count; i++)
+            {
+                NewOrder[i].Index = i;
+            }
             CalculateTotal();
         }
 

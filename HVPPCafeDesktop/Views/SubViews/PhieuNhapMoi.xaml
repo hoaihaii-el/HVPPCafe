@@ -62,27 +62,12 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBox 
-                            design:HintAssist.Hint="Mã nhập"
-                            Grid.Column="0"
-                            IsEnabled="False"
-                            Margin="15 0 5 0"
-                            Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource SubFloatingTextBox}" />
-                        <TextBox 
-                            design:HintAssist.Hint="Tên sản phẩm"
-                            Grid.Column="1"
-                            IsEnabled="{Binding NameEnable}"
-                            Margin="5 0 15 0"
-                            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource SubFloatingTextBox}" />
-                    </Grid>
+                    <TextBox 
+                        design:HintAssist.Hint="Tên sản phẩm"
+                        IsEnabled="{Binding IsNewReceipt}"
+                        Margin="15 0"
+                        Text="{Binding ReceiptItem.TenSanPham, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource SubFloatingTextBox}" />
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -95,14 +80,16 @@
                             <TextBox 
                                 design:HintAssist.Hint="Số lượng"
                                 Margin="15 0 5 0"
-                                Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding ReceiptItem.SoLuong, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <ComboBox 
                                 design:HintAssist.Hint="Đơn vị"
                                 Margin="5,0,5,0"
-                                Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}"
+                                IsEditable="True"
+                                IsEnabled="{Binding IsNewReceipt}"
+                                Text="{Binding ReceiptItem.DonVi, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingComboBox}">
                                 <ComboBoxItem>
                                     Chai
@@ -131,18 +118,14 @@
                             <ComboBox 
                                 design:HintAssist.Hint="Nhóm"
                                 Margin="5 0 15 0"
-                                IsHitTestVisible="{Binding InfoEditable}"
-                                Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+                                IsEditable="True"
+                                IsEnabled="{Binding IsNewReceipt}"
+                                Text="{Binding ReceiptItem.Nhom, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingComboBox}">
-                                <ComboBoxItem>
-                                    Nước uống
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Đồ ăn
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Khác
-                                </ComboBoxItem>
+                                <ComboBoxItem Content="Đồ ăn"/>
+                                <ComboBoxItem Content="Nước uống"/>
+                                <ComboBoxItem Content="Dụng cụ"/>
+                                <ComboBoxItem Content="Khác"/>
                             </ComboBox>
                         </Grid>
                     </Grid>
@@ -157,24 +140,24 @@
 
                         <Grid Grid.Column="0">
                             <TextBox 
-                                design:HintAssist.Hint="Mức báo hết"
+                                design:HintAssist.Hint="Mức báo nhập"
                                 Margin="15 0 5 0"
-                                IsEnabled="{Binding GroupEnable}"
-                                Text="{Binding Info, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding IsNewReceipt}"
+                                Text="{Binding ReceiptItem.MucBaoNhap, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <TextBox 
                                 design:HintAssist.Hint="Giá nhập (VNĐ)"
                                 Margin="5 0 5 0"
-                                Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding ReceiptItem.GiaNhap, StringFormat=N0}"
                                 Style="{StaticResource SubFloatingTextBox}" />
                         </Grid>
                         <Grid Grid.Column="2">
                             <DatePicker 
                                 design:HintAssist.Hint="Ngày nhập"
                                 Margin="5,0,15,0"
-                                SelectedDate="{Binding DateIn, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding ReceiptItem.NgayNhap, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingDatePicker}" />
                         </Grid>
 
@@ -190,14 +173,14 @@
                             <TextBox 
                                 design:HintAssist.Hint="Nguồn nhập"
                                 Margin="15 0 5 0"
-                                Text="{Binding Suplier, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding ReceiptItem.NguonNhap, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <TextBox 
                                 design:HintAssist.Hint="Liên lạc"
                                 Margin="5 0 15 0"
-                                Text="{Binding SuplierInfo, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding ReceiptItem.LienLac, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource SubFloatingTextBox}" />
                         </Grid>
                     </Grid>

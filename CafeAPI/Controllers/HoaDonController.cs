@@ -30,7 +30,7 @@ namespace CafeAPI.Controllers
                 return NotFound();
             }
 
-            return await _context.HoaDon.ToListAsync();
+            return await _context.HoaDon.Where(h => h.TrangThai == "Đã thanh toán").ToListAsync();
         }
 
         // GET: api/HoaDon/5
