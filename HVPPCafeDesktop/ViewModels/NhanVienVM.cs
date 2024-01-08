@@ -41,10 +41,10 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _StaffSelected, value);
         }
 
-        private string _Search;
+        private string _Search = "";
         public string Search
         {
-            get => Search;
+            get => _Search;
             set
             {
                 _Search = value;
@@ -55,6 +55,7 @@ namespace HVPPCafeDesktop.ViewModels
 
         public ICommand AddCM { get; set; }
         public ICommand EditCM { get; set; }
+        public ICommand DeleteCM { get; set; }
         public ICommand OpenAddCM { get; set; }
         public ICommand CheckCM { get; set; }
 
@@ -64,6 +65,7 @@ namespace HVPPCafeDesktop.ViewModels
 
             OpenAddCM = new RelayCommand<object>((p) => true, (p) =>
             {
+                NhanVienItem.NgaySinh = NhanVienItem.NgayVaoLam = DateTime.Now;
                 var window = new NhanVienThem();
                 window.DataContext = this;
                 window.ShowDialog();
@@ -72,11 +74,17 @@ namespace HVPPCafeDesktop.ViewModels
             AddCM = new RelayCommand<object>((p) => true, (p) =>
             {
                 AddNewStaff();
+                NhanVienItem = new NhanVien();
             });
 
             EditCM = new RelayCommand<object>((p) => true, (p) =>
             {
                 EditStaff();
+            });
+
+            DeleteCM = new RelayCommand<NhanVien>((p) => true, (p) =>
+            {
+                DeleteStaff(p.MaNV ?? "");
             });
 
             CheckCM = new RelayCommand<object>((p) => true, (p) =>
@@ -85,6 +93,26 @@ namespace HVPPCafeDesktop.ViewModels
                 window.DataContext = this;
                 window.ShowDialog();
             });
+        }
+
+        private async void DeleteStaff(string maNV)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.DeleteAsync($"api/NhanVien/{maNV}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var msg = new CustomMessageBox("Xóa thành công!");
+                    msg.ShowDialog();
+                }
+                else
+                {
+                    var msg = new CustomMessageBox("Đã có lỗi xảy ra!");
+                    msg.ShowDialog();
+                }
+            }
         }
 
         private async void GetStaffs()
@@ -141,6 +169,7 @@ namespace HVPPCafeDesktop.ViewModels
                 {
                     var msg = new CustomMessageBox("Sửa thành công!");
                     msg.ShowDialog();
+                    GetStaffs();
                 }
             }
         }
@@ -161,6 +190,7 @@ namespace HVPPCafeDesktop.ViewModels
                 {
                     var msg = new CustomMessageBox("Thêm thành công!");
                     msg.ShowDialog();
+                    GetStaffs();
                 }
             }
         }

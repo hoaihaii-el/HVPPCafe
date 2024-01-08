@@ -67,10 +67,10 @@
         x:Key="FloatingDatePicker"
         TargetType="DatePicker"
         BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
-        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource Primary}"/>
         <Setter Property="materialDesign:CalendarAssist.Orientation" Value="Vertical"/>
-        <Setter Property="Height" Value="43"/>
+        <Setter Property="Height" Value="54"/>
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource Primary}"/>
     </Style>
 

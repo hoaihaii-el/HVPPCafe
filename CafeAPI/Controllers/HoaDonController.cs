@@ -1,5 +1,6 @@
 ﻿using CafeAPI.Models;
 using CafeAPI.Repo;
+using CafeAPI.Response;
 using CafeAPI.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,33 +19,114 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/HoaDon
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<HoaDon>>> GetHoaDon()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<HoaDonResponse>>> GetHoaDon()
         {
-            if (_context.HoaDon == null)
+            var bills = await _context.HoaDon.Where(h => h.DaThanhToan).ToListAsync();
+
+            var result = new List<HoaDonResponse>();
+            foreach (var bill in bills)
             {
-                return NotFound();
+                var km = await _context.KhuyenMai.FindAsync(bill.MaKhuyenMai);
+
+                result.Add(new HoaDonResponse
+                {
+                    SoHoaDon = bill.SoHoaDon,
+                    LoaiHoaDon = bill.LoaiHoaDon,
+                    TriGia = bill.TriGia,
+                    NgayHoaDon = bill.NgayHoaDon,
+                    HinhThucThanhToan = bill.HinhThucThanhToan,
+                    SoBan = bill.SoBan,
+                    MaNV = bill.MaNV,
+                    TenKhuyenMai = km != null ? km.TenKhuyenMai : ""
+                });
             }
 
-            return await _context.HoaDon.Where(h => h.DaThanhToan).ToListAsync();
+            return result;
+        }
+
+        [HttpGet("cthd-all/{SoHD}")]
+        public async Task<ActionResult<IEnumerable<CTHDResponse>>> GetCTHD(int SoHD)
+        {
+            var bill = await _context.HoaDon.FindAsync(SoHD);
+            if (bill == null) return NotFound();
+            var result = new List<CTHDResponse>();
+
+            var cthd = await _context.ChiTietHoaDon.Where(o => o.SoHoaDon == SoHD).ToListAsync();
+            foreach (var ct in cthd)
+            {
+                var mon = await _context.Mon.FindAsync(ct.MaMon);
+                var ctg = await _context.ChiTietGia.FindAsync(ct.MaMon, ct.Size);
+                result.Add(new CTHDResponse
+                {
+                    SoHoaDon = ct.SoHoaDon,
+                    MaMon = ct.MaMon,
+                    TenMon = mon.TenMon,
+                    Size =ct.Size,
+                    SoLuong = ct.SoLuong,
+                    ThanhTien = ct.SoLuong * ctg.GiaBan
+                });
+                var cttoppings = await _context.ChiTietTopping.Where(t => t.ID == ct.ID).ToListAsync(); 
+                foreach (var ctt in cttoppings)
+                {
+                    result[result.Count - 1].Toppings.Add(ctt.TenTopping);
+                }
+            }
+            return result;
+        }
+
+        [HttpGet("chebien")]
+        public async Task<ActionResult<IEnumerable<CTHDResponse>>> GetCheBien()
+        {
+            var bills = await _context.HoaDon
+                .Where(b => !b.DaCheBien)
+                .OrderBy(b => b.NgayHoaDon)
+                .ToListAsync();
+
+            if (bills == null) return NotFound();
+
+            var result = new List<CTHDResponse>();
+
+            foreach (var bill in bills)
+            {
+                var cthd = await _context.ChiTietHoaDon.Where(o => o.SoHoaDon == bill.SoHoaDon).ToListAsync();
+                foreach (var ct in cthd)
+                {
+                    var mon = await _context.Mon.FindAsync(ct.MaMon);
+                    result.Add(new CTHDResponse
+                    {
+                        SoHoaDon = ct.SoHoaDon,
+                        MaMon = ct.MaMon,
+                        TenMon = mon.TenMon,
+                        Size = ct.Size,
+                        SoLuong = ct.SoLuong,
+                        NgayHoaDon = bill.NgayHoaDon
+                    });
+                    var cttoppings = await _context.ChiTietTopping.Where(t => t.ID == ct.ID).ToListAsync();
+                    foreach (var ctt in cttoppings)
+                    {
+                        result[result.Count - 1].Toppings.Add(ctt.TenTopping);
+                    }
+                }
+            }
+            return result;
         }
 
         // GET: api/HoaDon/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<HoaDon>> GetHoaDon(int id)
+        [HttpDelete("chebien/{SoHD}")]
+        public async Task<ActionResult<HoaDon>> CheBienXong(int SoHD)
         {
-            if (_context.HoaDon == null)
-            {
-                return NotFound();
-            }
-            var hoaDon = await _context.HoaDon.FindAsync(id);
+            var hoadon = await _context.HoaDon.FindAsync(SoHD);
 
-            if (hoaDon == null)
-            {
-                return NotFound();
-            }
+            if (hoadon == null) return NotFound();
+            hoadon.DaCheBien = true;
+            _context.HoaDon.Update(hoadon);
 
-            return hoaDon;
+            // decrease quantity here
+
+            await _context.SaveChangesAsync();
+
+            return hoadon;
         }
 
         [HttpPost]
@@ -59,7 +141,9 @@ namespace CafeAPI.Controllers
                 MaKhuyenMai = hdVM.MaKhuyenMai,
                 DaCheBien = hdVM.DaCheBien,
                 DaThanhToan = hdVM.DaThanhToan,
-                SoBan = hdVM.SoBan
+                SoBan = hdVM.SoBan,
+                HinhThucThanhToan = hdVM.HinhThucThanhToan,
+                GhiChu = hdVM.GhiChu
             };
 
             _context.HoaDon.Add(hoadon);

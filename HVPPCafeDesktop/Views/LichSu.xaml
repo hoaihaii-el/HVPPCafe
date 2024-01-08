@@ -20,9 +20,9 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
@@ -40,18 +40,25 @@
                     <TextBox
                         Grid.Column="1"
                         Margin="0 0 10 0"
+                        Text="{Binding Search}"
                         design:HintAssist.Hint="Tìm kiếm số hóa đơn"
                         Style="{StaticResource SearchBox}"/>
                 </Grid>
             </Border>
-            <Label 
+            <ComboBox
                 Grid.Column="1"
-                Content="Xem hóa đơn: "
+                VerticalAlignment="Center"
+                Text="{Binding FilterMaNV}"
+                design:HintAssist.Hint="Mã nhân viên"
+                Style="{StaticResource FloatingComboBox}"/>
+            <Label 
+                Grid.Column="2"
+                Content="Thời gian:"
                 VerticalAlignment="Center"
                 Foreground="#3C6255"
                 HorizontalAlignment="Center"/>
             <DatePicker 
-                Grid.Column="2"
+                Grid.Column="3"
                 Margin="5 0"
                 Height="47"
                 SelectedDate="{Binding DateBegin, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
@@ -59,7 +66,7 @@
                 Style="{StaticResource FloatingDatePicker}" 
                     SelectedDateFormat="Short" />
             <DatePicker 
-                Grid.Column="3"
+                Grid.Column="4"
                 Margin="5 0"
                 Height="47"
                 SelectedDate="{Binding DateEnd, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
@@ -67,7 +74,7 @@
                 Style="{StaticResource FloatingDatePicker}" 
                 SelectedDateFormat="Short" />
             <Button
-                Grid.Column="4"
+                Grid.Column="5"
                 Content="Xuất file Excel"
                 Command="{Binding ExportCM}" 
                 Style="{StaticResource PrimaryButton}">
@@ -76,13 +83,13 @@
         <Grid Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ListView 
+                    x:Name="ItemsControl"
                     ItemsSource="{Binding ListBill}"
-                    SelectedItem="{Binding Selected}"
                     Style="{StaticResource PrimaryListView}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn 
-                                DisplayMemberBinding="{Binding SoHD}"
+                                DisplayMemberBinding="{Binding SoHoaDon}"
                                 Width="160"
                                 Header="Số HD" />
                             <GridViewColumn
@@ -90,7 +97,7 @@
                                 Width="200"
                                 Header="Thành tiền" />
                             <GridViewColumn 
-                                DisplayMemberBinding="{Binding NgayHD}"
+                                DisplayMemberBinding="{Binding NgayHoaDon}"
                                 Width="200"
                                 Header="Ngày hóa đơn" />
                             <GridViewColumn 
@@ -101,6 +108,22 @@
                                 DisplayMemberBinding="{Binding NgayHD}"
                                 Width="200"
                                 Header="Khuyến mãi" />
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            Command="{Binding ElementName=ItemsControl, Path=DataContext.DetailCM}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Height="27">
+                                            <fa:ImageAwesome 
+                                                Icon="Eye" 
+                                                Foreground="{StaticResource Primary}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>

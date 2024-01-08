@@ -128,6 +128,8 @@ namespace HVPPCafeDesktop.ViewModels
                     MaKhuyenMai = "",
                     DaCheBien = false,
                     DaThanhToan = true,
+                    HinhThucThanhToan = "Tiền mặt",
+                    GhiChu = "",
                     SoBan = 0
                 };
 

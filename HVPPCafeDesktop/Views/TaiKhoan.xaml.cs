@@ -10,24 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace HVPPCafeDesktop.Views
 {
     /// <summary>
-    /// Interaction logic for OrderStatus.xaml
+    /// Interaction logic for TaiKhoan.xaml
     /// </summary>
-    public partial class OrderStatus : UserControl
+    public partial class TaiKhoan : Window
     {
-        public OrderStatus()
+        public TaiKhoan()
         {
             InitializeComponent();
         }
 
-        private void ItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            this.Close();
         }
     }
 }

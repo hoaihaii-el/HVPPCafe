@@ -10,24 +10,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HVPPCafeDesktop.Views
+namespace HVPPCafeDesktop.Views.SubViews
 {
     /// <summary>
-    /// Interaction logic for OrderStatus.xaml
+    /// Interaction logic for ChiTietHoaDon.xaml
     /// </summary>
-    public partial class OrderStatus : UserControl
+    public partial class ChiTietHoaDon : Window
     {
-        public OrderStatus()
+        public ChiTietHoaDon()
         {
             InitializeComponent();
         }
 
-        private void ItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            this.Close();
+        }
 
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }

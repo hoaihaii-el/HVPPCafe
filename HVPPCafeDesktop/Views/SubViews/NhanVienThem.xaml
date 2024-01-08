@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local1="clr-namespace:HVPPCafeDesktop.Converters"
     mc:Ignorable="d"
     Title="ThemNhanVien" 
     Height="700" Width="450"
@@ -17,6 +18,9 @@
     WindowStyle="None"
     AllowsTransparency="True"
     WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local1:BoolToStringConverter x:Key="BoolToString"/>
+    </Window.Resources>
     <Grid>
         <Border 
             Background="White"
@@ -88,20 +92,15 @@
                                       Text="{Binding NhanVienItem.ChucVu, UpdateSourceTrigger=PropertyChanged}"
                                       Margin="15 0 5 0"
                                       Style="{StaticResource SubFloatingComboBox}">
-                                    <ComboBoxItem>
-                                        Quản lý
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Nhân viên
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Bảo vệ
-                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="Quản lý"/>
+                                    <ComboBoxItem Content="Thu ngân" IsSelected="True"/>
+                                    <ComboBoxItem Content="Pha chế"/>
+                                    <ComboBoxItem Content="Phục vụ"/>
                                 </ComboBox>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <ComboBox design:HintAssist.Hint="Loại nhân viên"
-                                      Text="{Binding NhanVienItem.IsFullTime, UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding NhanVienItem.IsFullTime, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToString}}"
                                       Margin="5 0 15 0"
                                       Style="{StaticResource SubFloatingComboBox}">
                                     <ComboBoxItem>
@@ -128,7 +127,7 @@
                             <Grid Grid.Column="1">
                                 <TextBox 
                                     design:HintAssist.Hint="SĐT"
-                                    Text="{Binding NhanVienItem.SDT, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding NhanVienItem.SoDienThoai, UpdateSourceTrigger=PropertyChanged}"
                                     Margin="5 0 15 0"
                                     Style="{StaticResource SubFloatingTextBox}" />
                             </Grid>
@@ -140,18 +139,16 @@
                             </Grid.ColumnDefinitions>
                             <DatePicker
                                 Grid.Column="0"
-                                SelectedDate="{Binding NhanVienItem.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding NhanVienItem.NgaySinh, StringFormat={}{0:dd/MM/yyyy}, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="15 21 5 21"
                                 design:HintAssist.Hint="Ngày sinh"
-                                Style="{StaticResource SubFloatingDatePicker}" 
-                                SelectedDateFormat="Short" />
+                                Style="{StaticResource SubFloatingDatePicker}"/>
                             <DatePicker 
                                 Grid.Column="1"
-                                SelectedDate="{Binding NhanVienItem.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
-                                FontFamily="Comfortaa"
+                                SelectedDate="{Binding NhanVienItem.NgayVaoLam, StringFormat={}{0:dd/MM/yyyy}, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="5 21 15 21"
                                 design:HintAssist.Hint="Ngày vào làm"
-                                Style="{StaticResource SubFloatingDatePicker}" />
+                                Style="{StaticResource SubFloatingDatePicker}"/>
                         </Grid>
                         <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>

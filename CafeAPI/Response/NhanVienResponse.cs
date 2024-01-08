@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace HVPPCafeDesktop.Models
+﻿namespace CafeAPI.Response
 {
-    class NhanVien
+    public class NhanVienResponse
     {
         public string? MaNV { get; set; }
         public string? HoTen { get; set; }

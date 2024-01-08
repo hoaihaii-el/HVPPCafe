@@ -1,4 +1,5 @@
 ﻿using HVPPCafeDesktop.ViewModels;
+using HVPPCafeDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,12 @@ namespace HVPPCafeDesktop
         {
             MainWX = this.Left;
             MainWY = this.Top;
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var window = new TaiKhoan();
+            window.ShowDialog();
         }
     }
 }

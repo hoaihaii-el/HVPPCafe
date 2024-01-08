@@ -5,19 +5,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local1="clr-namespace:HVPPCafeDesktop.Converters"
     mc:Ignorable="d" 
     TextElement.FontFamily="{StaticResource NunitoLight}"
     TextElement.FontSize="17"
     d:DesignHeight="673" 
     d:DesignWidth="1146">
+    <UserControl.Resources>
+        <local1:BoolToStringConverter x:Key="IntToColor"/>
+    </UserControl.Resources>
     <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -28,97 +28,133 @@
                 Foreground="{StaticResource Primary}"
                 VerticalContentAlignment="Center"
                 Content="Đơn cần làm: "/>
-            <Grid Grid.Row="1">
+            <Border
+                Grid.Row="1"
+                Margin="5 5 5 0"
+                BorderBrush="{StaticResource Primary}"
+                BorderThickness="0 0 0 0.5">
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        Content="Số HD"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="1"
+                        Content="Tên món"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="2"
+                        Content="Size"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="3"
+                        Content="Số lượng"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="4"
+                        Content="Thời gian"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="5"
+                        Content="Topping thêm"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ListView 
-                        ItemsSource="{Binding ListBill}"
-                        SelectedItem="{Binding Selected}"
-                        Style="{StaticResource PrimaryListView}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn 
-                                    DisplayMemberBinding="{Binding SoHD}"
-                                    Width="120"
-                                    Header="Số HD" />
-                                <GridViewColumn
-                                    DisplayMemberBinding="{Binding TriGia}"
-                                    Width="200"
-                                    Header="Tên món" />
-                                <GridViewColumn 
-                                    DisplayMemberBinding="{Binding NgayHD}"
-                                    Width="150"
-                                    Header="Số lượng" />
-                                <GridViewColumn 
-                                    DisplayMemberBinding="{Binding NgayHD}"
-                                    Width="Auto"
-                                    Header="Thời gian" />
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button>
-                                                    <fa:ImageAwesome 
-                                                        Icon="ArrowRight"
-                                                        Foreground="{StaticResource Primary}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </ScrollViewer>
-            </Grid>
-        </Grid>
-        <Border 
-            Grid.Column="1"
-            Background="{StaticResource Primary}"
-            Margin="2 20"/>
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label
-                Grid.Row="0"
-                FontSize="20"
-                Margin="20 0"
-                Foreground="{StaticResource Primary}"
-                VerticalContentAlignment="Center"
-                Content="Đơn cần thanh toán: "/>
-            <Grid Grid.Row="1">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ListView 
-                        ItemsSource="{Binding ListBill}"
-                        SelectedItem="{Binding Selected}"
-                        Style="{StaticResource PrimaryListView}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn 
-                                    DisplayMemberBinding="{Binding SoHD}"
-                                    Width="120"
-                                    Header="Số HD" />
-                                <GridViewColumn
-                                    DisplayMemberBinding="{Binding TriGia}"
-                                    Width="180"
-                                    Header="Thành tiền" />
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button>
-                                                    <fa:ImageAwesome 
-                                                        Icon="Money"
-                                                        Foreground="{StaticResource Primary}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                    <ItemsControl
+                        x:Name="Bill"
+                        ItemsSource="{Binding Bills}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0 5 0 0"
+                                    BorderBrush="Green"
+                                    BorderThickness=" 0 0 0 0.3">
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="240"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="230"/>
+                                            <ColumnDefinition Width="230"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                            Grid.Column="0"
+                                            Content="{Binding SoHoaDon}"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"/>
+                                        <Label
+                                            Grid.Column="1"
+                                            Content="{Binding TenMon}"
+                                            Margin="10 0 0 0"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            VerticalContentAlignment="Center"/>
+                                        <Label
+                                            Grid.Column="2"
+                                            Content="{Binding Size}"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"/>
+                                        <Label
+                                            Grid.Column="3"
+                                            Content="{Binding SoLuong}"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"/>
+                                        <Label
+                                            Grid.Column="4"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            Content="{Binding NgayHoaDon}"
+                                            Margin="10 0 0 0"
+                                            VerticalContentAlignment="Center"/>
+                                        <Grid
+                                            Grid.Column="5">
+                                            <ItemsControl x:Name="Toppings" ItemsSource="{Binding Toppings, UpdateSourceTrigger=PropertyChanged}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Label
+                                                            VerticalContentAlignment="Center"
+                                                            Content="{Binding}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+                                        <Button
+                                            Command="{Binding ElementName=Bill, Path=DataContext.DoneCM}"
+                                            CommandParameter="{Binding}"
+                                            Grid.Column="6"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Width="60"
+                                            Height="40">
+                                            <fa:ImageAwesome
+                                                Icon="Check"
+                                                Foreground="{StaticResource Primary}"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </Grid>
         </Grid>

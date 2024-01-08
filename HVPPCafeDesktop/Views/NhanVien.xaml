@@ -95,7 +95,7 @@
                                     Width="150"
                                     Header="Chức vụ" />
                                 <GridViewColumn 
-                                    DisplayMemberBinding="{Binding NgayVaoLam}"
+                                    DisplayMemberBinding="{Binding NgayVaoLam, StringFormat={}{0:dd/MM/yyyy}}"
                                     Width="220"
                                     Header="Ngày vào làm" />
                                 <GridViewColumn>
@@ -175,15 +175,10 @@
                                 Text="{Binding StaffSelected.ChucVu, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="15 20 5 23"
                                 Style="{StaticResource FloatingComboBox}">
-                                <ComboBoxItem>
-                                    Quản lý
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Nhân viên
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Bảo vệ
-                                </ComboBoxItem>
+                                <ComboBoxItem Content="Quản lý"/>
+                                <ComboBoxItem Content="Thu ngân"/>
+                                <ComboBoxItem Content="Pha chế"/>
+                                <ComboBoxItem Content="Phục vụ"/>
                             </ComboBox>
                         </Grid>
                         <Grid Grid.Column="1">
@@ -216,7 +211,7 @@
                         <Grid Grid.Column="1">
                             <TextBox 
                                 design:HintAssist.Hint="SĐT"
-                                Text="{Binding StaffSelected.SDT, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding StaffSelected.SoDienThoai, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="5 0 15 0"
                                 Style="{StaticResource FloatingTextBox}" />
                         </Grid>
@@ -228,15 +223,13 @@
                         </Grid.ColumnDefinitions>
                         <DatePicker 
                             Grid.Column="0"
-                            SelectedDate="{Binding StaffSelected.NgaySinh, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
-                            FontFamily="Comfortaa"
+                            SelectedDate="{Binding StaffSelected.NgaySinh, StringFormat={}{0:dd/MM/yyyy}, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             Margin="15 0 5 0"
                             design:HintAssist.Hint="Ngày sinh"
                             Style="{StaticResource FloatingDatePicker}" SelectedDateFormat="Short" />
                         <DatePicker 
                             Grid.Column="1"
-                            SelectedDate="{Binding StaffSelected.NgayVaoLam, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
-                            FontFamily="Comfortaa"
+                            SelectedDate="{Binding StaffSelected.NgayVaoLam, StringFormat={}{0:dd/MM/yyyy},Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             Margin="5 0 15 0"
                             design:HintAssist.Hint="Ngày vào làm"
                             Style="{StaticResource FloatingDatePicker}" />
