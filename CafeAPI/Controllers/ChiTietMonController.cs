@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CafeAPI.Models;
 using CafeAPI.Repo;
+using CafeAPI.Response;
 
 namespace CafeAPI.Controllers
 {
@@ -22,14 +23,35 @@ namespace CafeAPI.Controllers
         }
 
         // GET: api/ChiTietMon
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ChiTietMon>>> GetChiTietMon()
+        [HttpGet("cong-thuc/{MaMon}")]
+        public async Task<ActionResult<IEnumerable<CongThucResponse>>> GetNguyenLieu(string MaMon)
         {
-          if (_context.ChiTietMon == null)
-          {
-              return NotFound();
-          }
-            return await _context.ChiTietMon.ToListAsync();
+            var result = await _context.SanPham.Where(p => !p.Xoa)
+                .Select(p => new CongThucResponse
+                {
+                    TenSanPham = p.TenSanPham,
+                    DonVi = p.DonVi,
+                    Nhom = p.Nhom,
+                    MucBaoNhap = p.MucBaoNhap,
+                    TonDu = p.TonDu,
+                    DuocChon = false,
+                    DinhLuong = 0
+                })
+                .ToListAsync();
+
+            var ct = await _context.ChiTietMon.Where(c => c.MaMon == MaMon).ToListAsync();
+            foreach (var c in ct)
+            {
+                foreach (var item in result)
+                {
+                    if (item.TenSanPham == c.TenNguyenLieu)
+                    {
+                        item.DuocChon = true;
+                        item.DinhLuong = c.DinhLuong;
+                    }
+                }
+            }
+            return result;
         }
 
         // GET: api/ChiTietMon/5
@@ -50,64 +72,29 @@ namespace CafeAPI.Controllers
             return chiTietMon;
         }
 
-        // PUT: api/ChiTietMon/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutChiTietMon(string id, ChiTietMon chiTietMon)
+        [HttpPut]
+        public async Task<IActionResult> PutChiTietMon(ChiTietMon chiTietMon)
         {
-            if (id != chiTietMon.TenNguyenLieu)
+            var ct = await _context.ChiTietMon.FindAsync(chiTietMon.TenNguyenLieu, chiTietMon.MaMon);
+
+            if (ct != null)
             {
-                return BadRequest();
+                _context.ChiTietMon.Remove(ct);
             }
 
-            _context.Entry(chiTietMon).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ChiTietMonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _context.ChiTietMon.Add(chiTietMon);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
-        // POST: api/ChiTietMon
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ChiTietMon>> PostChiTietMon(ChiTietMon chiTietMon)
         {
-          if (_context.ChiTietMon == null)
-          {
-              return Problem("Entity set 'DataContext.ChiTietMon'  is null.");
-          }
             _context.ChiTietMon.Add(chiTietMon);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ChiTietMonExists(chiTietMon.TenNguyenLieu))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return CreatedAtAction("GetChiTietMon", new { id = chiTietMon.TenNguyenLieu }, chiTietMon);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // DELETE: api/ChiTietMon/5

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CafeAPI.Models;
 using CafeAPI.Repo;
+using CafeAPI.StaticServices;
 
 namespace CafeAPI.Controllers
 {
@@ -21,26 +22,25 @@ namespace CafeAPI.Controllers
             _context = context;
         }
 
-        // GET: api/TaiKhoan
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaiKhoan>>> GetTaiKhoan()
+
+        [HttpGet("{TK}/{MK}")]
+        public async Task<ActionResult<TaiKhoan>> DangNhap(string TK, string MK)
         {
-          if (_context.TaiKhoan == null)
-          {
-              return NotFound();
-          }
-            return await _context.TaiKhoan.ToListAsync();
+            var taikhoan = await _context.TaiKhoan.Where(t => t.ID == TK && t.MatKhau == MK).FirstOrDefaultAsync();
+
+            if (taikhoan == null) 
+            {
+                return NotFound();
+            }
+
+            return taikhoan;
         }
 
         // GET: api/TaiKhoan/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TaiKhoan>> GetTaiKhoan(string id)
+        [HttpGet("{MaNV}")]
+        public async Task<ActionResult<TaiKhoan>> GetTaiKhoan(string MaNV)
         {
-          if (_context.TaiKhoan == null)
-          {
-              return NotFound();
-          }
-            var taiKhoan = await _context.TaiKhoan.FindAsync(id);
+            var taiKhoan = await _context.TaiKhoan.FindAsync(MaNV);
 
             if (taiKhoan == null)
             {
@@ -50,8 +50,6 @@ namespace CafeAPI.Controllers
             return taiKhoan;
         }
 
-        // PUT: api/TaiKhoan/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTaiKhoan(string id, TaiKhoan taiKhoan)
         {
@@ -81,8 +79,40 @@ namespace CafeAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/TaiKhoan
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [HttpGet("tham-so")]
+        public async Task<ActionResult<Dictionary<string, string>>> GetThamSo()
+        {
+            var dic = new Dictionary<string, string>();
+
+            var thamso = await _context.ThamSo.ToListAsync();
+            foreach (var item in thamso)
+            {
+                dic.Add(item.Ten, item.GiaTri);
+            }
+
+            return dic;
+        }
+
+        [HttpPut("set-tham-so")]
+        public async Task<ActionResult> SetThamSo(ThamSo thamso)
+        {
+            var ts = await _context.ThamSo.FindAsync(thamso.Ten);
+            if (ts != null)
+            {
+                _context.ThamSo.Remove(ts);
+            }
+
+            if (thamso.Ten == "QrThanhToan")
+            {
+                thamso.GiaTri = await UploadImage.Instance.UploadAsync(Guid.NewGuid().ToString(), thamso.GiaTri);
+            }
+            _context.ThamSo.Add(thamso);
+
+            return Ok();
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<TaiKhoan>> PostTaiKhoan(TaiKhoan taiKhoan)
         {

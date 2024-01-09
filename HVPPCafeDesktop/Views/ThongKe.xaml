@@ -17,10 +17,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Margin="5">
                 <Border Background="#EEEEEE" CornerRadius="5"/>
                 <Grid>
@@ -34,6 +30,7 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label 
                             Content="Tình hình thu chi:"
@@ -43,15 +40,15 @@
                         <ComboBox 
                             Margin="10 0"
                             Grid.Column="1"
-                            Height="45"
+                            Height="47"
                             Foreground="{StaticResource Primary}"
                             ItemsSource="{Binding Types}"
-                            SelectedItem="{Binding TypeSelected}"
+                            Text="{Binding TypeSelected}"
                             Style="{StaticResource FloatingComboBox}">
                         </ComboBox>
                         <ComboBox 
-                            Margin="10 4"
-                            Height="45"
+                            Margin="10 0"
+                            Height="47"
                             Grid.Column="2"
                             Foreground="{StaticResource Primary}"
                             Visibility="{Binding ListTimeVisible}"
@@ -63,16 +60,16 @@
                             design:HintAssist.Hint="Bắt đầu"
                             Grid.Column="2"
                             Foreground="{StaticResource Primary}"
-                            Visibility="{Binding DateBeginVisible}"
-                            Margin="5,0,5,0"
+                            Visibility="{Binding DateVisible}"
+                            Margin="5 0"
                             SelectedDate="{Binding DateBegin, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource FloatingDatePicker}" />
                         <DatePicker 
                             design:HintAssist.Hint="Kết thúc"
                             Grid.Column="3"
                             Foreground="{StaticResource Primary}"
-                            Margin="5,0,5,0"
-                            Visibility="{Binding DateEndVisible}"
+                            Margin="5 0"
+                            Visibility="{Binding DateVisible}"
                             SelectedDate="{Binding DateEnd, Mode=TwoWay, ValidatesOnDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource FloatingDatePicker}" />
                     </Grid>
@@ -90,14 +87,12 @@
                             <lvc:CartesianChart.AxisX>
                                 <lvc:Axis 
                                     Labels="{Binding LabelsRevenue}"
-                                    FontFamily="Comfortaa"
                                     Foreground="{StaticResource Primary}"
                                     FontSize="10"></lvc:Axis>
                             </lvc:CartesianChart.AxisX>
                             <lvc:CartesianChart.AxisY>
                                 <lvc:Axis 
-                                    Title="VNĐ" 
-                                    FontFamily="Comfortaa"
+                                    Title="VNĐ"
                                     Foreground="{StaticResource Primary}"
                                     FontSize="13"
                                     LabelFormatter="{Binding Formatter}"></lvc:Axis>
@@ -105,10 +100,9 @@
                         </lvc:CartesianChart>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition/>
+                                <RowDefinition Height="60"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Label 
@@ -137,61 +131,6 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Grid.Row="3"/>
-                            <Label 
-                                Grid.Row="4"
-                                Content="{Binding PercentProOnRevenue}"
-                                Foreground="Green"
-                                VerticalContentAlignment="Center"
-                                HorizontalContentAlignment="Center"/>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid Grid.Column="1"
-              Margin="5">
-                <Border Background="#EEEEEE"
-                    CornerRadius="5"/>
-                <Grid>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Label 
-                                Content="Doanh thu các món"
-                                VerticalAlignment="Center"
-                                Grid.Row="0"
-                                Foreground="{StaticResource Primary}"
-                                HorizontalAlignment="Center"/>
-                            <ComboBox 
-                                design:HintAssist.Hint="Tháng"
-                                Margin="5,-5,15,0"
-                                Height="50"
-                                Foreground="{StaticResource Primary}"
-                                Grid.Column="1"
-                                ItemsSource="{Binding ListMonths}"
-                                Text="{Binding TypeTableMonth, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource FloatingComboBox}"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-
-                            <lvc:PieChart 
-                                Series="{Binding SeriesCollectionTypeTable}" 
-                                LegendLocation="Bottom" 
-                                InnerRadius="5"
-                                Margin="0 15">
-                                <lvc:PieChart.ChartLegend>
-                                    <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
-                                </lvc:PieChart.ChartLegend>
-                                <lvc:PieChart.DataTooltip>
-                                    <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
-                                </lvc:PieChart.DataTooltip>
-                            </lvc:PieChart>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -246,14 +185,12 @@
                                 <lvc:CartesianChart.AxisX>
                                     <lvc:Axis 
                                         Labels="{Binding LabelsCrowd}"
-                                        FontFamily="Comfortaa"
                                         Foreground="{StaticResource Primary}"
                                         FontSize="10"/>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis 
-                                        Title="Số người" 
-                                        FontFamily="Comfortaa"
+                                        Title="Số đơn"
                                         Foreground="{StaticResource Primary}"
                                         FontSize="13"
                                         LabelFormatter="{Binding CrowdFormatter}"/>
@@ -302,15 +239,13 @@
                                 <lvc:CartesianChart.AxisX>
                                     <lvc:Axis 
                                         Labels="{Binding LabelsStaff}"
-                                        FontFamily="Comfortaa"
                                         Foreground="{StaticResource Primary}"
                                         FontSize="13"></lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis 
-                                        Title="Tổng giá trị hóa đơn(VNĐ)" 
-                                        LabelFormatter="{Binding Formatter}"
-                                        FontFamily="Comfortaa"
+                                        Title="Tổng số đơn"
+                                        LabelFormatter="{Binding CrowdFormatter}"
                                         Foreground="{StaticResource Primary}"
                                         FontSize="13"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>

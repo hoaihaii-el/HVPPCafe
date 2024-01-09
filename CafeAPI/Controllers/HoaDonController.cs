@@ -95,14 +95,17 @@ namespace CafeAPI.Controllers
                     var mon = await _context.Mon.FindAsync(ct.MaMon);
                     result.Add(new CTHDResponse
                     {
+                        ID = ct.ID,
                         SoHoaDon = ct.SoHoaDon,
                         MaMon = ct.MaMon,
                         TenMon = mon.TenMon,
                         Size = ct.Size,
                         SoLuong = ct.SoLuong,
+                        LoaiHoaDon = bill.LoaiHoaDon,
                         NgayHoaDon = bill.NgayHoaDon
                     });
                     var cttoppings = await _context.ChiTietTopping.Where(t => t.ID == ct.ID).ToListAsync();
+                    if (cttoppings == null) continue;
                     foreach (var ctt in cttoppings)
                     {
                         result[result.Count - 1].Toppings.Add(ctt.TenTopping);

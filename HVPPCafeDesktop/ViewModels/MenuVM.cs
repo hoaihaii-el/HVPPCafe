@@ -25,6 +25,13 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _MenuCol, value);
         }
 
+        private ObservableCollection<CongThuc> _NguyenLieuCol = new ObservableCollection<CongThuc>();
+        public ObservableCollection<CongThuc> NguyenLieuCol
+        {
+            get => _NguyenLieuCol;
+            set => SetProperty(ref _NguyenLieuCol, value);
+        }
+
         private Mon _MenuSelected;
         public Mon MenuSelected
         {
@@ -117,6 +124,8 @@ namespace HVPPCafeDesktop.ViewModels
                 IsHaveSizeL = false;
                 IsHaveSizeXL = false;
 
+                GetNguyenLieu();
+
                 var addWindow = new MenuThem();
                 addWindow.DataContext = this;
                 addWindow.ShowDialog();
@@ -138,6 +147,8 @@ namespace HVPPCafeDesktop.ViewModels
                 TyLeL = MenuSelected.TyLeL.ToString();
                 TyLeXL = MenuSelected.TyLeXL.ToString();
                 ImagePath = "";
+
+                GetNguyenLieu(MenuItem.MaMon);
 
                 var editWindow = new MenuThem(true);
                 editWindow.DataContext = this;
@@ -182,6 +193,86 @@ namespace HVPPCafeDesktop.ViewModels
 
                 LoadMenuCol();
             });
+
+            SaveDetailCM = new RelayCommand<object>((p) => 
+            {
+                return true;
+            }, (p) =>
+            {
+                if (string.IsNullOrEmpty(MenuItem.MaMon))
+                {
+                    var msg = new CustomMessageBox("Vui lòng thêm món trước!");
+                    msg.ShowDialog();
+                    return;
+                }
+                if (IsAnyNguyenLieuSelected() == false)
+                {
+                    var msg = new CustomMessageBox("Vui lòng chọn nguyên liệu cần thiết!");
+                    msg.ShowDialog();
+                    return;
+                }
+                if (IsValidNguyenLieu() == false)
+                {
+                    var msg = new CustomMessageBox("Định lượng phải lớn hơn 0!");
+                    msg.ShowDialog();
+                    return;
+                }
+
+                AddNguyenLieu(MenuItem.MaMon);
+
+                LoadMenuCol();
+            });
+        }
+
+        private async void AddNguyenLieu(string maMon)
+        {
+            foreach (var nl in NguyenLieuCol)
+            {
+                if (nl.DinhLuong <= 0) continue;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+
+                    var ctm = new
+                    {
+                        TenNguyenLieu = nl.TenSanPham,
+                        MaMon = maMon,
+                        DinhLuong = nl.DinhLuong
+                    };
+
+                    var json = JsonConvert.SerializeObject(ctm);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync("api/ChiTietMon", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var msg = new CustomMessageBox("Thêm nguyên liệu thành công!");
+                        msg.ShowDialog();
+                    }
+                }
+            }
+        }
+
+        public bool IsAnyNguyenLieuSelected()
+        {
+            foreach (var item in NguyenLieuCol)
+            {
+                if (item.DuocChon == true)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool IsValidNguyenLieu()
+        {
+            foreach (var item in NguyenLieuCol)
+            {
+                if (item.DuocChon && item.DinhLuong <= 0) return false;
+            }
+            return true;
         }
 
         public async void LoadMenuCol()
@@ -206,6 +297,32 @@ namespace HVPPCafeDesktop.ViewModels
                     foreach (var item in menu)
                     {
                         MenuCol.Add(item);
+                    }
+                }
+            }
+        }
+
+        public async void GetNguyenLieu(string MaMon = "empty")
+        {
+            NguyenLieuCol.Clear();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/ChiTietMon/cong-thuc/{MaMon}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var menu = JsonConvert.DeserializeObject<List<CongThuc>>(result);
+
+                    if (menu == null)
+                    {
+                        return;
+                    }
+
+                    foreach (var item in menu)
+                    {
+                        NguyenLieuCol.Add(item);
                     }
                 }
             }
@@ -273,6 +390,8 @@ namespace HVPPCafeDesktop.ViewModels
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var result = await response.Content.ReadAsStringAsync();
+                    MenuItem.MaMon = JsonConvert.DeserializeObject<string>(result);
                     msgBox.TaskDone("Thêm thành công!");
                 }
             }

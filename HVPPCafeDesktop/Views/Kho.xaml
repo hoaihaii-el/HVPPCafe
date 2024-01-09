@@ -84,7 +84,6 @@
                 <ListView 
                     x:Name="ItemsControl"
                     ItemsSource="{Binding ProductsCol}"
-                    SelectedItem="{Binding ProductSelected}"
                     Style="{StaticResource PrimaryListView}">
                     <ListView.View>
                         <GridView>

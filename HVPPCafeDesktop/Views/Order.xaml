@@ -163,7 +163,9 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="120"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="140"/>
+                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="110"/>
                         </Grid.RowDefinitions>
                         <Border
                             Grid.Row="0" 
@@ -241,11 +243,62 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 15 0 0">
-                            <Border
-                                Margin="20 10"
-                                Height="1.25"
-                                Background="{StaticResource Primary}"/>
+                        <Border Grid.Row="3">
+                            <Grid Margin="5 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Margin="5 0"
+                                    Text="{Binding GhiChu}"
+                                    design:HintAssist.Hint="Ghi chú"
+                                    Style="{StaticResource SubFloatingTextBox}"/>
+                                <ComboBox
+                                    design:HintAssist.Hint="Loại"
+                                    Text="{Binding LoaiHoaDon}"
+                                    Grid.Column="1"
+                                    Margin="5 0"
+                                    Style="{StaticResource SubFloatingComboBox}">
+                                    <ComboBoxItem Content="Dùng tại chỗ"/>
+                                    <ComboBoxItem Content="Mang đi"/>
+                                </ComboBox>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="2"
+                                BorderBrush="{StaticResource Primary}"
+                                BorderThickness="0 0.5 0 0">
+                            <Grid Margin="5 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Margin="5 0"
+                                    Text="{Binding TamTinh}"
+                                    design:HintAssist.Hint="Tạm tính"
+                                    Style="{StaticResource SubFloatingTextBox}"/>
+                                <TextBox
+                                    Margin="5 0"
+                                    Grid.Column="1"
+                                    Text="{Binding GiamGiaKM, StringFormat=N0}"
+                                    design:HintAssist.Hint="Giảm giá"
+                                    Style="{StaticResource SubFloatingTextBox}"/>
+                                <ComboBox
+                                    design:HintAssist.Hint="Phương thức"
+                                    Text="{Binding PhuongThucTT}"
+                                    Grid.Column="2"
+                                    Margin="5 0"
+                                    Style="{StaticResource SubFloatingComboBox}">
+                                    <ComboBoxItem Content="Tiền mặt"/>
+                                    <ComboBoxItem Content="MOMO"/>
+                                    <ComboBoxItem Content="Banking"/>
+                                    <ComboBoxItem Content="Thẻ ngân hàng"/>
+                                </ComboBox>
+                            </Grid>
+                        </Border>
+                        <StackPanel Grid.Row="4" Orientation="Vertical" Margin="0 15 0 0">
                             <StackPanel 
                                 Orientation="Horizontal" 
                                 VerticalAlignment="Top" 

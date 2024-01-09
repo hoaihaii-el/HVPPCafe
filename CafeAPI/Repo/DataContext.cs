@@ -28,6 +28,7 @@ namespace CafeAPI.Repo
         public DbSet<ChiTietGia> ChiTietGia { get; set; }
         public DbSet<Topping> Topping { get; set; }
         public DbSet<ChiTietTopping> ChiTietTopping { get; set; }
+        public DbSet<ThamSo> ThamSo { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietCaLam>()

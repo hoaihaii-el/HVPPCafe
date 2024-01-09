@@ -19,8 +19,16 @@ namespace HVPPCafeDesktop.Converters
                 {
                     return new SolidColorBrush(Color.FromRgb(57, 153, 62));
                 }
-                return new SolidColorBrush(Color.FromRgb(39, 137, 186));
             }
+
+            if (value is string Str)
+            {
+                if (int.Parse(Str) % 2 == 0)
+                {
+                    return new SolidColorBrush(Color.FromRgb(57, 153, 62));
+                }
+            }
+
             return new SolidColorBrush(Color.FromRgb(39, 137, 186));
         }
 

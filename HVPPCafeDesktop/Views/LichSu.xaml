@@ -40,7 +40,7 @@
                     <TextBox
                         Grid.Column="1"
                         Margin="0 0 10 0"
-                        Text="{Binding Search}"
+                        Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                         design:HintAssist.Hint="Tìm kiếm số hóa đơn"
                         Style="{StaticResource SearchBox}"/>
                 </Grid>
@@ -48,7 +48,8 @@
             <ComboBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Text="{Binding FilterMaNV}"
+                ItemsSource="{Binding Staffs}"
+                Text="{Binding FilterMaNV, UpdateSourceTrigger=PropertyChanged}"
                 design:HintAssist.Hint="Mã nhân viên"
                 Style="{StaticResource FloatingComboBox}"/>
             <Label 

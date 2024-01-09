@@ -191,7 +191,7 @@ namespace CafeAPI.Controllers
 
         // POST: api/Mon
         [HttpPost]
-        public async Task<ActionResult<Mon>> PostMon(MonVM monVM)
+        public async Task<ActionResult<string>> PostMon(MonVM monVM)
         {
             var mon = new Mon
             {
@@ -250,7 +250,7 @@ namespace CafeAPI.Controllers
                 });
             }
 
-            return Ok(mon);
+            return mon.MaMon;
         }
 
         // DELETE: api/Mon/5

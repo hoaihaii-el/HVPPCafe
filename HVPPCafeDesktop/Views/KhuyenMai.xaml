@@ -11,17 +11,6 @@
     d:DesignHeight="673" 
     d:DesignWidth="1146">
     <Grid Background="White">
-        <Grid.Resources>
-            <Style x:Key="Txtbox" TargetType="TextBox">
-                <Setter Property="Foreground" Value="#413F42"/>
-                <Setter Property="Margin" Value="10 0"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="FontSize" Value="20"/>
-                <Setter Property="Padding" Value="4"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
@@ -51,11 +40,12 @@
                     <TextBox
                         Grid.Column="1"
                         Margin="0 0 10 0"
+                        Text="{Binding Search}"
                         Style="{StaticResource SearchBox}"/>
                 </Grid>
             </Border>
             <Button 
-                Command="{Binding AddKhuyenMai_Command}"
+                Command="{Binding OpenAddCM}"
                 Grid.Column="1"
                 Style="{StaticResource PrimaryButton}"
                 Content="Thêm"/>
@@ -63,47 +53,56 @@
 
         <Grid Grid.Row="1">
             <ListView 
-                ItemsSource="{Binding KhuyenMaiView}"
-                SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+                x:Name="ItemsControl"
+                ItemsSource="{Binding ListKM}"
                 Style="{StaticResource PrimaryListView}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn 
-                            Width="250"
-                            Header="Tên KM" 
-                            DisplayMemberBinding="{Binding TenKM}"/>
+                            Width="230"
+                            Header="Tên khuyến mãi" 
+                            DisplayMemberBinding="{Binding TenKhuyenMai}"/>
                         <GridViewColumn 
                             Width="135" 
                             Header="Giảm (%)" 
-                            DisplayMemberBinding="{Binding GiamGia}"/>
+                            DisplayMemberBinding="{Binding GiamGia, StringFormat=N0}"/>
                         <GridViewColumn 
                             Width="165" 
                             Header="Mức áp dụng" 
-                            DisplayMemberBinding="{Binding MucApDung}"/>
+                            DisplayMemberBinding="{Binding MucApDung, StringFormat=N0}"/>
                         <GridViewColumn 
                             Width="170" 
                             Header="Ngày bắt đầu" 
-                            DisplayMemberBinding="{Binding NgayBatDau}"/>
+                            DisplayMemberBinding="{Binding NgayBatDau, StringFormat={}{0:MM/dd/yyyy}}"/>
                         <GridViewColumn 
                             Width="170"
                             Header="Ngày kết thúc"
-                            DisplayMemberBinding="{Binding NGayKetThuc}"/>
+                            DisplayMemberBinding="{Binding NgayKetThuc, StringFormat={}{0:MM/dd/yyyy}}"/>
                         <GridViewColumn 
-                            Width="170"
+                            Width="165"
                             Header="Trạng thái" 
                             DisplayMemberBinding="{Binding TrangThai}"/>
                         <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="-40 0 0 0">
+                                        <Button Command="{Binding ElementName=ItemsControl, Path=DataContext.EditCM}"
+                                                CommandParameter="{Binding}"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Height="25">
                                             <fa:ImageAwesome 
                                                 Icon="Edit" 
                                                 Foreground="{StaticResource Primary}"/>
                                         </Button>
-                                        <Button>
+                                        <Button Command="{Binding ElementName=ItemsControl, Path=DataContext.DeleteCM}"
+                                                CommandParameter="{Binding}"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Height="25">
                                             <fa:ImageAwesome 
-                                                Icon="Times"
+                                                Icon="Trash"
                                                 Foreground="#BF3131"/>
                                         </Button>
                                     </StackPanel>

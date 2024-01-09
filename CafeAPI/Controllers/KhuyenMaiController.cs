@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CafeAPI.Models;
+using CafeAPI.Repo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CafeAPI.Models;
-using CafeAPI.Repo;
+using System.Text.RegularExpressions;
 
 namespace CafeAPI.Controllers
 {
@@ -25,41 +21,37 @@ namespace CafeAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KhuyenMai>>> GetKhuyenMai()
         {
-          if (_context.KhuyenMai == null)
-          {
-              return NotFound();
-          }
-            return await _context.KhuyenMai.ToListAsync();
+            var result = await _context.KhuyenMai.Where(km => !km.Xoa).ToListAsync();
+            foreach (var item in result)
+            {
+                if (item.NgayKetThuc <= DateTime.Now)
+                {
+                    item.TrangThai = "Đã kết thúc";
+                }
+                _context.KhuyenMai.Update(item);
+            }
+            await _context.SaveChangesAsync();
+            return result;
         }
 
         // GET: api/KhuyenMai/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<KhuyenMai>> GetKhuyenMai(string id)
+        [HttpGet("ap-dung/{total}")]
+        public async Task<ActionResult<KeyValuePair<string, decimal>>> GetGiamGia(decimal total)
         {
-          if (_context.KhuyenMai == null)
-          {
-              return NotFound();
-          }
-            var khuyenMai = await _context.KhuyenMai.FindAsync(id);
+            var khuyenMai = await _context.KhuyenMai
+                .Where(km => km.NgayBatDau <= DateTime.Now
+                          && km.NgayKetThuc >= DateTime.Now
+                          && km.TrangThai == "Đang diễn ra").FirstOrDefaultAsync();
 
-            if (khuyenMai == null)
-            {
-                return NotFound();
-            }
-
-            return khuyenMai;
+            if (khuyenMai == null) return new KeyValuePair<string, decimal>("", 0);
+            if (total < khuyenMai.MucApDung) return new KeyValuePair<string, decimal>("", 0);
+            return new KeyValuePair<string, decimal>(khuyenMai.MaKhuyenMai, total * khuyenMai.GiamGia / 100);
         }
 
-        // PUT: api/KhuyenMai/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutKhuyenMai(string id, KhuyenMai khuyenMai)
-        {
-            if (id != khuyenMai.MaKhuyenMai)
-            {
-                return BadRequest();
-            }
 
+        [HttpPut]
+        public async Task<IActionResult> PutKhuyenMai(KhuyenMai khuyenMai)
+        {
             _context.Entry(khuyenMai).State = EntityState.Modified;
 
             try
@@ -68,28 +60,18 @@ namespace CafeAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!KhuyenMaiExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest();
             }
 
-            return NoContent();
+            return Ok();
         }
 
-        // POST: api/KhuyenMai
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         public async Task<ActionResult<KhuyenMai>> PostKhuyenMai(KhuyenMai khuyenMai)
         {
-          if (_context.KhuyenMai == null)
-          {
-              return Problem("Entity set 'DataContext.KhuyenMai'  is null.");
-          }
+            khuyenMai.MaKhuyenMai = await AutoID();
+
             _context.KhuyenMai.Add(khuyenMai);
             try
             {
@@ -97,42 +79,56 @@ namespace CafeAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (KhuyenMaiExists(khuyenMai.MaKhuyenMai))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest();
             }
 
-            return CreatedAtAction("GetKhuyenMai", new { id = khuyenMai.MaKhuyenMai }, khuyenMai);
+            return Ok();
         }
 
         // DELETE: api/KhuyenMai/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteKhuyenMai(string id)
         {
-            if (_context.KhuyenMai == null)
-            {
-                return NotFound();
-            }
             var khuyenMai = await _context.KhuyenMai.FindAsync(id);
+
             if (khuyenMai == null)
             {
                 return NotFound();
             }
 
-            _context.KhuyenMai.Remove(khuyenMai);
+            khuyenMai.Xoa = true;
+            _context.KhuyenMai.Update(khuyenMai);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
-        private bool KhuyenMaiExists(string id)
+        private async Task<string> AutoID()
         {
-            return (_context.KhuyenMai?.Any(e => e.MaKhuyenMai == id)).GetValueOrDefault();
+            var ID = "KM0001";
+
+            var maxID = await _context.KhuyenMai
+                .OrderByDescending(m => m.MaKhuyenMai)
+                .Select(m => m.MaKhuyenMai)
+                .FirstOrDefaultAsync();
+
+            if (string.IsNullOrEmpty(maxID))
+            {
+                return ID;
+            }
+
+            ID = "KM";
+
+            var numeric = Regex.Match(maxID, @"\d+").Value;
+
+            numeric = (int.Parse(numeric) + 1).ToString();
+
+            while (ID.Length + numeric.Length < 6)
+            {
+                ID += '0';
+            }
+
+            return ID + numeric;
         }
     }
 }

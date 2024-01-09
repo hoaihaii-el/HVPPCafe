@@ -1,6 +1,7 @@
 ﻿using HVPPCafeDesktop.Models;
 using HVPPCafeDesktop.Resources;
 using HVPPCafeDesktop.Resources.Utilities;
+using HVPPCafeDesktop.Views.SubViews;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,13 @@ namespace HVPPCafeDesktop.ViewModels
         {
             get => _Details;
             set => SetProperty(ref _Details, value);
+        }
+
+        private ObservableCollection<string> _Staffs = new ObservableCollection<string>();
+        public ObservableCollection<string> Staffs
+        {
+            get => _Staffs;
+            set => SetProperty(ref _Staffs, value);
         }
 
         private string _DetailOrderID;
@@ -97,13 +105,17 @@ namespace HVPPCafeDesktop.ViewModels
         public LichSuVM()
         {
             GetBills();
+            GetStaffs();
             DateBegin = DateTime.Now.ToShortDateString();
             DateEnd = DateTime.Now.ToShortDateString();
 
             DetailCM = new RelayCommand<HoaDon>((p) => { return true; }, (p) =>
             {
-                DetailOrderID = p.SoHoaDon.ToString();
+                DetailOrderID = "#" + p.SoHoaDon.ToString();
                 GetDetail(p.SoHoaDon);
+                var window = new ChiTietHoaDon();
+                window.DataContext = this;
+                window.ShowDialog();
             });
 
             ExportCM = new RelayCommand<object>((p) => { return true; }, (p) =>
@@ -117,9 +129,37 @@ namespace HVPPCafeDesktop.ViewModels
 
         }
 
+        public async void GetStaffs()
+        {
+            FilterMaNV = "Tất cả";
+            Staffs.Clear();
+            Staffs.Add("Tất cả");
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/NhanVien/all");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var menu = JsonConvert.DeserializeObject<List<NhanVien>>(result);
+
+                    if (menu == null)
+                    {
+                        return;
+                    }
+
+                    foreach (var item in menu)
+                    {
+                        Staffs.Add(item.MaNV);
+                    }
+                }
+            }
+        }
+
         private void Filter(string search, string dateBein, string dateEnd, string MaNV)
         {
-            var bill = search == "" ? Raw : Raw.Where(h => h.SoHoaDon.ToString().Contains(search));
+            var bill = string.IsNullOrEmpty(search) ? Raw : Raw.Where(h => h.SoHoaDon.ToString().Contains(search));
 
             if (!string.IsNullOrEmpty(dateBein) && !string.IsNullOrEmpty(dateEnd))
             {

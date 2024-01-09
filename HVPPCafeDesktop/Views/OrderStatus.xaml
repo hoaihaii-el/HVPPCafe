@@ -27,7 +27,7 @@
                 Margin="20 0"
                 Foreground="{StaticResource Primary}"
                 VerticalContentAlignment="Center"
-                Content="Đơn cần làm: "/>
+                Content="Đơn cần làm theo thứ tự thời gian: "/>
             <Border
                 Grid.Row="1"
                 Margin="5 5 5 0"
@@ -37,10 +37,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="240"/>
-                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="230"/>
-                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label
@@ -64,12 +65,17 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"/>
                     <Label
-                        Grid.Column="4"
-                        Content="Thời gian"
+                        Grid.Column="5"
+                        Content="Số thẻ"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"/>
                     <Label
-                        Grid.Column="5"
+                        Grid.Column="6"
+                        Content="Loại hóa đơn"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+                    <Label
+                        Grid.Column="4"
                         Content="Topping thêm"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"/>
@@ -90,10 +96,11 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="240"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="130"/>
-                                            <ColumnDefinition Width="230"/>
-                                            <ColumnDefinition Width="230"/>
+                                            <ColumnDefinition Width="170"/>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="130"/>
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <Label
@@ -121,13 +128,14 @@
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"/>
                                         <Label
-                                            Grid.Column="4"
+                                            Grid.Column="5"
                                             Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
-                                            Content="{Binding NgayHoaDon}"
+                                            Content="{Binding SoBan}"
                                             Margin="10 0 0 0"
+                                            HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"/>
                                         <Grid
-                                            Grid.Column="5">
+                                            Grid.Column="4">
                                             <ItemsControl x:Name="Toppings" ItemsSource="{Binding Toppings, UpdateSourceTrigger=PropertyChanged}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
@@ -138,10 +146,17 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                         </Grid>
+                                        <Label
+                                            Grid.Column="6"
+                                            Foreground="{Binding SoHoaDon, Converter={StaticResource IntToColor}}"
+                                            Content="{Binding LoaiHoaDon}"
+                                            Margin="10 0 0 0"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"/>
                                         <Button
                                             Command="{Binding ElementName=Bill, Path=DataContext.DoneCM}"
                                             CommandParameter="{Binding}"
-                                            Grid.Column="6"
+                                            Grid.Column="7"
                                             Background="Transparent"
                                             BorderThickness="0"
                                             Width="60"

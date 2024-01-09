@@ -58,6 +58,69 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _SubTotal, value);
         }
 
+        private string _TamTinh;
+        public string TamTinh
+        {
+            get => _TamTinh;
+            set => SetProperty(ref _TamTinh, value);
+        }
+
+        private string _PhuongThucTT;
+        public string PhuongThucTT
+        {
+            get => _PhuongThucTT;
+            set => SetProperty(ref _PhuongThucTT, value);
+        }
+
+        private string _LoaiHoaDon;
+        public string LoaiHoaDon
+        {
+            get => _LoaiHoaDon;
+            set => SetProperty(ref _LoaiHoaDon, value);
+        }
+
+        private string _GhiChu = "";
+        public string GhiChu
+        {
+            get => _GhiChu;
+            set => SetProperty(ref _GhiChu, value);
+        }
+
+        private string _QrThanhToan = "";
+        public string QrThanhToan
+        {
+            get => _QrThanhToan;
+            set => SetProperty(ref _QrThanhToan, value);
+        }
+
+        private string _Bank = "";
+        public string Bank
+        {
+            get => _Bank;
+            set => SetProperty(ref _Bank, value);
+        }
+
+        private string _STK = "";
+        public string STK
+        {
+            get => _STK;
+            set => SetProperty(ref _STK, value);
+        }
+
+        private string _MOMO = "";
+        public string MOMO
+        {
+            get => _MOMO;
+            set => SetProperty(ref _MOMO, value);
+        }
+
+        private decimal _GiamGiaKM;
+        public decimal GiamGiaKM
+        {
+            get => _GiamGiaKM;
+            set => SetProperty(ref _GiamGiaKM, value);
+        }
+
         public string ToDay => DateTime.Today.DayOfWeek.ToString() + ", " + DateTime.Now.ToString("dd/MM/yyyy");
 
         private ObservableCollection<Mon> _MenuCol = new ObservableCollection<Mon>();
@@ -90,11 +153,17 @@ namespace HVPPCafeDesktop.ViewModels
         public ICommand RemoveCM { get; set; }
         public ICommand DeleteAllCM { get; set; }
 
+        private string MaKM = "";
+
         public OrderVM()
         {
             GetMenu();
             GetToppings();
             CalculateTotal();
+            GetPaymentInfo();
+            GiamGiaKM = 0;
+            PhuongThucTT = "Tiền mặt";
+            LoaiHoaDon = "Dùng tại chỗ";
 
             OrderSizeM = new RelayCommand<Mon>((p) => true, (p) => AddToOrder(p, "M"));
             OrderSizeL = new RelayCommand<Mon>((p) => true, (p) => AddToOrder(p, "L"));
@@ -112,6 +181,33 @@ namespace HVPPCafeDesktop.ViewModels
             });
         }
 
+        private async void GetPaymentInfo()
+        {
+            using (var client = new  HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/TaiKhoan/tham-so");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var res = await response.Content.ReadAsStringAsync();   
+                    var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(res);
+
+                    try
+                    {
+                        QrThanhToan = dic["QrThanhToan"];
+                        Bank = dic["Bank"] + ":   ";
+                        STK = dic["STK"];
+                        MOMO = dic["MOMO"];
+                    }
+                    catch
+                    {
+                        //continue
+                    }
+                }
+            }
+        }
+
         private async void CreateOrderAsync()
         {
             int OrderID;
@@ -121,15 +217,15 @@ namespace HVPPCafeDesktop.ViewModels
                 client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
                 var hoadon = new HoaDonDTO
                 {
-                    LoaiHoaDon = "Dùng tại chỗ",
+                    LoaiHoaDon = LoaiHoaDon,
                     TriGia = NewOrder.Select(o => o.GiaBan).Sum(),
                     NgayHoaDon = DateTime.Now,
                     MaNV = "",
-                    MaKhuyenMai = "",
+                    MaKhuyenMai = MaKM,
                     DaCheBien = false,
                     DaThanhToan = true,
-                    HinhThucThanhToan = "Tiền mặt",
-                    GhiChu = "",
+                    HinhThucThanhToan = PhuongThucTT,
+                    GhiChu = GhiChu,
                     SoBan = 0
                 };
 
@@ -185,6 +281,10 @@ namespace HVPPCafeDesktop.ViewModels
                     {
                         throw new Exception();
                     }
+                    var result = await response.Content.ReadAsStringAsync();
+                    var CTHDID = JsonConvert.DeserializeObject<int>(result);
+
+                    AddCTTopping(CTHDID, order);
                 }
             }
         }
@@ -341,7 +441,7 @@ namespace HVPPCafeDesktop.ViewModels
             }
         }
 
-        public void CalculateTotal()
+        public async void CalculateTotal()
         {
             decimal total = 0;
             foreach (var item in NewOrder)
@@ -357,7 +457,26 @@ namespace HVPPCafeDesktop.ViewModels
                 }
             }
 
-            SubTotal = String.Format("{0:0,0 VND}", total);
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(HVPPStringRes.BaseAPIAddress);
+                var response = await client.GetAsync($"api/KhuyenMai/ap-dung/{total}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var km = JsonConvert.DeserializeObject<KeyValuePair<string, decimal>>(result);
+                    GiamGiaKM = km.Value;
+                    MaKM = km.Key;
+                }
+                else
+                {
+                    GiamGiaKM = 0;
+                }
+            }
+
+            TamTinh = String.Format("{0:0,0 VND}", total);
+            SubTotal = String.Format("{0:0,0 VND}", total - GiamGiaKM);
         }
 
         public void Filter(string filter = "", string search = "")

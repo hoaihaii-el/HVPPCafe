@@ -235,8 +235,8 @@
                         <ListView 
                             Margin="10"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                            ItemsSource="{Binding IngredientCollection, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedItem="{Binding Selected_Ingredient}"
+                            ItemsSource="{Binding NguyenLieuCol, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding NguyenLieuSelected}"
                             FontSize="14">
                             <ListView.View>
                                 <GridView>
@@ -267,7 +267,7 @@
                                             <DataTemplate>
                                                 <TextBox Width="100"
                                                      IsEnabled="{Binding DuocChon}"
-                                                     Text="{Binding DinhLuong, UpdateSourceTrigger=PropertyChanged}">
+                                                     Text="{Binding DinhLuong}">
                                                     <TextBox.LayoutTransform>
                                                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                                                     </TextBox.LayoutTransform>
