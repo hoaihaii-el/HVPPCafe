@@ -82,11 +82,18 @@
                                 Background="#FFB000"/>
 
                             <nav:MainNavigator 
+                                x:Name="AdminNav"
+                                Grid.Row="3"
+                                Margin="0 10"/>
+
+                            <nav:SecondaryNavigator
+                                x:Name="StaffNav"
                                 Grid.Row="3"
                                 Margin="0 10"/>
 
                             <Button
                                 Style="{StaticResource NormalButton}"
+                                Click="Button_Click"
                                 Grid.Row="4">
                                 <Grid>
                                     <fa:ImageAwesome

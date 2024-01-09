@@ -1,19 +1,8 @@
 ﻿using HVPPCafeDesktop.ViewModels;
 using HVPPCafeDesktop.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace HVPPCafeDesktop
 {
@@ -22,16 +11,30 @@ namespace HVPPCafeDesktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(bool isAdmin = false)
         {
             InitializeComponent();
             this.DataContext = new NavigationVM();
-            MainWX = this.Left;
-            MainWY = this.Top;
+
+            StartTime = DateTime.Now;
+
+            if (isAdmin )
+            {
+                StaffNav.Visibility = Visibility.Hidden;
+                AdminNav.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                StaffNav.Visibility = Visibility.Visible;
+                AdminNav.Visibility = Visibility.Hidden;
+            }
         }
 
-        public static double MainWX;
-        public static double MainWY;
+        public bool isLogout = false;
+        public static double MainWX { get; set; }
+        public static double MainWY { get; set; }
+        public static string MaNV { get; set; }
+        public static DateTime StartTime { get; set; } = DateTime.Now;
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -58,6 +61,12 @@ namespace HVPPCafeDesktop
         {
             var window = new TaiKhoan();
             window.ShowDialog();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            isLogout = true;
+            this.Close();
         }
     }
 }

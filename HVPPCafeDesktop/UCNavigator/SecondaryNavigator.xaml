@@ -45,7 +45,7 @@
         <menu:NavigateButton
             Cursor="Hand"
             Style="{StaticResource ButtonStyle}"
-            Command="{Binding LichSuCM}">
+            Command="{Binding LichSuCaCM}">
             <Grid>
                 <fa:ImageAwesome 
                     Icon="ClockOutline"
