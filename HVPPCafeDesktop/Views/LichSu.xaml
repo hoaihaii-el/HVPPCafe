@@ -94,7 +94,7 @@
                                 Width="160"
                                 Header="Số HD" />
                             <GridViewColumn
-                                DisplayMemberBinding="{Binding TriGia}"
+                                DisplayMemberBinding="{Binding TriGia, StringFormat=N0}"
                                 Width="200"
                                 Header="Thành tiền" />
                             <GridViewColumn 

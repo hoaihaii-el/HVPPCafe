@@ -125,7 +125,21 @@ namespace CafeAPI.Controllers
             hoadon.DaCheBien = true;
             _context.HoaDon.Update(hoadon);
 
-            // decrease quantity here
+            var cthd = await _context.ChiTietHoaDon.Where(ct => ct.SoHoaDon == SoHD).ToListAsync();
+            foreach(var ct in cthd)
+            {
+                var tyle = await _context.ChiTietGia
+                    .Where(c => c.MaMon == ct.MaMon && c.Size == ct.Size)
+                    .Select(c => c.TyLeSizeM)
+                    .FirstOrDefaultAsync();
+
+                var nl = await _context.ChiTietMon.Where(m => m.MaMon == ct.MaMon).ToListAsync();
+                foreach (var nguyenlieu in nl)
+                {
+                    var sp = await _context.SanPham.FindAsync(nguyenlieu.TenNguyenLieu);
+                    sp.TonDu -= (float)(nguyenlieu.DinhLuong * tyle);
+                }
+            }
 
             await _context.SaveChangesAsync();
 

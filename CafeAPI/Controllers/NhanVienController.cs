@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CafeAPI.Models;
+﻿using CafeAPI.Models;
 using CafeAPI.Repo;
 using CafeAPI.Response;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace CafeAPI.Controllers
@@ -55,10 +50,10 @@ namespace CafeAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NhanVien>> GetNhanVien(string id)
         {
-          if (_context.NhanVien == null)
-          {
-              return NotFound();
-          }
+            if (_context.NhanVien == null)
+            {
+                return NotFound();
+            }
             var nhanVien = await _context.NhanVien.FindAsync(id);
 
             if (nhanVien == null)
@@ -67,6 +62,81 @@ namespace CafeAPI.Controllers
             }
 
             return nhanVien;
+        }
+
+        [HttpGet("cham-cong/{month}/{year}")]
+        public async Task<ActionResult<IEnumerable<ChamCong>>> GetChamCong(int month, int year)
+        {
+            var result = await _context.NhanVien.Where(n => !n.Xoa)
+                .Select(n => new ChamCong
+                {
+                    MaNV = n.MaNV,
+                    HoTen = n.HoTen,
+                    ChucVu = n.ChucVu,
+                    IsFullTime = n.IsFullTime,
+                    TongSogio = 0
+                })
+                .ToListAsync();
+
+            foreach (var cc in result)
+            {
+                var tong = await _context.ChiTietCaLam
+                    .Where(n => n.MaNV == cc.MaNV && n.Ngay.Month == month && n.Ngay.Year == year)
+                    .OrderBy(n => n.MaNV)
+                    .Select(n => n.SoGio)
+                    .SumAsync();
+                cc.TongSogio = tong;
+            }
+            return result;
+        }
+
+        [HttpGet("chi-tiet-cc")]
+        public async Task<ActionResult<IEnumerable<ChiTietCC>>> GetChiTietCC([FromQuery] string date)
+        {
+            var ct = await _context.NhanVien.Where(n => !n.Xoa)
+                .Select(n => new ChiTietCC
+                {
+                    MaNV = n.MaNV,
+                    Ngay = DateTime.Parse(date),
+                    SoGio = 0,
+                    GhiChu = ""
+                })
+                .ToListAsync();
+
+            foreach (var c in ct)
+            {
+                var item = await _context.ChiTietCaLam.Where(cc => cc.MaNV == c.MaNV && cc.Ngay == c.Ngay).FirstOrDefaultAsync();
+                if (item != null)
+                {
+                    c.SoGio = item.SoGio;
+                    c.GhiChu = item.GhiChu;
+                }
+            }
+
+            return ct;
+        }
+
+        [HttpPut("chi-tiet")]
+        public async Task<ActionResult> SetChiTietCC(ChiTietCC cc)
+        {
+            var ct = await _context.ChiTietCaLam
+                .Where(c => c.Ngay.Date == cc.Ngay.Date && c.MaNV == cc.MaNV)
+                .FirstOrDefaultAsync();
+
+            if (ct != null)
+            {
+                _context.ChiTietCaLam.Remove(ct);
+            }
+            _context.ChiTietCaLam.Add(new ChiTietCaLam
+            {
+                MaNV = cc.MaNV,
+                Ngay = cc.Ngay,
+                SoGio = cc.SoGio,
+                GhiChu = cc.GhiChu
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         [HttpPut]

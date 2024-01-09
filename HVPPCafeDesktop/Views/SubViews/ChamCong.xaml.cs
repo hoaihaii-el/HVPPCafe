@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HVPPCafeDesktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace HVPPCafeDesktop.Views.SubViews
         public ChamCong()
         {
             InitializeComponent();
+            this.DataContext = new ChamCongVM();
         }
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)

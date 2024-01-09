@@ -5,9 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:design="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local1="clr-namespace:HVPPCafeDesktop.Converters"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d"
-    Title="ChamCong" Height="550" Width="950"
+    Title="ChamCong" Height="550" Width="1000"
     TextElement.FontWeight="Regular"
     TextElement.FontSize="16"
     TextElement.Foreground="{StaticResource Primary}"
@@ -19,12 +20,14 @@
     WindowStyle="None"
     AllowsTransparency="True"
     WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local1:BoolToStringConverter x:Key="BoolToString"/>
+    </Window.Resources>
     <Grid>
         <Border 
             CornerRadius="5"
             BorderThickness="4"
             BorderBrush="{StaticResource Primary}"
-            MouseLeftButtonDown="Border_MouseLeftButtonDown"
             Background="White"/>
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -33,24 +36,27 @@
             </Grid.RowDefinitions>
             <Grid>
                 <Border Background="#EEEEEE"
-                        CornerRadius="5"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="14*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="  CHẤM CÔNG NHÂN VIÊN"
-                           Foreground="{StaticResource Primary}"
-                           VerticalAlignment="Center"/>
-                    <Label
-                        Grid.Column="1"
-                        Style="{StaticResource CloseWindow}"
-                        MouseDown="Label_MouseDown">
-                        <fa:ImageAwesome
-                            Icon="PowerOff"
-                            Foreground="{StaticResource Primary}"/>
-                    </Label>
-                </Grid>
+                        CornerRadius="5"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="  CHẤM CÔNG NHÂN VIÊN"
+                               FontSize="17"
+                               Foreground="{StaticResource Primary}"
+                               VerticalAlignment="Center"/>
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource CloseWindow}"
+                            MouseDown="Label_MouseDown">
+                            <fa:ImageAwesome
+                                Icon="PowerOff"
+                                Foreground="{StaticResource Primary}"/>
+                        </Label>
+                    </Grid>
+                </Border>
             </Grid>
             <Grid Grid.Row="1"
                   Margin="0 7 0 0">
@@ -59,6 +65,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="0.5"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
@@ -70,9 +77,10 @@
 
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
                             <Label 
@@ -89,10 +97,18 @@
 
                             <Button 
                                 Grid.Column="2"
+                                Command="{Binding ImportCM}"
+                                Style="{StaticResource PrimaryButton}"
+                                Margin="10 0"
+                                Content="Import">
+                            </Button>
+
+                            <Button 
+                                Grid.Column="3"
                                 Command="{Binding ExportCM}"
                                 Style="{StaticResource PrimaryButton}"
-                                Margin="15 5 15 5"
-                                Content="Xuất file chi tiết">
+                                Margin="10 0"
+                                Content="Xuất file">
                             </Button>
                         </Grid>
 
@@ -125,16 +141,16 @@
                                             <GridViewColumn Width="100">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Fulltime}"
+                                                        <TextBlock Text="{Binding IsFullTime, Converter={StaticResource BoolToString}}"
                                                            VerticalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Width="150"
+                                            <GridViewColumn Width="Auto"
                                                     Header="Tổng số giờ">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding TongSoGio}"
+                                                        <TextBlock Text="{Binding TongSogio}"
                                                            VerticalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
@@ -146,8 +162,11 @@
                         </Grid>
                     </Grid>
 
+                    <Border Background="{StaticResource Primary}"
+                            Grid.Column="1"
+                            Margin="0 20"/>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="8*"/>
@@ -196,7 +215,8 @@
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox 
-                                                            Text="{Binding SoGioCong, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            design:TextFieldAssist.UnderlineBrush="{StaticResource Primary}"
+                                                            Text="{Binding SoGio}"
                                                             Width="70"
                                                             Height="23"/>
                                                     </DataTemplate>
@@ -208,7 +228,8 @@
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBox 
-                                                            Text="{Binding GhiChu, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            design:TextFieldAssist.UnderlineBrush="{StaticResource Primary}"
+                                                            Text="{Binding GhiChu, UpdateSourceTrigger=PropertyChanged}"
                                                             Width="150"
                                                             Height="23"/>
                                                     </DataTemplate>

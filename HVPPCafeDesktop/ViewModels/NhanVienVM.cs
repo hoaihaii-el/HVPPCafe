@@ -1,5 +1,4 @@
 ﻿using HVPPCafeDesktop.CustomControl;
-using HVPPCafeDesktop.DTO;
 using HVPPCafeDesktop.Models;
 using HVPPCafeDesktop.Resources;
 using HVPPCafeDesktop.Resources.Utilities;
@@ -13,6 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Sub = HVPPCafeDesktop.Views.SubViews;
 
 namespace HVPPCafeDesktop.ViewModels
 {
@@ -89,8 +89,7 @@ namespace HVPPCafeDesktop.ViewModels
 
             CheckCM = new RelayCommand<object>((p) => true, (p) =>
             {
-                var window = new ChamCong();
-                window.DataContext = this;
+                var window = new Sub.ChamCong();
                 window.ShowDialog();
             });
         }

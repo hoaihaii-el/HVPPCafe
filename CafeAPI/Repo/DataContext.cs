@@ -32,7 +32,7 @@ namespace CafeAPI.Repo
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietCaLam>()
-                .HasKey(c => new { c.LoaiCaLam, c.MaNV, c.Ngay });
+                .HasKey(c => new { c.MaNV, c.Ngay });
 
             modelBuilder.Entity<ChiTietMon>()
                 .HasKey(c => new { c.TenNguyenLieu, c.MaMon });
