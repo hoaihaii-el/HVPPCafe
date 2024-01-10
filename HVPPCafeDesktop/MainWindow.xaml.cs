@@ -33,7 +33,6 @@ namespace HVPPCafeDesktop
         public bool isLogout = false;
         public static double MainWX { get; set; }
         public static double MainWY { get; set; }
-        public static string MaNV { get; set; }
         public static DateTime StartTime { get; set; } = DateTime.Now;
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)

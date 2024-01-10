@@ -95,6 +95,8 @@
                                 x:Name="Passw"
                                 Margin="35 0"
                                 FontSize="17"
+                                KeyDown="Passw_KeyDown"
+                                design:TextFieldAssist.UnderlineBrush="{StaticResource Primary}"
                                 design:HintAssist.Hint="Mật khẩu"
                                 Height="40"/>
                             <Button

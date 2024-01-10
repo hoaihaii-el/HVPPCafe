@@ -12,8 +12,9 @@
         FontFamily="{StaticResource NunitoLight}"
         ResizeMode="NoResize"
         WindowStyle="None"
-        AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen">
+        Closed="Window_Closed"
+        Loaded="Window_Loaded"
+        AllowsTransparency="True">
     <Grid>
         <Border 
         Background="White"

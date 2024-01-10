@@ -2,10 +2,76 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HVPPCafe.Views.MenuPage"
+             xmlns:vm="clr-namespace:HVPPCafe.ViewModels"
+             xmlns:models="clr-namespace:HVPPCafe.Models"
              BackgroundColor="{StaticResource Tertiary}">
     <Grid
         Margin="10"
         BackgroundColor="White">
-
+        <ScrollView>
+            <CollectionView 
+                x:Name="Col"
+                ItemsSource="{Binding Menus}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:Menu}">
+                        <Grid BackgroundColor="#EEEEEE"
+                              HeightRequest="140"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Image Source="https://i.pinimg.com/736x/6e/74/63/6e7463744c9fdf25c505adfd51902f50.jpg"/>
+                            </Grid>
+                            <Grid Grid.Column="1" Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Text="{Binding TenMon}"
+                                       FontSize="16"
+                                       HorizontalTextAlignment="Center"/>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding GiaBanM}"
+                                           HorizontalTextAlignment="Center"/>
+                                    <Label Grid.Column="1" Text="{Binding GiaBanL}"
+                                           HorizontalTextAlignment="Center"/>
+                                    <Label Grid.Column="2" Text="{Binding GiaBanXL}"
+                                           HorizontalTextAlignment="Center"/>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"
+                                            Text="M"
+                                            FontSize="12"
+                                            Margin="5,0,5,5"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MenuViewModel}}, Path=AddMCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    <Button Grid.Column="1"
+                                            Text="L"
+                                            FontSize="12"
+                                            Margin="5,0,5,5"/>
+                                    <Button Grid.Column="2"
+                                            Text="XL"
+                                            FontSize="12"
+                                            Margin="5,0,5,5"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
     </Grid>
 </ContentPage>

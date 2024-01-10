@@ -114,6 +114,13 @@ namespace HVPPCafeDesktop.ViewModels
             set => SetProperty(ref _MOMO, value);
         }
 
+        private string _SoBan = "1";
+        public string SoBan
+        {
+            get => _SoBan;
+            set => SetProperty(ref _SoBan, value);
+        }
+
         private decimal _GiamGiaKM;
         public decimal GiamGiaKM
         {
@@ -154,6 +161,7 @@ namespace HVPPCafeDesktop.ViewModels
         public ICommand DeleteAllCM { get; set; }
 
         private string MaKM = "";
+        private decimal subTotal = 0;
 
         public OrderVM()
         {
@@ -161,6 +169,7 @@ namespace HVPPCafeDesktop.ViewModels
             GetToppings();
             CalculateTotal();
             GetPaymentInfo();
+            
             GiamGiaKM = 0;
             PhuongThucTT = "Tiền mặt";
             LoaiHoaDon = "Dùng tại chỗ";
@@ -218,15 +227,15 @@ namespace HVPPCafeDesktop.ViewModels
                 var hoadon = new HoaDonDTO
                 {
                     LoaiHoaDon = LoaiHoaDon,
-                    TriGia = NewOrder.Select(o => o.GiaBan).Sum(),
+                    TriGia = subTotal,
                     NgayHoaDon = DateTime.Now,
-                    MaNV = "",
+                    MaNV = LoginWindow.MaNV,
                     MaKhuyenMai = MaKM,
                     DaCheBien = false,
                     DaThanhToan = true,
                     HinhThucThanhToan = PhuongThucTT,
                     GhiChu = GhiChu,
-                    SoBan = 0
+                    SoBan = int.Parse(SoBan)
                 };
 
                 var json = JsonConvert.SerializeObject(hoadon);
@@ -475,6 +484,7 @@ namespace HVPPCafeDesktop.ViewModels
                 }
             }
 
+            subTotal = total;
             TamTinh = String.Format("{0:0,0 VND}", total);
             SubTotal = String.Format("{0:0,0 VND}", total - GiamGiaKM);
         }

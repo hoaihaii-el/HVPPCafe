@@ -284,6 +284,11 @@ namespace HVPPCafeDesktop.ViewModels
                             }
                         }
                     }
+
+                    var msg = new CustomMessageBox("Import file thành công!");
+                    msg.ShowDialog();
+                    GetListStaff();
+                    GetListCheck();
                 }
             }
         }

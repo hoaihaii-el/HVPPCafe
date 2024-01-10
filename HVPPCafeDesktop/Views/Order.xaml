@@ -246,7 +246,8 @@
                         <Border Grid.Row="3">
                             <Grid Margin="5 0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox
@@ -254,6 +255,22 @@
                                     Text="{Binding GhiChu}"
                                     design:HintAssist.Hint="Ghi chú"
                                     Style="{StaticResource SubFloatingTextBox}"/>
+                                <ComboBox
+                                    design:HintAssist.Hint="Số bàn"
+                                    Text="{Binding SoBan}"
+                                    Grid.Column="2"
+                                    Margin="5 0"
+                                    Style="{StaticResource SubFloatingComboBox}">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                    <ComboBoxItem Content="5"/>
+                                    <ComboBoxItem Content="6"/>
+                                    <ComboBoxItem Content="7"/>
+                                    <ComboBoxItem Content="8"/>
+                                    <ComboBoxItem Content="9"/>
+                                </ComboBox>
                                 <ComboBox
                                     design:HintAssist.Hint="Loại"
                                     Text="{Binding LoaiHoaDon}"

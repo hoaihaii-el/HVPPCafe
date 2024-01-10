@@ -173,11 +173,11 @@ namespace HVPPCafeDesktop.ViewModels
                     string[] columnHeader = { "Số hóa đơn", "Ngày hóa đơn", "Tên món",
                         "Số lượng", "Thành tiền(VNĐ)", "Tổng tiền(VNĐ)" };
                     ws.Column(1).Width = 12;
-                    ws.Column(2).Width = 15;
-                    ws.Column(3).Width = 17;
+                    ws.Column(2).Width = 20;
+                    ws.Column(3).Width = 20;
                     ws.Column(4).Width = 14;
-                    ws.Column(6).Width = 15;
-                    ws.Column(7).Width = 16;
+                    ws.Column(5).Width = 20;
+                    ws.Column(6).Width = 20;
 
                     int countColumn = columnHeader.Count();
                     ws.Cells[1, 1].Value = title;
@@ -202,7 +202,7 @@ namespace HVPPCafeDesktop.ViewModels
                         col = 1;
                         row++;
                         ws.Cells[row, col++].Value = temp.SoHoaDon;
-                        ws.Cells[row, col++].Value = temp.NgayHoaDon;
+                        ws.Cells[row, col++].Value = temp.NgayHoaDon.ToShortDateString();
                         ws.Cells[row, countColumn].Value = temp.TriGia;
 
                         await GetDetail(temp.SoHoaDon);
@@ -218,6 +218,7 @@ namespace HVPPCafeDesktop.ViewModels
                     Byte[] bin = x.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 };
+                Filter(Search, DateBegin, DateEnd, FilterMaNV);
                 var msb = new CustomMessageBox("Xuất file thành công!");
                 msb.ShowDialog();
             }

@@ -48,7 +48,12 @@ namespace HVPPCafeDesktop.ViewModels
         public string PhuongThucTT
         {
             get => _PhuongThucTT;
-            set => SetProperty(ref _PhuongThucTT, value);
+            set
+            {
+                _PhuongThucTT = value;
+                OnPropertyChanged();
+                Filter(PhuongThucTT);
+            }
         }
 
         private string _Total;
@@ -70,7 +75,24 @@ namespace HVPPCafeDesktop.ViewModels
 
         public LichSuCaVM()
         {
-            StartTime = MainWindow.StartTime;
+            if (DateTime.Now.Hour < 12 && DateTime.Now.Hour > 6)
+            {
+                StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0);
+            }
+            else if (DateTime.Now.Hour < 18 && DateTime.Now.Hour > 12)
+            {
+                StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 13, 0, 0);
+            }
+            else if (DateTime.Now.Hour < 23 && DateTime.Now.Hour >= 18)
+            {
+                StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0);
+            }
+            else
+            {
+                StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 0, 0);
+            }
+
+            PhuongThucTT = "Tất cả";
             GetBills();
 
             DetailCM = new RelayCommand<HoaDon>((p) => { return true; }, async (p) =>
@@ -201,6 +223,8 @@ namespace HVPPCafeDesktop.ViewModels
             {
                 ListBill.Add(item);
             }
+            var total = ListBill.Select(b => b.TriGia).Sum();
+            Total = String.Format("{0:0,0 VND}", total);
         }
 
         public void Filter(string pttt)
@@ -208,7 +232,7 @@ namespace HVPPCafeDesktop.ViewModels
             var bills = Raw;
             if (pttt != "Tất cả")
             {
-                bills = bills.Where(b => b.HinhThucThanhToan == pttt).ToList();
+                bills = bills.Where(b => b.HinhThucThanhToan.ToLower() == pttt.ToLower()).ToList();
             }
 
             ListBill.Clear();

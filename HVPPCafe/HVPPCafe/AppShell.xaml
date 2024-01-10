@@ -79,10 +79,12 @@
     </FlyoutItem>
 
     <TabBar x:Name="PhoneTabs">
-        <Tab Title="Menu">
+        <Tab Title="Menu"
+             Icon="{x:Static icons:Icons.House}">
             <ShellContent ContentTemplate="{DataTemplate views:MenuPage}"/>
         </Tab>
-        <Tab Title="Order">
+        <Tab Title="Order"
+             Icon="{x:Static icons:Icons.MoneyBill}">
             <ShellContent ContentTemplate="{DataTemplate views:OrderPage}"/>
         </Tab>
     </TabBar>

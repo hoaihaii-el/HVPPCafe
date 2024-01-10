@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,45 @@ namespace HVPPCafeDesktop.Views.SubViews
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            SetRegistry();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetRegistry();
+        }
+
+        private void GetRegistry()
+        {
+            string registryPath = "HKEY_CURRENT_USER\\Software\\HVPPCafe";
+            var top = Registry.GetValue(registryPath, "Top", null);
+            var left = Registry.GetValue(registryPath, "Left", null);
+
+            if (top != null)
+            {
+                this.Top = double.Parse(top.ToString());
+            }
+            if (left != null)
+            {
+                this.Left = double.Parse(left.ToString());
+            }
+        }
+
+        private void SetRegistry()
+        {
+            string registryPath = "HKEY_CURRENT_USER\\Software\\HVPPCafe";
+
+            if (Registry.GetValue(registryPath, null, null) == null)
+            {
+                Registry.CurrentUser.CreateSubKey(@"Software\HVPPCafe");
+            }
+
+            Registry.SetValue(registryPath, "Top", this.Top);
+            Registry.SetValue(registryPath, "Left", this.Left);
         }
     }
 }

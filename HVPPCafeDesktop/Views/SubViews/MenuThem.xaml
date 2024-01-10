@@ -248,7 +248,7 @@
                                                 DisplayMemberBinding="{Binding DonVi}"/>
                                     <GridViewColumn Header="Tồn dư"
                                                 Width="140"
-                                                DisplayMemberBinding="{Binding TonDu}"/>
+                                                DisplayMemberBinding="{Binding TonDu, StringFormat=N2}"/>
                                     <GridViewColumn Header="Chọn"
                                                 Width="110">
                                         <GridViewColumn.CellTemplate>

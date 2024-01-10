@@ -1,21 +1,12 @@
 ﻿using HVPPCafeDesktop.CustomControl;
-using Model = HVPPCafeDesktop.Models;
 using HVPPCafeDesktop.Resources;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Model = HVPPCafeDesktop.Models;
 
 namespace HVPPCafeDesktop
 {
@@ -29,12 +20,19 @@ namespace HVPPCafeDesktop
             InitializeComponent();
         }
 
+        public static string MaNV { get; set; }
+
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await TryLogin();
+        }
+
+        private async Task TryLogin()
         {
             if (string.IsNullOrEmpty(UserName.Text) || string.IsNullOrEmpty(Passw.Password))
             {
@@ -55,9 +53,10 @@ namespace HVPPCafeDesktop
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     var tk = JsonConvert.DeserializeObject<Model.TaiKhoan>(result);
+                    MaNV = tk.MaNV ?? "Admin";
                     var logout = false;
 
-                    msg.TaskDone("Đăng nhập thành công!");
+                    msg.Close();
 
                     if (tk.Quyen.ToLower() == "admin")
                     {
@@ -73,15 +72,24 @@ namespace HVPPCafeDesktop
                     }
                     if (logout)
                     {
+                        UserName.Text = "";
+                        Passw.Password = "";
                         this.Show();
                     }
                     else { this.Close(); }
                 }
                 else
                 {
-                    var msg1 = new CustomMessageBox("Sai tên đăng nhập hoặc mật khẩu!");
-                    msg1.ShowDialog();
+                    msg.TaskDone("Sai tên đăng nhập hoặc mật khẩu!");
                 }
+            }
+        }
+
+        private async void Passw_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                await TryLogin();
             }
         }
     }
